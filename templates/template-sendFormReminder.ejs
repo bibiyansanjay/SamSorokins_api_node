@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reminder: <%= subject %></title>
+  </head>
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 40px 0;
+    "
+  >
+    <div
+      style="
+        max-width: 600px;
+        margin: auto;
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      "
+    >
+      <!-- Logo -->
+      <div style="text-align: center; margin-bottom: 20px">
+        <img
+          src="<%= logoUrl %>"
+          alt="Logo"
+          style="max-height: 60px; object-fit: contain"
+        />
+      </div>
+
+      <!-- Subject (Headline) -->
+      <h2
+        style="
+          text-align: center;
+          color: #263444;
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        "
+      >
+        <%= subject %>
+      </h2>
+
+      <!-- Preheader 
+      <p style="font-weight: bold; font-size: 14px; margin-top: 0">
+        <%= preheader.replace('{{Donation Amount}}', donation_amount) %>
+      </p> -->
+
+      <!-- Body Text -->
+      <p style="margin-top: 10px; font-size: 14px; line-height: 1.6">
+        <%= body.replace('{{First Name}}', name) %>
+      </p>
+
+      <!-- Charity Section Heading -->
+      <p style="font-weight: bold; margin-top: 30px; font-size: 15px">
+        Choose one of the following Charities listed:
+      </p>
+
+      <!-- Charity Table -->
+      <div
+        style="background-color: #f9f9f9; padding: 20px; border-radius: 10px"
+      >
+        <table
+          style="
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 14px;
+          "
+        >
+          <thead>
+            <tr>
+              <th
+                style="
+                  padding: 10px;
+                  border-bottom: 2px solid #ccc;
+                  background-color: #e6e6e6;
+                "
+              >
+                Charity Name
+              </th>
+              <th
+                style="
+                  padding: 10px;
+                  border-bottom: 2px solid #ccc;
+                  background-color: #e6e6e6;
+                "
+              >
+                View Link
+              </th>
+              <th
+                style="
+                  padding: 10px;
+                  border-bottom: 2px solid #ccc;
+                  background-color: #e6e6e6;
+                "
+              >
+                Take Survey
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% charities.forEach(function(charity) { %>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd">
+                <strong><%= charity.name %></strong>
+              </td>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd">
+                <a
+                  href="<%= charity.url %>"
+                  target="_blank"
+                  style="color: #4caf50; text-decoration: underline"
+                  >Click to View</a
+                >
+              </td>
+              <td style="padding: 12px; border-bottom: 1px solid #ddd">
+                <a
+                  href="<%= formLink %>&charity=<%= charity.key %>"
+                  style="
+                    padding: 8px 16px;
+                    background-color: #4caf50;
+                    color: #fff;
+                    text-decoration: none;
+                    border-radius: 6px;
+                    font-weight: bold;
+                  "
+                  >Take the Survey</a
+                >
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Signature -->
+      <div style="margin-top: 30px; font-size: 14px">
+        <p style="margin: 0 0 5px">Regards,</p>
+        <p style="margin: 0 0 5px"><strong><%= signatureName %></strong></p>
+
+        <% if (signoff_style === "business") { %>
+        <p style="margin: 0 0 5px"><%= signatureTeam %></p>
+        <p style="margin: 0 0 5px"><%= signatureTitle %></p>
+        <% } %>
+
+        <p style="margin: 0 0 5px"><%= signatureCompany %></p>
+      </div>
+
+      <!-- Footer -->
+      <div
+        style="
+          margin-top: 40px;
+          font-size: 12px;
+          color: #777;
+          text-align: center;
+        "
+      >
+        Sent via Insight Flow
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Custom Layout - Set Up Your Password</title>
+  </head>
+
+  <body>
+    <p>Dear <%= name %>,</p>
+
+    <p>
+      Welcome to Custom Layout! Your account has been successfully created.
+      Please use the link below to set up your password and log into your
+      account. This link is valid for 24 hours.
+    </p>
+
+    <p>Your user name is your email address of <%=user?.email%>.</p>
+
+    <p><a href="<%= resetLink %>"> <%= resetLink %> </a></p>
+
+    <p>
+      If you did not request this account creation, please disregard this email.
+    </p>
+
+    <p>Sincerely,</p>
+    <p>Insight Flow Team</p>
+  </body>
+</html>

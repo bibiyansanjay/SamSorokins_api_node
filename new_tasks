@@ -1,0 +1,32 @@
+
+17 doc pack
+--
+customer success n service depatrment
+
+--
+highlight mover----bulles
+formlevel view
+question --respondent-
+
+
+
+stakeholder analytics
+customer success n service depatrment--
+
+
+/home/ubuntu/.pm2/logs/my-node-backend-error.log last 15 lines:
+1|my-node- |     at asyncGeneratorStep (/home/ubuntu/node/routes/subcategory/subcategoryId/get.js:2:1)
+1|my-node- |     at _next (/home/ubuntu/node/routes/subcategory/subcategoryId/get.js:2:1)
+1|my-node- |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+1|my-node- | GET /Subcategory - Error: SyntaxError: Unterminated string in JSON at position 1026
+1|my-node- |     at JSON.parse (<anonymous>)
+1|my-node- |     at map (/home/ubuntu/node/routes/subcategory/get.js:20:16)
+1|my-node- |     at Array.map (<anonymous>)
+1|my-node- |     at formatStrategicFocusAreas (/home/ubuntu/node/routes/subcategory/get.js:5:15)
+1|my-node- |     at call (/home/ubuntu/node/routes/subcategory/get.js:217:33)
+1|my-node- |     at tryCatch (/home/ubuntu/node/routes/subcategory/get.js:2:1)
+1|my-node- |     at Generator._invoke (/home/ubuntu/node/routes/subcategory/get.js:2:1)
+1|my-node- |     at Generator.next (/home/ubuntu/node/routes/subcategory/get.js:2:1)
+1|my-node- |     at asyncGeneratorStep (/home/ubuntu/node/routes/subcategory/get.js:2:1)
+1|my-node- |     at _next (/home/ubuntu/node/routes/subcategory/get.js:2:1)
+1|my-node- |     at processTicksAndRejections (node:internal/process/task_queues:95:5)

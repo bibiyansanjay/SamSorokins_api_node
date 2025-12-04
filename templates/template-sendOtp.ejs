@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Two Factor Authentication</title>
+    <style>
+      .title {
+        font-family: "Noto Sans Arabic", sans-serif;
+        font-weight: bold;
+      }
+
+      .content {
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        font-family: "Noto Sans Arabic", sans-serif;
+        padding: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>Dear <%= name %>,</p>
+    <div class="content">
+      <p>
+        Your Login Code is
+        <strong> <%= otp %> </strong>
+      </p>
+    </div>
+    <p>Sincerely,</p>
+    <p>Insight Flow Team</p>
+  </body>
+</html>
