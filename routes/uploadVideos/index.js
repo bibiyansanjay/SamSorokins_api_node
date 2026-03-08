@@ -3,6 +3,6 @@ import tus from "./tus";
 
 const router = Router();
 
-router.post("/tus", tus);
+router.use("/tus", tus);
 
 export default router;

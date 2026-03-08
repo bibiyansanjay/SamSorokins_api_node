@@ -4,14 +4,21 @@ import express from "express";
 import routes from "./routes";
 import db from "./db";
 import isTokenExpired from "./middlewares/isTokenExpired";
+import createDefaultUser from "./db/DefaultUser.js";
 
 const app = express();
 
 // Configuring environment variables from .env file
 dotenv.config();
 
-//Connect to database
+// Connect to database
 db();
+
+// Initialize Cron Jobs
+import "./cron/uploadReminder.js";
+
+// Create default user
+createDefaultUser();
 
 // Middleware
 app.use(express.json());
