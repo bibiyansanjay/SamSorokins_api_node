@@ -4,9 +4,13 @@ import { Upload } from "../../models/index.js";
 import { Worker } from "worker_threads";
 import path from "path";
 // import pool from "../../db";
-import { S3Client, CopyObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import dotenv from "dotenv";
-dotenv.config();
+import {
+  S3Client,
+  CopyObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
+// import dotenv from "dotenv";
+// dotenv.config();
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -94,29 +98,44 @@ const getTusServer = () => {
 
         // Get S3 details
         const s3Key = upload.id;
-        const finalKey = filename ? `${Date.now()}_${filename.replace(/\s+/g, "_")}` : `${upload.id}.mp4`;
-        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION || "us-east-1"
-          }.amazonaws.com/${finalKey}`;
+        const finalKey = filename
+          ? `${Date.now()}_${filename.replace(/\s+/g, "_")}`
+          : `${upload.id}.mp4`;
+        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${
+          process.env.AWS_REGION || "us-east-1"
+        }.amazonaws.com/${finalKey}`;
 
         try {
-          console.log(`🔄 Copying AWS Object from ${s3Key} to ${finalKey} with Content-Type ${filetype || 'video/mp4'}`);
-          await s3Client.send(new CopyObjectCommand({
-            Bucket: process.env.AWS_BUCKET,
-            CopySource: `${process.env.AWS_BUCKET}/${s3Key}`,
-            Key: finalKey,
-            ContentType: filetype || 'video/mp4',
-            MetadataDirective: 'REPLACE'
-          }));
+          console.log(
+            `🔄 Copying AWS Object from ${s3Key} to ${finalKey} with Content-Type ${
+              filetype || "video/mp4"
+            }`
+          );
+          await s3Client.send(
+            new CopyObjectCommand({
+              Bucket: process.env.AWS_BUCKET,
+              CopySource: `${process.env.AWS_BUCKET}/${s3Key}`,
+              Key: finalKey,
+              ContentType: filetype || "video/mp4",
+              MetadataDirective: "REPLACE",
+            })
+          );
 
-          console.log(`🗑️ Deleting temporary TUS files: ${s3Key} and ${s3Key}.info`);
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET,
-            Key: s3Key
-          }));
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET,
-            Key: `${s3Key}.info`
-          }));
+          console.log(
+            `🗑️ Deleting temporary TUS files: ${s3Key} and ${s3Key}.info`
+          );
+          await s3Client.send(
+            new DeleteObjectCommand({
+              Bucket: process.env.AWS_BUCKET,
+              Key: s3Key,
+            })
+          );
+          await s3Client.send(
+            new DeleteObjectCommand({
+              Bucket: process.env.AWS_BUCKET,
+              Key: `${s3Key}.info`,
+            })
+          );
         } catch (s3Error) {
           console.error("❌ S3 Copy/Delete Error:", s3Error);
         }

@@ -35,10 +35,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    fullNameAtBirth: {
-      type: String,
-      default: "",
-    },
     gender: {
       type: String,
       trim: true,

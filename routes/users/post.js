@@ -25,7 +25,7 @@ const schema = Joi.object({
 /**
  * @module RegisterUser
  * @description Register the new user here
- * @author Tushar Sharma
+ * @author Sanjay
  */
 
 export default async (req, res, next) => {
