@@ -15,7 +15,20 @@ const schema = Joi.object({
 export default async (req, res, next) => {
   try {
     const { body, userId } = req;
-    const data = await schema.validateAsync(body);
+    // const data = await schema.validateAsync(body);
+
+    //   const formData = await req.formData();
+
+    // const file = formData.get("file") as File;
+    //    if (!file) {
+    //   return res.status(404).json({ message: "No file uploaded" });
+    // }
+
+    // ✅ Validate image
+    if (!file.type.startsWith("image/")) {
+      return res.status(404).json({ message: "Only image files are allowed" });
+    }
+
     const user = await User.findOneAndUpdate(
       { _id: userId },
       { profileImg: data?.profileImg, signature: data?.signature }

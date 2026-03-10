@@ -17,7 +17,7 @@ const router = Router();
  */
 
 router.use("/change-password", passwordChange);
-router.use("/profile-img", profileChange);
+router.use("/profileImg", profileChange);
 router.put("/restore-user", restore);
 
 router.put("/", put);

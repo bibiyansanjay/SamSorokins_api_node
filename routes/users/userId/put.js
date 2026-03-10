@@ -12,7 +12,7 @@ const schema = Joi.object({
   address: Joi.string().allow(""),
   pinCode: Joi.string().allow(""),
   profileImg: Joi.string().allow(""),
-  role: Joi.string().valid("CLIENT", "ADMIN", "SUB-ADMIN"),
+  role: Joi.string().valid("Client", "Admin"),
   preferredLanguage: Joi.string(),
   isDeleted: Joi.boolean(),
   isActive: Joi.boolean(),
@@ -36,7 +36,17 @@ export default async (req, res, next) => {
       new: true,
     });
 
-    return res.json({ message: "User Updated successfully", user });
+    return res.json({
+      message: "User Updated successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        fullName: user?.fullName,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+      },
+    });
   } catch (error) {
     next(error);
   }

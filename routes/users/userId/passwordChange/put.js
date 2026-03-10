@@ -8,7 +8,7 @@ import Joi from "joi";
 import { User } from "../../../../models";
 
 const schema = Joi.object({
-  currentPassword: Joi.string().required(),
+  // currentPassword: Joi.string().required(),
   newPassword: Joi.string().required(),
 });
 
@@ -17,7 +17,7 @@ export default async (req, res, next) => {
     const { body, userId, user: requestingUser } = req;
 
     const data = await schema.validateAsync(body);
-    const { currentPassword, newPassword } = data;
+    const { newPassword } = data;
 
     const user = await User.findOne({ _id: userId, isDeleted: false });
 
@@ -25,11 +25,11 @@ export default async (req, res, next) => {
       return res.status(404).json({ message: "User Not Found" });
     }
 
-    const matchPassword = await user.comparePassword(currentPassword);
+    // const matchPassword = await user.comparePassword(currentPassword);
 
-    if (!matchPassword) {
-      return res.status(409).json({ message: "Invalid Current Password" });
-    }
+    // if (!matchPassword) {
+    //   return res.status(409).json({ message: "Invalid Current Password" });
+    // }
 
     user.password = newPassword;
     user.resendOtpCount = 0;
