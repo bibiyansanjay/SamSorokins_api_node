@@ -11,6 +11,6 @@ import resetPassword from "./resetPassword";
 const router = Router();
 
 router.post("/", post);
-router.post("/resetPassword", resetPassword);
+router.post("/changePassword", resetPassword);
 
 export default router;
