@@ -12,8 +12,8 @@ const uploadSchema = new mongoose.Schema(
       required: true,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+      // ref: "User",
       // required: true,
     },
     filename: {
@@ -29,8 +29,8 @@ const uploadSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["uploading", "completed", "failed"],
-      default: "uploading",
+      enum: ["Pending", "Uploading", "Uploaded", "Failed"],
+      default: "Pending",
     },
     reminderSent: {
       type: Boolean,

@@ -1,14 +1,13 @@
-import { Server } from "@tus/server";
-import { S3Store } from "@tus/s3-store";
 import { Upload } from "../../models/index.js";
 import { Worker } from "worker_threads";
 import path from "path";
-// import pool from "../../db";
 import {
   S3Client,
   CopyObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
+
+
 // import dotenv from "dotenv";
 // dotenv.config();
 
@@ -30,9 +29,12 @@ console.log("AWS Configuration:", {
 // Initialize TUS Server once (singleton pattern)
 let tusServer;
 
-const getTusServer = () => {
+const getTusServer = async () => {
   if (!tusServer) {
     console.log("Initializing TUS Server...");
+
+    const { Server } = await import("@tus/server");
+    const { S3Store } = await import("@tus/s3-store");
 
     tusServer = new Server({
       path: "/upload/tus",
@@ -46,84 +48,94 @@ const getTusServer = () => {
       }),
 
       onUploadCreate: async (req, upload) => {
-        console.log("📤 Upload CREATE triggered");
+        console.log(`[TUS] [${upload.id}] 📤 Upload CREATE triggered`);
         if (!upload) {
-          console.error("❌ upload object missing");
+          console.error(`[TUS] [${upload.id}] ❌ upload object missing`);
           return;
         }
-        console.log("upload.metadata", upload.metadata);
+
         const metadata = upload.metadata || {};
+        // Note: TUS metadata values are usually base64 encoded strings in raw TUS, 
+        // but @tus/server often decodes them. We'll use them as is first.
         const { submissionId, userId, filename, filetype } = metadata;
 
-        console.log("Upload metadata:", {
-          uploadId: upload.id,
+        console.log(`[TUS] [${upload.id}] Metadata:`, {
           submissionId,
-          userId: "69abe4b1284af79b9b23165d",
+          userId,
           filename,
           filetype,
           size: `${(upload.size / (1024 * 1024)).toFixed(2)} MB`,
         });
 
-        // Optional: Save initial record to database
+        // Link to existing "Pending" record or create a new one
         try {
-          if ((submissionId || userId) && filename) {
-            const newUpload = new Upload({
-              uploadId: upload.id,
+          console.log(`[TUS] [${upload.id}] 🔍 Searching for Pending record: submissionId=${submissionId}, filename=${filename}`);
+          if (submissionId && filename) {
+            const existingPending = await Upload.findOne({
               submissionId,
-              userId: "69abe4b1284af79b9b23165d",
               filename,
-              size: upload.size,
-              status: "uploading",
+              status: "Pending"
             });
-            await newUpload.save();
-            console.log("✅ Initial DB record created");
+
+            if (existingPending) {
+              console.log(`[TUS] [${upload.id}] 🔗 Found existing Pending record (${existingPending._id}), linking...`);
+              existingPending.uploadId = upload.id;
+              existingPending.status = "Uploading";
+              await existingPending.save();
+              console.log(`[TUS] [${upload.id}] ✅ Pending record linked successfully`);
+            } else {
+              console.log(`[TUS] [${upload.id}] ℹ️ No Pending record found, creating new record...`);
+              const newUpload = new Upload({
+                uploadId: upload.id,
+                submissionId,
+                userId: userId || null,
+                filename,
+                size: upload.size,
+                status: "Uploading",
+              });
+              await newUpload.save();
+              console.log(`[TUS] [${upload.id}] ✅ New DB record created (fallback)`);
+            }
           } else {
-            console.log("⚠️ Missing required metadata for DB record", {
-              submissionId,
-              userId,
-              filename,
-            });
+            console.warn(`[TUS] [${upload.id}] ⚠️ Metadata missing for record linking: submissionId=${submissionId}, filename=${filename}`);
           }
         } catch (dbError) {
-          console.error("❌ DB Error on create:", dbError);
+          console.error(`[TUS] [${upload.id}] ❌ DB Error on create:`, dbError.message);
         }
 
         return { res: { status: 200 } };
       },
       onUploadFinish: async (req, upload) => {
-        console.log("✅ Upload FINISH triggered");
+        console.log(`[TUS] [${upload.id}] ✅ Upload FINISH triggered`);
 
         const metadata = upload.metadata || {};
         const { submissionId, userId, filename, filetype } = metadata;
+        console.log(`[TUS] [${upload.id}] Finish Metadata:`, { submissionId, userId, filename });
 
         // Get S3 details
         const s3Key = upload.id;
-        const finalKey = filename
-          ? `${Date.now()}_${filename.replace(/\s+/g, "_")}`
-          : `${upload.id}.mp4`;
-        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${
-          process.env.AWS_REGION || "us-east-1"
-        }.amazonaws.com/${finalKey}`;
+
+        // CRITICAL: Ensure unique final key using upload.id to avoid collisions
+        const timestamp = Date.now();
+        const safeFilename = filename ? filename.replace(/\s+/g, "_") : "unnamed_file";
+        const finalKey = `files/${timestamp}_${upload.id}_${safeFilename}`;
+
+        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION || "us-east-1"
+          }.amazonaws.com/${finalKey}`;
 
         try {
-          console.log(
-            `🔄 Copying AWS Object from ${s3Key} to ${finalKey} with Content-Type ${
-              filetype || "video/mp4"
-            }`
-          );
+          console.log(`[TUS] [${upload.id}] 🔄 Moving S3 Object to ${finalKey}`);
           await s3Client.send(
             new CopyObjectCommand({
               Bucket: process.env.AWS_BUCKET,
               CopySource: `${process.env.AWS_BUCKET}/${s3Key}`,
               Key: finalKey,
-              ContentType: filetype || "video/mp4",
+              ContentType: filetype || "application/octet-stream",
               MetadataDirective: "REPLACE",
             })
           );
 
-          console.log(
-            `🗑️ Deleting temporary TUS files: ${s3Key} and ${s3Key}.info`
-          );
+          console.log(`[TUS] [${upload.id}] 🗑️ Deleting temp S3 keys: ${s3Key}, ${s3Key}.info`);
           await s3Client.send(
             new DeleteObjectCommand({
               Bucket: process.env.AWS_BUCKET,
@@ -137,50 +149,51 @@ const getTusServer = () => {
             })
           );
         } catch (s3Error) {
-          console.error("❌ S3 Copy/Delete Error:", s3Error);
+          console.error(`[TUS] [${upload.id}] ❌ S3 Move/Delete Error:`, s3Error.message);
         }
 
-        console.log("Upload completed successfully:", {
-          uploadId: upload.id,
-          submissionId,
-          userId: "69abe4b1284af79b9b23165d",
-          filename: finalKey,
-          s3Url,
-          s3Key: finalKey,
-          size: `${(upload.size / (1024 * 1024)).toFixed(2)} MB`,
-        });
+        console.log(`[TUS] [${upload.id}] Finalizing DB record...`);
 
         // Update database with completed upload
         try {
-          console.log(s3Url, finalKey, "completed", submissionId, filename);
-
           if (upload.id) {
+            const updateData = {
+              status: "Uploaded",
+              s3Url,
+            };
+            
+            if (submissionId) updateData.submissionId = submissionId;
+            if (userId) updateData.userId = userId;
+            // We do NOT overwrite updateData.filename with finalKey anymore
+            // to keep the "exact file name" in the database as requested.
+
             const result = await Upload.findOneAndUpdate(
               { uploadId: upload.id },
-              { status: "completed", s3Url, filename: finalKey },
+              updateData,
               { new: true }
             );
 
             if (result) {
-              console.log("✅ Database updated successfully", result._id);
+              console.log(`[TUS] [${upload.id}] ✅ Database updated: status=Uploaded, id=${result._id}`);
             } else {
-              // Fallback insert if record was missing
+              console.log(`[TUS] [${upload.id}] ⚠️ Record missing on finish, creating fallback...`);
               const newUpload = new Upload({
                 uploadId: upload.id,
                 submissionId: submissionId || "unknown",
-                userId: "69abe4b1284af79b9b23165d" || "unknown",
-                filename: finalKey,
+                userId: userId || null,
+                filename: filename || "unnamed_file", // Use original filename
                 size: upload.size,
-                status: "completed",
+                status: "Uploaded",
                 s3Url,
               });
               await newUpload.save();
-              console.log("✅ Database insert successful (fallback)");
+              console.log(`[TUS] [${upload.id}] ✅ Database fallback insert successful: ${newUpload._id}`);
             }
           }
         } catch (dbError) {
-          console.error("❌ DB Error on finish:", dbError);
+          console.error(`[TUS] [${upload.id}] ❌ DB Error on finish:`, dbError.message);
         }
+
 
         // Spawn a Worker Thread for heavy post-processing tasks
         try {
@@ -198,23 +211,18 @@ const getTusServer = () => {
           });
 
           worker.on("message", (msg) => {
-            console.log(
-              `[Worker Message] ${msg.uploadId}:`,
-              msg.message || msg.error
-            );
+            console.log(`[TUS] [${upload.id}] [Worker Message]:`, msg.message || msg.error);
           });
 
           worker.on("error", (err) => {
-            console.error(`[Worker Error] for upload ${upload.id}:`, err);
+            console.error(`[TUS] [${upload.id}] [Worker Error]:`, err.message);
           });
 
           worker.on("exit", (code) => {
-            console.log(
-              `[Worker Exit] Worker for upload ${upload.id} exited with code ${code}`
-            );
+            console.log(`[TUS] [${upload.id}] [Worker Exit] Code ${code}`);
           });
         } catch (workerError) {
-          console.error("❌ Failed to spawn background worker:", workerError);
+          console.error(`[TUS] [${upload.id}] ❌ Failed to spawn background worker:`, workerError.message);
         }
 
         return { res: { status: 200 } };
@@ -234,7 +242,7 @@ export default async (req, res, next) => {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     `);
 
-    const server = getTusServer();
+    const server = await getTusServer();
     await server.handle(req, res);
 
     console.log("✅ TUS Request handled");
