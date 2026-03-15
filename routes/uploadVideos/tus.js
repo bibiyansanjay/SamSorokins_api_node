@@ -54,9 +54,9 @@ const getTusServer = async () => {
           return;
         }
 
+        // @tus/server already decodes base64 metadata values before passing to hooks.
+        // Do NOT re-decode - it corrupts normal strings like "Sanjay" or numeric IDs.
         const metadata = upload.metadata || {};
-        // Note: TUS metadata values are usually base64 encoded strings in raw TUS, 
-        // but @tus/server often decodes them. We'll use them as is first.
         const { submissionId, userId, filename, filetype, residentName, residentEmail } = metadata;
 
         console.log(`[TUS] [${upload.id}] Metadata:`, {
@@ -71,22 +71,30 @@ const getTusServer = async () => {
 
         // Link to existing "Pending" record or create a new one
         try {
-          console.log(`[TUS] [${upload.id}] 🔍 Searching for Pending record: submissionId=${submissionId}, filename=${filename}`);
+          console.log(`[TUS] [${upload.id}] 🔍 Attempting atomic link: submissionId=${submissionId}, filename=${filename}, size=${upload.size}`);
+          
           if (submissionId && filename) {
-            const existingPending = await Upload.findOne({
-              submissionId,
-              filename,
-              status: "Pending"
-            });
+            // Use findOneAndUpdate to atomically claim a Pending record
+            const updatedRecord = await Upload.findOneAndUpdate(
+              {
+                submissionId,
+                filename,
+                size: upload.size,
+                status: "Pending" // Only link to truly Pending records
+              },
+              {
+                $set: {
+                  uploadId: upload.id,
+                  status: "Uploading"
+                }
+              },
+              { new: true }
+            );
 
-            if (existingPending) {
-              console.log(`[TUS] [${upload.id}] 🔗 Found existing Pending record (${existingPending._id}), linking...`);
-              existingPending.uploadId = upload.id;
-              existingPending.status = "Uploading";
-              await existingPending.save();
-              console.log(`[TUS] [${upload.id}] ✅ Pending record linked successfully`);
+            if (updatedRecord) {
+              console.log(`[TUS] [${upload.id}] 🔗 Atomically linked to record (${updatedRecord._id})`);
             } else {
-              console.log(`[TUS] [${upload.id}] ℹ️ No Pending record found, creating new record...`);
+              console.log(`[TUS] [${upload.id}] ℹ️ No matching Pending record found or already claimed, creating fallback record...`);
               const newUpload = new Upload({
                 uploadId: upload.id,
                 submissionId,
@@ -112,66 +120,82 @@ const getTusServer = async () => {
       onUploadFinish: async (req, upload) => {
         console.log(`[TUS] [${upload.id}] ✅ Upload FINISH triggered`);
 
+        // @tus/server already decodes base64 metadata values before passing to hooks.
         const metadata = upload.metadata || {};
         const { submissionId, userId, filename, filetype, residentName, residentEmail } = metadata;
         console.log(`[TUS] [${upload.id}] Finish Metadata:`, { submissionId, userId, filename, residentName, residentEmail });
 
         // Get S3 details
+        // NOTE: @tus/s3-store stores the upload data at the upload.id as the S3 key.
         const s3Key = upload.id;
+        console.log(`[TUS] [${upload.id}] 🔑 Raw upload.id (S3 source key): "${s3Key}"`);
 
         // CRITICAL: Ensure unique final key using upload.id to avoid collisions
         const timestamp = Date.now();
         const safeFilename = filename ? filename.replace(/\s+/g, "_") : "unnamed_file";
         const finalKey = `files/${timestamp}_${upload.id}_${safeFilename}`;
 
-        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION || "us-east-1"
-          }.amazonaws.com/${finalKey}`;
+        const region = process.env.AWS_REGION || "us-east-1";
+        const s3Url = `https://${process.env.AWS_BUCKET}.s3.${region}.amazonaws.com/${finalKey}`;
+
+        let s3MoveSuccess = false;
 
         try {
-          console.log(`[TUS] [${upload.id}] 🔄 Moving S3 Object to ${finalKey}`);
-          await s3Client.send(
+          if (upload.size > 5 * 1024 * 1024 * 1024) {
+             console.error(`[TUS] [${upload.id}] ❌ File exceeds 5GB CopyObject limit.`);
+             throw new Error("File size exceeds S3 CopyObject limit (5GB)");
+          }
+
+          console.log(`[TUS] [${upload.id}] 🔄 Moving S3 Object from "${s3Key}" to "${finalKey}" (${(upload.size / (1024*1024)).toFixed(2)} MB)`);
+          
+          // CopySource: "bucket/key" — NO encoding needed for standard UUID-based TUS upload IDs
+          const copyResult = await s3Client.send(
             new CopyObjectCommand({
               Bucket: process.env.AWS_BUCKET,
               CopySource: `${process.env.AWS_BUCKET}/${s3Key}`,
               Key: finalKey,
+              // Set the correct MIME type so browsers display files instead of downloading them.
+              // MetadataDirective: "REPLACE" is required to actually change the ContentType on copy.
               ContentType: filetype || "application/octet-stream",
               MetadataDirective: "REPLACE",
             })
           );
+          console.log(`[TUS] [${upload.id}] ✅ S3 Copy success (RequestId: ${copyResult.$metadata.requestId})`);
 
-          console.log(`[TUS] [${upload.id}] 🗑️ Deleting temp S3 keys: ${s3Key}, ${s3Key}.info`);
-          await s3Client.send(
-            new DeleteObjectCommand({
-              Bucket: process.env.AWS_BUCKET,
-              Key: s3Key,
-            })
-          );
-          await s3Client.send(
-            new DeleteObjectCommand({
-              Bucket: process.env.AWS_BUCKET,
-              Key: `${s3Key}.info`,
-            })
-          );
+          // Only delete originals if copy succeeded
+          console.log(`[TUS] [${upload.id}] 🗑️ Deleting temp S3 objects: ${s3Key}, ${s3Key}.info`);
+          await s3Client.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET, Key: s3Key }));
+          await s3Client.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET, Key: `${s3Key}.info` }));
+          console.log(`[TUS] [${upload.id}] ✅ Temp S3 objects deleted`);
+
+          s3MoveSuccess = true;
         } catch (s3Error) {
-          console.error(`[TUS] [${upload.id}] ❌ S3 Move/Delete Error:`, s3Error.message);
+          // Log the full error for diagnosis, not just the message
+          console.error(`[TUS] [${upload.id}] ❌ S3 Move/Delete Error:`, {
+            message: s3Error.message,
+            code: s3Error.Code || s3Error.code,
+            statusCode: s3Error.$metadata?.httpStatusCode,
+            requestId: s3Error.$metadata?.requestId,
+            key: s3Key,
+            bucket: process.env.AWS_BUCKET,
+          });
         }
 
-        console.log(`[TUS] [${upload.id}] Finalizing DB record...`);
+        console.log(`[TUS] [${upload.id}] Finalizing DB record... (s3MoveSuccess=${s3MoveSuccess})`);
 
         // Update database with completed upload
         try {
           if (upload.id) {
             const updateData = {
-              status: "Uploaded",
-              s3Url,
+              status: s3MoveSuccess ? "Uploaded" : "Failed",
+              // Only set s3Url if the file was actually moved successfully
+              ...(s3MoveSuccess && { s3Url }),
             };
             
             if (submissionId) updateData.submissionId = submissionId;
             if (userId) updateData.userId = userId;
             if (residentName) updateData.residentName = residentName;
             if (residentEmail) updateData.residentEmail = residentEmail;
-            // We do NOT overwrite updateData.filename with finalKey anymore
-            // to keep the "exact file name" in the database as requested.
 
             const result = await Upload.findOneAndUpdate(
               { uploadId: upload.id },
@@ -180,22 +204,22 @@ const getTusServer = async () => {
             );
 
             if (result) {
-              console.log(`[TUS] [${upload.id}] ✅ Database updated: status=Uploaded, id=${result._id}`);
+              console.log(`[TUS] [${upload.id}] ✅ DB updated: status=${result.status}, url=${result.s3Url || "none"}`);
             } else {
-              console.log(`[TUS] [${upload.id}] ⚠️ Record missing on finish, creating fallback...`);
+              console.warn(`[TUS] [${upload.id}] ⚠️ No record found by uploadId="${upload.id}" on finish. Creating fallback...`);
               const newUpload = new Upload({
                 uploadId: upload.id,
                 submissionId: submissionId || "unknown",
                 userId: userId || null,
                 residentName: residentName || null,
                 residentEmail: residentEmail || null,
-                filename: filename || "unnamed_file", // Use original filename
+                filename: filename || "unnamed_file",
                 size: upload.size,
-                status: "Uploaded",
-                s3Url,
+                status: s3MoveSuccess ? "Uploaded" : "Failed",
+                ...(s3MoveSuccess && { s3Url }),
               });
               await newUpload.save();
-              console.log(`[TUS] [${upload.id}] ✅ Database fallback insert successful: ${newUpload._id}`);
+              console.log(`[TUS] [${upload.id}] ✅ DB fallback insert: ${newUpload._id}`);
             }
           }
         } catch (dbError) {

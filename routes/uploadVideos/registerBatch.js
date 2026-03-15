@@ -14,19 +14,27 @@ router.post("/", async (req, res) => {
 
     console.log(`[Batch] Registering ${files.length} files for submission ${submissionId}`);
 
-    const uploadDocs = files.map((file) => ({
-      uploadId: `pending_${Math.random().toString(36).substring(7)}`, // Temporary ID until TUS provides one
-      submissionId,
-      userId: userId || null,
-      residentName: residentName || null,
-      residentEmail: residentEmail || null,
-      filename: file.name,
-      size: file.size,
-      status: "Pending",
+    const ops = files.map((file) => ({
+      updateOne: {
+        filter: { submissionId, filename: file.name, size: file.size, status: "Pending" },
+        update: {
+          $setOnInsert: {
+            uploadId: `pending_${Math.random().toString(36).substring(7)}`,
+            submissionId,
+            filename: file.name,
+            size: file.size,
+            status: "Pending",
+            userId: userId || null,
+            residentName: residentName || null,
+            residentEmail: residentEmail || null,
+          }
+        },
+        upsert: true
+      }
     }));
 
-    // Bulk insert
-    await Upload.insertMany(uploadDocs);
+    // Bulk write for idempotency
+    await Upload.bulkWrite(ops);
 
     res.status(200).json({ success: true, message: "Batch registered successfully" });
   } catch (error) {

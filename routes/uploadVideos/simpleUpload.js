@@ -60,7 +60,7 @@ router.post("/files", upload.array("files", 10), async (req, res) => {
           filename: file.originalname,
           size: file.size,
           mimetype: file.mimetype,
-          status: "pending",
+          status: "Pending",
           s3Url: null,
         });
         await doc.save();

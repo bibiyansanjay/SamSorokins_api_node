@@ -1,17 +1,9 @@
-import { Upload } from "../../../models";
+import { Upload } from "../../models";
 
 export default async (req, res, next) => {
   try {
     const { search, page = 0, pageSize = 12, sortField, sortOrder } = req.query;
-    const { submissionId } = req;
 
-    // console.log(
-    //   { search },
-    //   { page },
-    //   { pageSize },
-    //   { sortField },
-    //   { sortOrder }
-    // );
     const skip = page * pageSize;
 
     // Search filter
@@ -25,7 +17,6 @@ export default async (req, res, next) => {
       : {};
 
     const filter = {
-      submissionId,
       ...searchFilter,
     };
 
