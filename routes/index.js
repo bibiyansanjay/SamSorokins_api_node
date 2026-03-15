@@ -7,6 +7,7 @@ import users from "./users";
 import { authOnly } from "../middlewares/restrict";
 import { postman } from "../middlewares/postman";
 import uploadVideos from "./uploadVideos";
+import jotform from "./jotform";
 // import chatBot from "./chatBot";
 // import subscription from "./subscription";
 /**
@@ -19,6 +20,7 @@ const router = Router();
 router.use("/test", test);
 router.use("/registerUser", registerUser);
 router.use("/auth", auth);
+router.use("/jotform", jotform);
 router.use("/forgotPassword", forgotPassword);
 router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);
