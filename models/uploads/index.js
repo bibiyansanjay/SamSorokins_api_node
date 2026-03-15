@@ -36,6 +36,12 @@ const uploadSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    residentName: {
+      type: String,
+    },
+    residentEmail: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

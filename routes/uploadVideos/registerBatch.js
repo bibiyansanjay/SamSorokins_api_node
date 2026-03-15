@@ -6,7 +6,7 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     console.log("[Batch] Received registration request:", req.body);
-    const { submissionId, userId, files } = req.body;
+    const { submissionId, userId, files, residentName, residentEmail } = req.body;
 
     if (!submissionId || !files || !Array.isArray(files)) {
       return res.status(400).json({ success: false, message: "Invalid batch data" });
@@ -18,6 +18,8 @@ router.post("/", async (req, res) => {
       uploadId: `pending_${Math.random().toString(36).substring(7)}`, // Temporary ID until TUS provides one
       submissionId,
       userId: userId || null,
+      residentName: residentName || null,
+      residentEmail: residentEmail || null,
       filename: file.name,
       size: file.size,
       status: "Pending",

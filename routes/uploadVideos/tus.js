@@ -57,11 +57,13 @@ const getTusServer = async () => {
         const metadata = upload.metadata || {};
         // Note: TUS metadata values are usually base64 encoded strings in raw TUS, 
         // but @tus/server often decodes them. We'll use them as is first.
-        const { submissionId, userId, filename, filetype } = metadata;
+        const { submissionId, userId, filename, filetype, residentName, residentEmail } = metadata;
 
         console.log(`[TUS] [${upload.id}] Metadata:`, {
           submissionId,
           userId,
+          residentName,
+          residentEmail,
           filename,
           filetype,
           size: `${(upload.size / (1024 * 1024)).toFixed(2)} MB`,
@@ -89,6 +91,8 @@ const getTusServer = async () => {
                 uploadId: upload.id,
                 submissionId,
                 userId: userId || null,
+                residentName: residentName || null,
+                residentEmail: residentEmail || null,
                 filename,
                 size: upload.size,
                 status: "Uploading",
@@ -109,8 +113,8 @@ const getTusServer = async () => {
         console.log(`[TUS] [${upload.id}] ✅ Upload FINISH triggered`);
 
         const metadata = upload.metadata || {};
-        const { submissionId, userId, filename, filetype } = metadata;
-        console.log(`[TUS] [${upload.id}] Finish Metadata:`, { submissionId, userId, filename });
+        const { submissionId, userId, filename, filetype, residentName, residentEmail } = metadata;
+        console.log(`[TUS] [${upload.id}] Finish Metadata:`, { submissionId, userId, filename, residentName, residentEmail });
 
         // Get S3 details
         const s3Key = upload.id;
@@ -164,6 +168,8 @@ const getTusServer = async () => {
             
             if (submissionId) updateData.submissionId = submissionId;
             if (userId) updateData.userId = userId;
+            if (residentName) updateData.residentName = residentName;
+            if (residentEmail) updateData.residentEmail = residentEmail;
             // We do NOT overwrite updateData.filename with finalKey anymore
             // to keep the "exact file name" in the database as requested.
 
@@ -181,6 +187,8 @@ const getTusServer = async () => {
                 uploadId: upload.id,
                 submissionId: submissionId || "unknown",
                 userId: userId || null,
+                residentName: residentName || null,
+                residentEmail: residentEmail || null,
                 filename: filename || "unnamed_file", // Use original filename
                 size: upload.size,
                 status: "Uploaded",

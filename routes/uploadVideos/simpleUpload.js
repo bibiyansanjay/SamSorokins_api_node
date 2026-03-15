@@ -36,7 +36,7 @@ const upload = multer({
  */
 router.post("/files", upload.array("files", 10), async (req, res) => {
   try {
-    const { submissionId, userId } = req.body;
+    const { submissionId, userId, residentName, residentEmail } = req.body;
     const files = req.files;
 
     if (!files || files.length === 0) {
@@ -55,6 +55,8 @@ router.post("/files", upload.array("files", 10), async (req, res) => {
         const doc = new Upload({
           submissionId,
           userId,
+          residentName,
+          residentEmail,
           filename: file.originalname,
           size: file.size,
           mimetype: file.mimetype,
@@ -89,6 +91,8 @@ router.post("/files", upload.array("files", 10), async (req, res) => {
         })),
         submissionId,
         userId,
+        residentName,
+        residentEmail,
       },
     });
 
