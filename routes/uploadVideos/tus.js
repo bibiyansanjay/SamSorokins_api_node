@@ -94,19 +94,45 @@ const getTusServer = async () => {
             if (updatedRecord) {
               console.log(`[TUS] [${upload.id}] 🔗 Atomically linked to record (${updatedRecord._id})`);
             } else {
-              console.log(`[TUS] [${upload.id}] ℹ️ No matching Pending record found or already claimed, creating fallback record...`);
-              const newUpload = new Upload({
-                uploadId: upload.id,
-                submissionId,
-                userId: userId || null,
-                residentName: residentName || null,
-                residentEmail: residentEmail || null,
-                filename,
-                size: upload.size,
-                status: "Uploading",
-              });
-              await newUpload.save();
-              console.log(`[TUS] [${upload.id}] ✅ New DB record created (fallback)`);
+              console.log(`[TUS] [${upload.id}] ℹ️ No Pending record found. Checking for existing Uploading/Failed record to re-link...`);
+              
+              // On page refresh, the TUS ID may change but the file is the same.
+              // Try to re-link an existing in-progress record (e.g., from a previous session).
+              const existingRecord = await Upload.findOneAndUpdate(
+                {
+                  submissionId,
+                  filename,
+                  size: upload.size,
+                  // NO STATUS FILTER: Re-link to ANY existing record (even "Uploaded").
+                  // If the user spams uploads or explicitly re-uploads, we recycle the existing 
+                  // record to guarantee exactly ONE DB row per (submissionId, filename).
+                },
+                {
+                  $set: {
+                    uploadId: upload.id, // Update to new TUS ID
+                    status: "Uploading"
+                  }
+                },
+                { new: true }
+              );
+
+              if (existingRecord) {
+                console.log(`[TUS] [${upload.id}] 🔗 Re-linked to existing record (${existingRecord._id}) — was ${existingRecord.status}`);
+              } else {
+                // Truly new upload with no DB record at all — create one
+                const newUpload = new Upload({
+                  uploadId: upload.id,
+                  submissionId,
+                  userId: userId || null,
+                  residentName: residentName || null,
+                  residentEmail: residentEmail || null,
+                  filename,
+                  size: upload.size,
+                  status: "Uploading",
+                });
+                await newUpload.save();
+                console.log(`[TUS] [${upload.id}] ✅ New DB record created (no existing record found)`);
+              }
             }
           } else {
             console.warn(`[TUS] [${upload.id}] ⚠️ Metadata missing for record linking: submissionId=${submissionId}, filename=${filename}`);

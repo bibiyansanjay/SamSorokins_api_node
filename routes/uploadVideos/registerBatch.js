@@ -16,7 +16,9 @@ router.post("/", async (req, res) => {
 
     const ops = files.map((file) => ({
       updateOne: {
-        filter: { submissionId, filename: file.name, size: file.size, status: "Pending" },
+        // Match existing records regardless of their status (Pending, Uploading, Uploaded, Failed)
+        // This ensures true idempotency: if the User spams the upload button, no duplicates are created.
+        filter: { submissionId, filename: file.name, size: file.size },
         update: {
           $setOnInsert: {
             uploadId: `pending_${Math.random().toString(36).substring(7)}`,
