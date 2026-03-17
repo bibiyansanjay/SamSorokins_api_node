@@ -2,14 +2,14 @@
 // import dotenv from "dotenv";
 
 // dotenv.config();
-console.log("process.env.AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
-console.log(
-  "process.env.AWS_SECRET_ACCESS_KEY",
-  process.env.AWS_SECRET_ACCESS_KEY
-);
-console.log("process.env.AWS_BUCKET", process.env.AWS_BUCKET);
-console.log("process.env.AWS_REGION", process.env.AWS_REGION);
-// const s3Client = new S3Client({
+// console.log("process.env.AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
+// console.log(
+//   "process.env.AWS_SECRET_ACCESS_KEY",
+//   process.env.AWS_SECRET_ACCESS_KEY
+// );
+// console.log("process.env.AWS_BUCKET", process.env.AWS_BUCKET);
+// console.log("process.env.AWS_REGION", process.env.AWS_REGION);
+// // const s3Client = new S3Client({
 //   region: process.env.AWS_REGION,
 //   credentials: {
 //     accessKeyId: process.env.AWS_ACCESS_KEY_ID,

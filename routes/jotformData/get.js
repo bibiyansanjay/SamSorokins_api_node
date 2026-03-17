@@ -11,7 +11,7 @@ const apiKey =
  */
 
 function getAnswerByName(answers, fieldName, keyName = "answer") {
-  const field = Object.values(answers).find((item) => item.name === fieldName);
+  const field = Object.values(answers).find((item) => item.text === fieldName);
   if (!field) return null;
 
   const value = field?.[keyName] || null;
@@ -31,6 +31,29 @@ export default async (req, res, next) => {
       return res.status(400).json({ message: "Submission Id is required!" });
     }
 
+    const data = await JotformSubmission.findOne({
+      submissionId: submissionId,
+    });
+
+    // Safely find the "Files to Upload" answer field
+    const fileUploadAnswer = data?.answers
+      ? Object.values(data.answers).find(
+          (item) => item.text === "Files to Upload"
+        )
+      : null;
+
+    // Check if the answer value is empty/missing
+    const isEmpty =
+      !fileUploadAnswer?.answer || fileUploadAnswer.answer.length === 0;
+
+    if (data && isEmpty) {
+      return res.json({
+        success: true,
+        formKeys: {
+          requiredUploads: "nothing_to_upload",
+        },
+      });
+    }
     // Call JotForm API
     const response = await axios.get(
       `https://premiumpd.jotform.com/API/submission/${submissionId}`,
@@ -63,30 +86,52 @@ export default async (req, res, next) => {
 
     const answers = jotformData?.content?.answers;
 
-    const residentName = getAnswerByName(answers, "Resident_Name");
-    const email = getAnswerByName(answers, "email");
+    const residentName = getAnswerByName(answers, "User Name");
+    const email = getAnswerByName(answers, "Email");
 
-    const formTitle = getAnswerByName(answers, "fileUploader", "text"); //File Uploader Tool (Form Title) //text
-    const instTitle = getAnswerByName(answers, "moveIn380", "text"); //Move In Condition Report File Uploader (Instruction Title) //text
-    const generalInstructions = getAnswerByName(answers, "generalInstructions"); // Thanks for answering all the the questions //answer
+    // const formTitle = getAnswerByName(answers, "fileUploader"); //File Uploader Tool (Form Title) //text
+    const instTitle = getAnswerByName(answers, "Issue Title"); //Move In Condition Report File Uploader (Instruction Title) //text
+    const generalInstructions = getAnswerByName(
+      answers,
+      "General Instructions"
+    ); // Thanks for answering all the the questions //text
 
-    const videoUploadTitle = getAnswerByName(answers, "videoUpload382", "text"); //Video Upload Instructions(Title) //text
-    const videoUploadInstruction = getAnswerByName(answers, "input385", "text"); //Please upload the video you took...(Instruction) //text
-    const photoUploadInstruction = getAnswerByName(answers, "photoUpload"); //Please upload the photos you took of...(Instruction)//answer
-    const photoUploadTitle = getAnswerByName(answers, "photoUpload384", "text"); //Photo Upload Instructions(Title) //text
-    const finalInstructions = getAnswerByName(answers, "finalInstructions"); //Thanks for selecting your files... //answer
+    const videoUploadTitle = getAnswerByName(answers, "videoUpload382"); //Video Upload Instructions(Title) //text
+    const videoUploadInstruction = getAnswerByName(
+      answers,
+      "Video Upload Instructions"
+    ); //Please upload the video you took...(Instruction) //text
+    const photoUploadTitle = getAnswerByName(answers, "photoUpload384"); //Photo Upload Instructions(Title) //text
+    const photoUploadInstruction = getAnswerByName(
+      answers,
+      "Photo Upload Instructions"
+    ); //Please upload the photos you took of...(Instruction)//text
 
+    const fileUploadInstruction = getAnswerByName(
+      answers,
+      "File Upload Instructions"
+    );
+
+    const finalInstructions = getAnswerByName(answers, "Final Instructions"); //Thanks for selecting your files... //text
+
+    const requiredUploads = getAnswerByName(answers, "Files to Upload"); //Thanks for selecting your files... //text
+    // finalInstructions,
+    //   generalInstructions,
+    //   photoUploadInstruction,
+    //   requiredUploads;
     return res.json({
       success: true,
       formKeys: {
-        formTitle,
+        // formTitle,
         instTitle,
         generalInstructions,
         videoUploadTitle,
         videoUploadInstruction,
         photoUploadInstruction,
         photoUploadTitle,
+        fileUploadInstruction,
         finalInstructions,
+        requiredUploads,
       },
       userData: {
         residentName,
