@@ -141,7 +141,7 @@ const getTusServer = async () => {
           console.error(`[TUS] [${upload.id}] ❌ DB Error on create:`, dbError.message);
         }
 
-        return { res: { status: 200 } };
+        return {}; // @tus/server v2 requires an object return
       },
       onUploadFinish: async (req, upload) => {
         console.log(`[TUS] [${upload.id}] ✅ Upload FINISH triggered`);
@@ -283,7 +283,7 @@ const getTusServer = async () => {
           console.error(`[TUS] [${upload.id}] ❌ Failed to spawn background worker:`, workerError.message);
         }
 
-        return { res: { status: 200 } };
+        return {}; // @tus/server v2 requires an object return to prevent patch.status_code destructuring crash
       },
     });
 
@@ -292,29 +292,4 @@ const getTusServer = async () => {
   return tusServer;
 };
 
-export default async (req, res, next) => {
-  try {
-    console.log(`
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔵 TUS Request: ${req.method} ${req.url}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    `);
-
-    const server = await getTusServer();
-    await server.handle(req, res);
-
-    console.log("✅ TUS Request handled");
-  } catch (error) {
-    console.error("❌ TUS Handler Error:", {
-      message: error.message,
-      stack: error.stack,
-    });
-
-    if (!res.headersSent) {
-      res.status(500).json({
-        success: false,
-        error: error.message,
-      });
-    }
-  }
-};
+export default getTusServer;

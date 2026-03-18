@@ -1,6 +1,6 @@
 import { JotformSubmission, Upload } from "../../models";
 
-const getFieldValue = (answers, fieldName, keyName = "text") => {
+const getFieldValue = (answers, fieldName, keyName = "answer") => {
   const field = Object.values(answers || {}).find(
     (item) => item.text === fieldName
   );
@@ -27,20 +27,30 @@ export default async (req, res, next) => {
 
     const answers = submission?.answers || {};
 
+    const rawDate = getFieldValue(answers, "Submission Date");
+    // "2026-03-17 00:00:00"
+
+    const day = rawDate?.day;
+    const month = rawDate?.month;
+    const year = rawDate?.year;
+
+    const submissionDate =
+      day && month && year ? `${day}-${month}-${year}` : "-";
+
     const formData = {
-      clientName: getFieldValue(answers, "User Name"),
-      email: getFieldValue(answers, "Email"),
-      submissionDate: getFieldValue(answers, "Submission Date"),
-      fullAddress: getFieldValue(answers, "Full Address"),
-      unitType: getFieldValue(answers, "Unit Type"),
-      rMShortName: getFieldValue(answers, "RM Short Name"),
-      rMUnitName: getFieldValue(answers, "RM Unit Name"),
-      userPhoneNumber: getFieldValue(answers, "User Phone Number"),
-      tenantEmails: getFieldValue(answers, "Tenant Emails"),
-      forwardingURL: getFieldValue(answers, "Forwarding URL"),
-      replyEmail: getFieldValue(answers, "Reply Email"),
-      bedrooms: getFieldValue(answers, "Bedrooms"),
-      bathrooms: getFieldValue(answers, "Bathrooms"),
+      Name: getFieldValue(answers, "Full Name"),
+      Email: getFieldValue(answers, "Email"),
+      Submission_Date: submissionDate,
+      Address: getFieldValue(answers, "Full Address"),
+      Unit_Type: getFieldValue(answers, "Unit Type"),
+      RM_Short_Name: getFieldValue(answers, "RM Short Name"),
+      RM_Unit_Name: getFieldValue(answers, "RM Unit Name"),
+      Phone_Number: getFieldValue(answers, "User Phone Number"),
+      Other_Emails: getFieldValue(answers, "Tenant Emails"),
+      Forwarding_URL: getFieldValue(answers, "Forwarding URL"),
+      //   Reply_Email: getFieldValue(answers, "Reply Email"),
+      Bedrooms: getFieldValue(answers, "Bedrooms"),
+      Bathrooms: getFieldValue(answers, "Bathrooms"),
     };
 
     return res.json({
@@ -48,6 +58,7 @@ export default async (req, res, next) => {
       submissionId,
       files,
       formData,
+      answers,
     });
   } catch (error) {
     console.error(error);
