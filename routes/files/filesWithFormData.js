@@ -38,8 +38,8 @@ export default async (req, res, next) => {
       day && month && year ? `${day}-${month}-${year}` : "-";
 
     const formData = {
-      Name: getFieldValue(answers, "Full Name"),
-      Email: getFieldValue(answers, "Email"),
+      Name: getFieldValue(answers, "User Name"),
+      Email: getFieldValue(answers, "User Email"),
       Submission_Date: submissionDate,
       Address: getFieldValue(answers, "Full Address"),
       Unit_Type: getFieldValue(answers, "Unit Type"),

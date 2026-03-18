@@ -107,12 +107,12 @@ export default async (req, res, next) => {
         submissionId: item.submissionId,
         createdAt: item.createdAt,
         status, // ✅ Overall submission status
-        clientName: getFieldValue(item.answers, "Full Name"),
-        email: getFieldValue(item.answers, "Email"),
+        clientName: getFieldValue(item.answers, "User Name"),
+        email: getFieldValue(item.answers, "User Email"),
         files,
         formData: {
-          residentName: getFieldValue(item.answers, "Full Name"),
-          email: getFieldValue(item.answers, "Email"),
+          residentName: getFieldValue(item.answers, "User Name"),
+          email: getFieldValue(item.answers, "User Email"),
           phone: getFieldValue(item.answers, "Phone"),
         },
       };
