@@ -1,11 +1,13 @@
 import { Router } from "express";
-import tus from "./tus";
-import simpleUpload from "./simpleUpload";
-import registerBatch from "./registerBatch";
+import tus from "./tus.js";
+import simpleUpload from "./simpleUpload.js";
+import registerBatch from "./registerBatch.js";
+import download from "./download.js";
 
 const router = Router();
 
 router.use("/registerBatch", registerBatch);
+router.use("/download", download);
 
 // tus is now the getTusServer async function
 let tusInstance = null;
