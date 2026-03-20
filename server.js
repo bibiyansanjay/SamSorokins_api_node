@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
+    methods: ["POST", "PUT", "PATCH", "HEAD", "OPTIONS", "DELETE"],
     allowedHeaders: [
       "Tus-Resumable",
       "Upload-Length",

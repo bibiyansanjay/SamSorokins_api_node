@@ -3,11 +3,15 @@ import tus from "./tus.js";
 import simpleUpload from "./simpleUpload.js";
 import registerBatch from "./registerBatch.js";
 import download from "./download.js";
+import downloadZip from "./downloadZip.js";
+import deleteFile from "./deleteFile.js";
 
 const router = Router();
 
 router.use("/registerBatch", registerBatch);
 router.use("/download", download);
+router.use("/downloadZip", downloadZip);
+router.use("/deleteFile", deleteFile);
 
 // tus is now the getTusServer async function
 let tusInstance = null;

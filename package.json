@@ -24,6 +24,7 @@
     "@google/generative-ai": "^0.24.1",
     "@tus/s3-store": "^2.0.1",
     "@tus/server": "^2.3.0",
+    "archiver": "^7.0.1",
     "aws-sdk": "^2.1693.0",
     "axios": "^1.13.6",
     "bcrypt": "^5.1.1",

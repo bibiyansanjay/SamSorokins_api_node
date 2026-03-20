@@ -40,7 +40,7 @@ export default async (req, res, next) => {
     const formData = {
       Name: getFieldValue(answers, "User Name"),
       Email: getFieldValue(answers, "User Email"),
-      Submission_Date: submissionDate,
+      Submission_Date: new Date(submission?.createdAt).toLocaleString(),
       Address: getFieldValue(answers, "Full Address"),
       Unit_Type: getFieldValue(answers, "Unit Type"),
       RM_Short_Name: getFieldValue(answers, "RM Short Name"),
@@ -58,7 +58,6 @@ export default async (req, res, next) => {
       submissionId,
       files,
       formData,
-      answers,
     });
   } catch (error) {
     console.error(error);
