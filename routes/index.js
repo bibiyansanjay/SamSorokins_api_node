@@ -9,6 +9,8 @@ import { postman } from "../middlewares/postman";
 import uploadVideos from "./uploadVideos";
 import jotformData from "./jotformData";
 import files from "./files";
+import submissionsData from "./submissionsData";
+import dashboard from "./dashboard";
 // import chatBot from "./chatBot";
 // import subscription from "./subscription";
 /**
@@ -23,6 +25,8 @@ router.use("/registerUser", registerUser);
 router.use("/auth", auth);
 router.use("/jotformData", jotformData);
 router.use("/files", files);
+router.use("/submissionsData", submissionsData);
+router.use("/dashboard", dashboard);
 router.use("/forgotPassword", forgotPassword);
 router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);

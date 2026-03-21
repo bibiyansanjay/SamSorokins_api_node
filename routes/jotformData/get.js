@@ -115,6 +115,7 @@ export default async (req, res, next) => {
     const finalInstructions = getAnswerByName(answers, "Final Instructions"); //Thanks for selecting your files... //text
 
     const requiredUploads = getAnswerByName(answers, "Files to Upload"); //Thanks for selecting your files... //text
+    const forwarding_URL = getAnswerByName(answers, "Forwarding UR");
     // finalInstructions,
     //   generalInstructions,
     //   photoUploadInstruction,
@@ -132,6 +133,7 @@ export default async (req, res, next) => {
         fileUploadInstruction,
         finalInstructions,
         requiredUploads,
+        forwarding_URL,
       },
       userData: {
         residentName,

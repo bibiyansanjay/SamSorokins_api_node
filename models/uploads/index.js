@@ -36,6 +36,14 @@ const uploadSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    reminder1SentAt: {
+      type: Date,
+      default: null,
+    },
+    reminder2SentAt: {
+      type: Date,
+      default: null,
+    },
     residentName: {
       type: String,
     },

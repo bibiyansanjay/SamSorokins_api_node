@@ -22,6 +22,12 @@ const jotformSubmissionSchema = new mongoose.Schema(
     raw: {
       type: mongoose.Schema.Types.Mixed,
     },
+
+    // Reminder tracking
+    reminder1SentAt: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
