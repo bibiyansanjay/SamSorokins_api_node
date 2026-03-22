@@ -7,7 +7,7 @@ import sendMail from "../methods/sendMail.js";
  */
 const getFieldValue = (answers, fieldName, keyName = "answer") => {
   const field = Object.values(answers || {}).find(
-    (item) => item.text === fieldName
+    (item) => item?.text === fieldName
   );
   if (!field) return null;
   const value = field?.[keyName] ?? null;
@@ -33,6 +33,9 @@ const getFieldValue = (answers, fieldName, keyName = "answer") => {
  *   Body      : answers["Upload Reminder Message"]  (from the submission)
  *   Tracked by: Upload.reminder2SentAt
  */
+const samEmail = process.env.SAM_EMAIL;
+const jesicaEmail = process.env.JESSICA_EMAIL;
+
 const sendUploadReminders = async () => {
   console.log(
     "[UploadReminder] Running two-stage reminder check at",
@@ -43,6 +46,7 @@ const sendUploadReminders = async () => {
   const oneHourAgo = new Date(now - 1 * 60 * 60 * 1000);
   const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
 
+  const bcc = [samEmail, jesicaEmail].filter(Boolean);
   try {
     // ─────────────────────────────────────────────────────────────────────
     // STAGE 1 — 1-hour reminder (no files uploaded at all yet)
@@ -80,6 +84,13 @@ const sendUploadReminders = async () => {
       const recipientEmail = getFieldValue(answers, "Email");
       const recipientName = getFieldValue(answers, "User Name") || "there";
 
+      // const tenantEmail = getFieldValue(answers, "Tenant Emails");
+
+      const userOtherEmail = getFieldValue(answers, "User Other Emails");
+
+      const replyTo = getFieldValue(answers, "Reply Email");
+      // const replyTo = "tech.rohitchabra@gmail.com";
+
       const emailSubject =
         getFieldValue(answers, "Submission Reminder Subject") ||
         "Reminder: Please Upload Your Files";
@@ -90,6 +101,13 @@ const sendUploadReminders = async () => {
 
       // Inject actual recipient name if JotForm template uses "Dear Resident"
       emailBody = emailBody.replace(/Dear Resident/i, `Dear ${recipientName}`);
+
+      // Compute the upload link
+      const formId = submission?.formId;
+      const subId = submission?.submissionId;
+      const reactAppUrl =
+        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+      const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
       // Always mark reminder1SentAt so we don't re-evaluate every poll
       submission.reminder1SentAt = new Date();
@@ -102,18 +120,22 @@ const sendUploadReminders = async () => {
         continue;
       }
 
+      const toList = [recipientEmail, userOtherEmail].filter(Boolean).join(",");
+
       try {
         await sendMail(
           emailSubject,
-          { subject: emailSubject, body: emailBody },
-          recipientEmail,
+          { subject: emailSubject, body: emailBody, uploadUrl },
+          toList,
           "template-uploadReminder",
           "",
-          []
+          [],
+          replyTo,
+          bcc
         );
 
         console.log(
-          `[UploadReminder] Stage 1 sent → ${recipientEmail} (submission: ${submission.submissionId})`
+          `[UploadReminder] Stage 1 sent → ${toList} (submission: ${submission.submissionId})`
         );
       } catch (err) {
         console.error(
@@ -157,15 +179,28 @@ const sendUploadReminders = async () => {
       const submission = await JotformSubmission.findOne({ submissionId });
       const answers = submission?.answers || {};
 
+      // const tenantEmail = getFieldValue(answers, "Tenant Emails");
+      const userOtherEmail = getFieldValue(answers, "User Other Emails");
+      const replyTo = getFieldValue(answers, "Reply Email");
+
+      const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
+
       const emailSubject =
         getFieldValue(answers, "Upload Reminder Subject") ||
         "Final Reminder: Your File Upload is Still Incomplete";
       let emailBody =
         getFieldValue(answers, "Upload Reminder Message") ||
-        `Dear ${data.name},\n\nIt has been over 24 hours and your files have not been uploaded. Please connect to WiFi and complete your upload.\n\nThank you.`;
+        `Dear ${data?.name},\n\nIt has been over 24 hours and your files have not been uploaded. Please connect to WiFi and complete your upload.\n\nThank you.`;
 
       // Inject actual recipient name if JotForm template uses "Dear Resident"
-      emailBody = emailBody.replace(/Dear Resident/i, `Dear ${data.name}`);
+      emailBody = emailBody.replace(/Dear Resident/i, `Dear ${data?.name}`);
+
+      // Compute the upload link
+      const formId = submission?.formId;
+      const subId = submission?.submissionId;
+      const reactAppUrl =
+        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+      const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
       // Mark all uploads for this submission as reminder2 sent (before email so failures don't repeat)
       await Upload.updateMany(
@@ -176,15 +211,17 @@ const sendUploadReminders = async () => {
       try {
         await sendMail(
           emailSubject,
-          { subject: emailSubject, body: emailBody },
-          data.email,
+          { subject: emailSubject, body: emailBody, uploadUrl },
+          toList,
           "template-uploadReminder",
           "",
-          []
+          [],
+          replyTo,
+          bcc
         );
 
         console.log(
-          `[UploadReminder] Stage 2 sent → ${data.email} (submission: ${submissionId})`
+          `[UploadReminder] Stage 2 sent → ${toList} (submission: ${submissionId})`
         );
       } catch (err) {
         console.error(

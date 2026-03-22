@@ -1,5 +1,4 @@
 import { JotformSubmission } from "../../models/index.js";
-import uploads from "../../models/uploads/index.js";
 
 const getFieldValue = (answers, fieldName, keyName = "answer") => {
   const field = Object.values(answers || {}).find(
@@ -63,12 +62,25 @@ export default async (req, res, next) => {
 
     // ── Optional search ───────────────────────────────────────────────────
     if (search) {
+      // First, convert the dynamic `answers` object into an array so we can search inside its values
+      pipeline.push({
+        $addFields: {
+          answersArray: { $objectToArray: { $ifNull: ["$answers", {}] } },
+        },
+      });
+
       pipeline.push({
         $match: {
           $or: [
+            // Search inside the submission ID itself
             { submissionId: { $regex: search, $options: "i" } },
+            // Search ANY dynamic value inside the JotForm answers (covers names, emails, unit names, properties, etc.)
+            { "answersArray.v.answer": { $regex: search, $options: "i" } },
+            // Search against the joined uploaded files' data
+            { "files.filename": { $regex: search, $options: "i" } },
             { "files.residentName": { $regex: search, $options: "i" } },
             { "files.residentEmail": { $regex: search, $options: "i" } },
+            { "files.status": { $regex: search, $options: "i" } },
           ],
         },
       });
@@ -132,15 +144,13 @@ export default async (req, res, next) => {
         createdAt: item.createdAt,
         status: overallStatus,
         clientName: getFieldValue(answers, "User Name"),
-        email: getFieldValue(answers, "Email"),
+        clientEmail: getFieldValue(answers, "Email"),
+        propertyName: getFieldValue(answers, "RM Short Name"), //Property
+        unitName: getFieldValue(answers, "RM Unit Name"), //Unit
+        clientAddress: getFieldValue(answers, "Full Address"),
+        formName: getFieldValue(answers, "Issue Title"),
         files,
         totalFiles: files.length,
-        formData: {
-          Name: getFieldValue(answers, "User Name"),
-          Email: getFieldValue(answers, "Email"),
-          Phone: getFieldValue(answers, "User Phone Number"),
-          Address: getFieldValue(answers, "Full Address"),
-        },
       };
     });
 

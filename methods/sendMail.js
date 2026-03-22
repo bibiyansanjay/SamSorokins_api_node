@@ -9,7 +9,9 @@ const sendMail = async (
   recipient,
   templateName,
   cc,
-  attachments
+  attachments,
+  replyTo = "",
+  bcc = []
 ) => {
   try {
     //GMAIL-------------------------------starts working,
@@ -31,9 +33,11 @@ const sendMail = async (
       from: process.env.GMAIL_EMAIL_USER,
       to: recipient,
       cc: cc,
+      bcc: bcc,
       subject: subject,
       html: htmlContent,
       attachments,
+      replyTo: replyTo,
     };
     //GMAIL-------------------------------ends working
     //
