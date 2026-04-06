@@ -46,7 +46,7 @@ const sendUploadReminders = async () => {
   const oneHourAgo = new Date(now - 1 * 60 * 60 * 1000);
   const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
 
-  const bcc = [samEmail, jesicaEmail].filter(Boolean);
+  // const bcc = [samEmail, jesicaEmail].filter(Boolean);
   try {
     // ─────────────────────────────────────────────────────────────────────
     // STAGE 1 — 1-hour reminder (no files uploaded at all yet)
@@ -121,6 +121,7 @@ const sendUploadReminders = async () => {
       }
 
       const toList = [recipientEmail, userOtherEmail].filter(Boolean).join(",");
+      const bcc = [replyTo].filter(Boolean);
 
       try {
         await sendMail(
@@ -184,6 +185,7 @@ const sendUploadReminders = async () => {
       const replyTo = getFieldValue(answers, "Reply Email");
 
       const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
+      const bcc = [replyTo].filter(Boolean);
 
       const emailSubject =
         getFieldValue(answers, "Upload Reminder Subject") ||

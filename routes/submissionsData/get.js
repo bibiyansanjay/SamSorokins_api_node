@@ -91,8 +91,133 @@ export default async (req, res, next) => {
     const [countResult] = await JotformSubmission.aggregate(countPipeline);
     const totalFiles = countResult?.total || 0;
 
+    // ── Parse Date for Sorting ────────────────────────────────────────────
+    pipeline.push({
+      $addFields: {
+        dateParts: {
+          $cond: {
+            if: { $eq: [{ $type: "$createdAt" }, "string"] },
+            then: { $split: ["$createdAt", " "] },
+            else: null,
+          },
+        },
+      },
+    });
+
+    pipeline.push({
+      $addFields: {
+        parsedCreatedAt: {
+          $cond: {
+            if: { $eq: [{ $type: "$createdAt" }, "string"] },
+            then: {
+              $convert: {
+                input: {
+                  $concat: [
+                    { $arrayElemAt: ["$dateParts", 3] }, // YYYY
+                    "-",
+                    {
+                      $switch: {
+                        branches: [
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jan"],
+                            },
+                            then: "01",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Feb"],
+                            },
+                            then: "02",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Mar"],
+                            },
+                            then: "03",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Apr"],
+                            },
+                            then: "04",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "May"],
+                            },
+                            then: "05",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jun"],
+                            },
+                            then: "06",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jul"],
+                            },
+                            then: "07",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Aug"],
+                            },
+                            then: "08",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Sep"],
+                            },
+                            then: "09",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Oct"],
+                            },
+                            then: "10",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Nov"],
+                            },
+                            then: "11",
+                          },
+                          {
+                            case: {
+                              $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Dec"],
+                            },
+                            then: "12",
+                          },
+                        ],
+                        default: "01",
+                      },
+                    },
+                    "-",
+                    { $arrayElemAt: ["$dateParts", 2] }, // DD
+                    "T",
+                    { $arrayElemAt: ["$dateParts", 4] }, // HH:MM:SS
+                    "Z",
+                  ],
+                },
+                to: "date",
+                onError: new Date(0),
+                onNull: new Date(0),
+              },
+            },
+            else: "$createdAt",
+          },
+        },
+      },
+    });
+
     // ── Sort + paginate ───────────────────────────────────────────────────
-    pipeline.push({ $sort: sort });
+    const safeSortField =
+      sortField === "createdAt" ? "parsedCreatedAt" : sortField;
+    const safeSort = { [safeSortField]: sortOrder === "asc" ? 1 : -1 };
+
+    pipeline.push({ $sort: safeSort });
     pipeline.push({ $skip: skip });
     pipeline.push({ $limit: limit });
 
@@ -148,7 +273,7 @@ export default async (req, res, next) => {
         propertyName: getFieldValue(answers, "RM Short Name"), //Property
         unitName: getFieldValue(answers, "RM Unit Name"), //Unit
         clientAddress: getFieldValue(answers, "Full Address"),
-        formName: getFieldValue(answers, "Issue Title"),
+        formName: getFieldValue(answers, "Uploader Header"),
         files,
         totalFiles: files.length,
       };

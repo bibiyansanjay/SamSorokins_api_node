@@ -90,7 +90,7 @@ export default async (req, res, next) => {
     const email = getAnswerByName(answers, "Email");
 
     // const formTitle = getAnswerByName(answers, "fileUploader"); //File Uploader Tool (Form Title) //text
-    const instTitle = getAnswerByName(answers, "Issue Title"); //Move In Condition Report File Uploader (Instruction Title) //text
+    const instTitle = getAnswerByName(answers, "Uploader Header"); //Move In Condition Report File Uploader (Instruction Title) //text
     const generalInstructions = getAnswerByName(
       answers,
       "General Instructions"
