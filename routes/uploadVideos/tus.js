@@ -329,9 +329,10 @@ const getTusServer = async () => {
 
         // Spawn a Worker Thread for heavy post-processing tasks
         try {
+          // IMPORTANT: Replaced __dirname to avoid ESM/Babel conflicts
           const workerPath = path.join(
-            __dirname,
-            "../../workers/videoProcessor.js"
+            process.cwd(),
+            "workers/videoProcessor.js"
           );
           const worker = new Worker(workerPath, {
             workerData: {
