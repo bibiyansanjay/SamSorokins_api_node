@@ -1,0 +1,56 @@
+2026-04-22T12:00:00.105Z [INFO]  - [UploadCleanup] Running 48-hour cleanup job at 2026-04-22T12:00:00.105Z
+2026-04-22T12:00:00.119Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T12:00:00.119Z
+2026-04-22T12:00:00.126Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T12:00:00.126Z
+2026-04-22T12:30:00.035Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T12:30:00.035Z
+2026-04-22T12:30:00.036Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T12:30:00.036Z
+2026-04-22T12:30:06.737Z [INFO]  - [UploadReminder] Stage 1: 92 candidate submissions to evaluate.
+2026-04-22T12:30:43.131Z [INFO]  - { recipientName: 'there' } { recipientEmail: null } { userOtherEmail: null } { replyTo: 'turnovers@premiumpd.com' }
+2026-04-22T12:30:43.540Z [WARN]  - [UploadReminder] Stage 1: No email for submission 6526686458023080605 — skipped.
+2026-04-22T12:30:44.195Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T12:30:44.540Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T12:30:44.540Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T13:00:00.038Z [INFO]  - [UploadCleanup] Running 48-hour cleanup job at 2026-04-22T13:00:00.038Z
+2026-04-22T13:00:00.042Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T13:00:00.042Z
+2026-04-22T13:00:00.043Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T13:00:00.043Z
+2026-04-22T13:00:00.421Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-04-22T13:00:11.870Z [INFO]  - [UploadReminder] Stage 1: 91 candidate submissions to evaluate.
+2026-04-22T13:00:48.749Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T13:00:49.128Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T13:00:49.128Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T13:30:00.034Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T13:30:00.034Z
+2026-04-22T13:30:00.034Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T13:30:00.033Z
+2026-04-22T13:30:09.294Z [INFO]  - [UploadReminder] Stage 1: 92 candidate submissions to evaluate.
+2026-04-22T13:30:40.891Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T13:30:41.284Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T13:30:41.284Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T14:58:57.699Z [WARN]  - [2026-04-22T14:58:57.699Z] [PID: 17652] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Wed Apr 22 2026 19:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-04-22T14:58:57.884Z [WARN]  - [2026-04-22T14:58:57.884Z] [PID: 17652] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Wed Apr 22 2026 19:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-04-22T14:58:58.737Z [WARN]  - [2026-04-22T14:58:58.737Z] [PID: 17652] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Wed Apr 22 2026 20:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-04-22T15:00:00.055Z [INFO]  - [UploadCleanup] Running 48-hour cleanup job at 2026-04-22T15:00:00.055Z
+2026-04-22T15:00:00.060Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T15:00:00.060Z
+2026-04-22T15:00:00.061Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T15:00:00.061Z
+2026-04-22T15:00:03.250Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-04-22T15:00:07.814Z [INFO]  - [UploadReminder] Stage 1: 93 candidate submissions to evaluate.
+2026-04-22T15:00:40.081Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T15:00:40.428Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T15:00:40.429Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T15:30:00.033Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T15:30:00.033Z
+2026-04-22T15:30:00.033Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T15:30:00.033Z
+2026-04-22T15:30:06.555Z [INFO]  - [UploadReminder] Stage 1: 96 candidate submissions to evaluate.
+2026-04-22T15:30:38.247Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T15:30:38.596Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T15:30:38.595Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T16:00:00.071Z [INFO]  - [UploadCleanup] Running 48-hour cleanup job at 2026-04-22T16:00:00.071Z
+2026-04-22T16:00:00.075Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T16:00:00.075Z
+2026-04-22T16:00:00.076Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T16:00:00.076Z
+2026-04-22T16:00:00.403Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-04-22T16:00:09.098Z [INFO]  - [UploadReminder] Stage 1: 98 candidate submissions to evaluate.
+2026-04-22T16:00:45.378Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T16:00:45.772Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T16:00:45.773Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-04-22T16:30:00.045Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-22T16:30:00.045Z
+2026-04-22T16:30:00.044Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-22T16:30:00.044Z
+2026-04-22T16:30:03.736Z [INFO]  - [UploadReminder] Stage 1: 98 candidate submissions to evaluate.
+2026-04-22T16:30:38.242Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-22T16:30:38.574Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-22T16:30:38.575Z [INFO]  - [UploadReminder] Multi-stage check complete.

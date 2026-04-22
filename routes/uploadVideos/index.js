@@ -5,6 +5,7 @@ import registerBatch from "./registerBatch.js";
 import download from "./download.js";
 import downloadZip from "./downloadZip.js";
 import deleteFile from "./deleteFile.js";
+import updateStatus from "./updateStatus.js";
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.use("/registerBatch", registerBatch);
 router.use("/download", download);
 router.use("/downloadZip", downloadZip);
 router.use("/deleteFile", deleteFile);
+router.use("/updateStatus", updateStatus);
 
 // tus is now the getTusServer async function
 let tusInstance = null;

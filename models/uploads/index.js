@@ -32,6 +32,9 @@ const uploadSchema = new mongoose.Schema(
       enum: ["Pending", "Uploading", "Uploaded", "Failed"],
       default: "Pending",
     },
+    failureReason: {
+      type: String,
+    },
     reminderSent: {
       type: Boolean,
       default: false,
@@ -41,6 +44,18 @@ const uploadSchema = new mongoose.Schema(
       default: null,
     },
     reminder2SentAt: {
+      type: Date,
+      default: null,
+    },
+    lastReminderSentAt: {
+      type: Date,
+      default: null,
+    },
+    remindersCount: {
+      type: Number,
+      default: 0,
+    },
+    finalReminderSentAt: {
       type: Date,
       default: null,
     },

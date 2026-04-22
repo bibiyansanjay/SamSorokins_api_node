@@ -38,13 +38,15 @@ const jesicaEmail = process.env.JESSICA_EMAIL;
 
 const sendUploadReminders = async () => {
   console.log(
-    "[UploadReminder] Running two-stage reminder check at",
+    "[UploadReminder] Running multi-stage reminder check at",
     new Date().toISOString()
   );
 
   const now = Date.now();
   const oneHourAgo = new Date(now - 1 * 60 * 60 * 1000);
+  const threeHoursAgo = new Date(now - 3 * 60 * 60 * 1000);
   const twentyFourHoursAgo = new Date(now - 24 * 60 * 60 * 1000);
+  const fortyEightHoursAgo = new Date(now - 48 * 60 * 60 * 1000);
 
   // const bcc = [samEmail, jesicaEmail].filter(Boolean);
   try {
@@ -90,6 +92,13 @@ const sendUploadReminders = async () => {
 
       const replyTo = getFieldValue(answers, "Reply Email");
       // const replyTo = "tech.rohitchabra@gmail.com";
+
+      console.log(
+        { recipientName },
+        { recipientEmail },
+        { userOtherEmail },
+        { replyTo }
+      );
 
       const emailSubject =
         getFieldValue(answers, "Submission Reminder Subject") ||
@@ -147,13 +156,16 @@ const sendUploadReminders = async () => {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // STAGE 2 — 24-hour reminder (files exist but still not uploaded)
+    // STAGE 2 — 3-hour repeating reminder for first 24 hours (files exist but still not uploaded)
     // ─────────────────────────────────────────────────────────────────────
     const staleUploads = await Upload.find({
       status: { $ne: "Uploaded" },
-      reminder2SentAt: null,
       residentEmail: { $exists: true, $ne: null, $ne: "" },
-      createdAt: { $lte: twentyFourHoursAgo },
+      createdAt: { $gte: twentyFourHoursAgo, $lte: threeHoursAgo },
+      $or: [
+        { lastReminderSentAt: null },
+        { lastReminderSentAt: { $lte: threeHoursAgo } },
+      ],
     });
 
     // Group by submissionId → one email per resident
@@ -172,7 +184,7 @@ const sendUploadReminders = async () => {
     console.log(
       `[UploadReminder] Stage 2: ${
         Object.keys(bySubmission).length
-      } submissions need 24hr reminder.`
+      } submissions need 3hr repeating reminder.`
     );
 
     for (const [submissionId, data] of Object.entries(bySubmission)) {
@@ -180,19 +192,26 @@ const sendUploadReminders = async () => {
       const submission = await JotformSubmission.findOne({ submissionId });
       const answers = submission?.answers || {};
 
-      // const tenantEmail = getFieldValue(answers, "Tenant Emails");
       const userOtherEmail = getFieldValue(answers, "User Other Emails");
       const replyTo = getFieldValue(answers, "Reply Email");
 
       const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
       const bcc = [replyTo].filter(Boolean);
 
+      if (!toList) {
+        console.warn(
+          `[UploadReminder] Stage 2 skipped: No email recipient for submission ${submissionId}`
+        );
+        continue;
+      }
+
+      console.log("userEmail:", toList, { userOtherEmail }, { bcc });
       const emailSubject =
         getFieldValue(answers, "Upload Reminder Subject") ||
-        "Final Reminder: Your File Upload is Still Incomplete";
+        "Reminder: Your File Upload is Still Incomplete";
       let emailBody =
         getFieldValue(answers, "Upload Reminder Message") ||
-        `Dear ${data?.name},\n\nIt has been over 24 hours and your files have not been uploaded. Please connect to WiFi and complete your upload.\n\nThank you.`;
+        `Dear ${data?.name},\n\nYour files have not been uploaded yet. Please connect to WiFi and complete your upload.\n\nThank you.`;
 
       // Inject actual recipient name if JotForm template uses "Dear Resident"
       emailBody = emailBody.replace(/Dear Resident/i, `Dear ${data?.name}`);
@@ -204,10 +223,13 @@ const sendUploadReminders = async () => {
         process.env.REACT_APP_URL || "http://10.169.47.7:5173";
       const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
-      // Mark all uploads for this submission as reminder2 sent (before email so failures don't repeat)
+      // Mark all uploads for this submission as reminder sent (increment count)
       await Upload.updateMany(
         { _id: { $in: data.ids } },
-        { $set: { reminder2SentAt: new Date() } }
+        {
+          $set: { lastReminderSentAt: new Date() },
+          $inc: { remindersCount: 1 },
+        }
       );
 
       try {
@@ -233,7 +255,100 @@ const sendUploadReminders = async () => {
       }
     }
 
-    console.log("[UploadReminder] Two-stage check complete.");
+    // ─────────────────────────────────────────────────────────────────────
+    // STAGE 3 — 48-hour final reminder (files exist but still not uploaded)
+    // ─────────────────────────────────────────────────────────────────────
+    const finalUploads = await Upload.find({
+      status: { $ne: "Uploaded" },
+      residentEmail: { $exists: true, $ne: null, $ne: "" },
+      createdAt: { $lte: fortyEightHoursAgo },
+      finalReminderSentAt: null,
+    });
+
+    const finalBySubmission = {};
+    for (const upload of finalUploads) {
+      if (!finalBySubmission[upload.submissionId]) {
+        finalBySubmission[upload.submissionId] = {
+          email: upload.residentEmail,
+          name: upload.residentName || "there",
+          ids: [],
+        };
+      }
+      finalBySubmission[upload.submissionId].ids.push(upload._id);
+    }
+
+    console.log(
+      `[UploadReminder] Stage 3: ${
+        Object.keys(finalBySubmission).length
+      } submissions need 48-hour final reminder.`
+    );
+
+    for (const [submissionId, data] of Object.entries(finalBySubmission)) {
+      const submission = await JotformSubmission.findOne({ submissionId });
+      const answers = submission?.answers || {};
+
+      const userOtherEmail = getFieldValue(answers, "User Other Emails");
+      const replyTo = getFieldValue(answers, "Reply Email");
+
+      const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
+      const bcc = [replyTo].filter(Boolean);
+
+      if (!toList) {
+        console.warn(
+          `[UploadReminder] Stage 3 skipped: No email recipient for submission ${submissionId}`
+        );
+        continue;
+      }
+
+      const emailSubject =
+        getFieldValue(answers, "Upload Reminder Subject") ||
+        "Final Reminder: Your File Upload is Still Incomplete";
+
+      let emailBody =
+        getFieldValue(answers, "Upload Reminder Message") ||
+        `Dear ${data?.name},\n\nIt has been over 48 hours and your files have not been uploaded.`;
+
+      // Inject actual recipient name if JotForm template uses "Dear Resident"
+      emailBody = emailBody.replace(/Dear Resident/i, `Dear ${data?.name}`);
+
+      // Append the new instruction text
+      emailBody += `\n\nAfter 48 hours, background uploads will stop for pending or uploading files. You will need to re-upload the files if they were not completed due to network issues.\n\nThank you.`;
+
+      const formId = submission?.formId;
+      const subId = submission?.submissionId;
+      const reactAppUrl =
+        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+      const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
+
+      await Upload.updateMany(
+        { _id: { $in: data.ids } },
+        { $set: { finalReminderSentAt: new Date() } }
+      );
+
+      try {
+        await sendMail(
+          emailSubject,
+          { subject: emailSubject, body: emailBody, uploadUrl },
+          toList,
+          "template-uploadReminder",
+          "",
+          [],
+          replyTo,
+          bcc
+        );
+
+        console.log(
+          `[UploadReminder] Stage 3 sent → ${toList} (submission: ${submissionId})`
+        );
+      } catch (err) {
+        console.error(
+          `[UploadReminder] Stage 3 failed for ${data.email}:`,
+          err.message
+        );
+      }
+    }
+
+    console.log("[UploadReminder] Multi-stage check complete.");
   } catch (error) {
     console.error("[UploadReminder] Fatal error in reminder cron job:", error);
   }
