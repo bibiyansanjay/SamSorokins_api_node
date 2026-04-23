@@ -195,7 +195,9 @@ const sendUploadReminders = async () => {
       const userOtherEmail = getFieldValue(answers, "User Other Emails");
       const replyTo = getFieldValue(answers, "Reply Email");
 
-      const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
+      const toList =
+        [data?.email, userOtherEmail].filter(Boolean).join(",") ||
+        "bibiyan@yopmail.com";
       const bcc = [replyTo].filter(Boolean);
 
       if (!toList) {
@@ -290,7 +292,9 @@ const sendUploadReminders = async () => {
       const userOtherEmail = getFieldValue(answers, "User Other Emails");
       const replyTo = getFieldValue(answers, "Reply Email");
 
-      const toList = [data?.email, userOtherEmail].filter(Boolean).join(",");
+      const toList =
+        [data?.email, userOtherEmail].filter(Boolean).join(",") ||
+        "bibiyan@yopmail.com";
       const bcc = [replyTo].filter(Boolean);
 
       if (!toList) {
