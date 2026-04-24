@@ -28,6 +28,10 @@ const jotformSubmissionSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    uniqueId: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

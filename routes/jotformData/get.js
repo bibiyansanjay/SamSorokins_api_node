@@ -11,10 +11,27 @@ const apiKey =
  */
 
 function getAnswerByName(answers, fieldName, keyName = "answer") {
+  if (!answers) return null;
   const field = Object.values(answers).find((item) => item.text === fieldName);
   if (!field) return null;
 
   const value = field?.[keyName] || null;
+
+  if (typeof value === "string") {
+    return value.replace(/<[^>]*>/g, "").trim();
+  }
+
+  return value;
+}
+
+function getUniqueId(answers, fieldName, keyName = "answer") {
+  if (!answers) return null;
+
+  const field = Object.values(answers).find((item) => item.name === fieldName);
+
+  if (!field) return "";
+
+  const value = field?.[keyName] || "";
 
   if (typeof value === "string") {
     return value.replace(/<[^>]*>/g, "").trim();
@@ -64,8 +81,24 @@ export default async (req, res, next) => {
 
     const jotformData = response?.data;
     const content = jotformData?.content;
+    const answers = jotformData?.content?.answers;
+
+    const uniqueIdURL = getUniqueId(answers, "uniqueId");
+
+    let uniqueId = "";
+    if (uniqueIdURL) {
+      try {
+        uniqueId = new URL(uniqueIdURL).pathname
+          .split("/")
+          .filter(Boolean)
+          .pop();
+      } catch (err) {
+        uniqueId = String(uniqueIdURL).split("/").filter(Boolean).pop() || "";
+      }
+    }
 
     // Save into MongoDB
+
     const submission = await JotformSubmission.findOneAndUpdate(
       { submissionId: content.id },
       {
@@ -76,6 +109,7 @@ export default async (req, res, next) => {
         createdAt: content.created_at,
         updatedAt: content.updated_at,
         answers: content.answers,
+        uniqueId: uniqueId || "",
         // raw: jotformData,
       },
       {
@@ -83,8 +117,6 @@ export default async (req, res, next) => {
         new: true,
       }
     );
-
-    const answers = jotformData?.content?.answers;
 
     const residentName = getAnswerByName(answers, "User Name");
     const email = getAnswerByName(answers, "Email");
@@ -116,6 +148,7 @@ export default async (req, res, next) => {
 
     const requiredUploads = getAnswerByName(answers, "Files to Upload"); //Thanks for selecting your files... //text
     const forwarding_URL = getAnswerByName(answers, "Forwarding URL");
+
     // finalInstructions,
     //   generalInstructions,
     //   photoUploadInstruction,

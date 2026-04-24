@@ -1,29 +1,10 @@
-2026-04-24T06:40:37.922Z [ERROR] - (node:10172) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+2026-04-24T22:50:24.146Z [ERROR] - (node:13288) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
 It will no longer receive updates or releases.
 
 Please migrate your code to use AWS SDK for JavaScript (v3).
 For more information, check the blog post at https://a.co/cUPnyil
 (Use `node --trace-warnings ...` to show where the warning was created)
-2026-04-24T07:51:32.871Z [ERROR] - Error: read ECONNRESET
-    at TLSWrap.onStreamRead (node:internal/stream_base_commons:218:20) {
-  errno: -4077,
-  code: 'ECONNRESET',
-  syscall: 'read'
-}
-2026-04-24T07:51:32.890Z - ERROR: read ECONNRESET, CODE: ECONNRESET, STATUS: 500, URL: /files/submissionId/6528261463714749694?search=&page=0&pageSize=100&sortField=status&sortOrder=asc, METHOD: GET, USER: Guest, ROLE: N/A, IP: Unknown IP
-2026-04-24T08:11:57.229Z [ERROR] - (node:11232) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
-It will no longer receive updates or releases.
-
-Please migrate your code to use AWS SDK for JavaScript (v3).
-For more information, check the blog post at https://a.co/cUPnyil
-(Use `node --trace-warnings ...` to show where the warning was created)
-2026-04-24T08:31:04.617Z [ERROR] - (node:2772) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
-It will no longer receive updates or releases.
-
-Please migrate your code to use AWS SDK for JavaScript (v3).
-For more information, check the blog post at https://a.co/cUPnyil
-(Use `node --trace-warnings ...` to show where the warning was created)
-2026-04-24T09:22:50.022Z [ERROR] - (node:9304) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+2026-04-24T22:50:44.979Z [ERROR] - (node:13360) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
 It will no longer receive updates or releases.
 
 Please migrate your code to use AWS SDK for JavaScript (v3).
