@@ -214,8 +214,7 @@ const getTusServer = async () => {
           }
 
           console.log(
-            `[TUS] [${
-              upload.id
+            `[TUS] [${upload.id
             }] 🔄 Moving S3 Object from "${s3Key}" to "${finalKey}" (${(
               upload.size /
               (1024 * 1024)
@@ -295,8 +294,7 @@ const getTusServer = async () => {
 
             if (result) {
               console.log(
-                `[TUS] [${upload.id}] ✅ DB updated: status=${
-                  result.status
+                `[TUS] [${upload.id}] ✅ DB updated: status=${result.status
                 }, url=${result.s3Url || "none"}`
               );
             } else {

@@ -13,8 +13,42 @@ const logsDir = path.join(process.cwd(), "logs");
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir);
 }
-const appLogPath = path.join(logsDir, "app.log");
-const errLogPath = path.join(logsDir, "error.log");
+
+// Log rotation helpers
+const getYearMonth = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+const getLogPaths = () => {
+  const ym = getYearMonth(new Date());
+  return {
+    appLogPath: path.join(logsDir, `app-${ym}.log`),
+    errLogPath: path.join(logsDir, `error-${ym}.log`),
+  };
+};
+
+const cleanupOldLogs = () => {
+  try {
+    const files = fs.readdirSync(logsDir);
+    const now = new Date();
+    const currentYM = getYearMonth(now);
+
+    // Calculate previous month
+    const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const prevYM = getYearMonth(prevDate);
+
+    const validMatches = [`app-${currentYM}.log`, `error-${currentYM}.log`, `app-${prevYM}.log`, `error-${prevYM}.log`];
+
+    for (const file of files) {
+      if ((file.startsWith("app-") || file.startsWith("error-")) && file.endsWith(".log") && !validMatches.includes(file)) {
+        try {
+          fs.unlinkSync(path.join(logsDir, file));
+        } catch (e) { }
+      }
+    }
+  } catch (err) { }
+};
+
+// Cleanup on startup and schedule every 24 hours
+cleanupOldLogs();
+setInterval(cleanupOldLogs, 24 * 60 * 60 * 1000);
 
 const originalLog = console.log;
 const originalError = console.error;
@@ -22,19 +56,19 @@ const originalWarn = console.warn;
 
 console.log = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(appLogPath, `${new Date().toISOString()} [INFO]  - ${msg}\n`, () => {});
+  fs.appendFile(getLogPaths().appLogPath, `${new Date().toISOString()} [INFO]  - ${msg}\n`, () => { });
   originalLog.apply(console, args);
 };
 
 console.error = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(errLogPath, `${new Date().toISOString()} [ERROR] - ${msg}\n`, () => {});
+  fs.appendFile(getLogPaths().errLogPath, `${new Date().toISOString()} [ERROR] - ${msg}\n`, () => { });
   originalError.apply(console, args);
 };
 
 console.warn = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(appLogPath, `${new Date().toISOString()} [WARN]  - ${msg}\n`, () => {});
+  fs.appendFile(getLogPaths().appLogPath, `${new Date().toISOString()} [WARN]  - ${msg}\n`, () => { });
   originalWarn.apply(console, args);
 };
 
@@ -64,22 +98,20 @@ createDefaultUser();
 // =========================
 const logErrorToFile = (errorDetails) => {
   const logsDir = path.join(process.cwd(), "logs");
-  const logFilePath = path.join(logsDir, "error.log");
+  const d = new Date();
+  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const logFilePath = path.join(logsDir, `error-${ym}.log`);
 
   // Create logs directory if not exists
   if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir);
   }
 
-  const logEntry = `${new Date().toISOString()} - ERROR: ${
-    errorDetails.message
-  }, CODE: ${errorDetails.code || "N/A"}, STATUS: ${
-    errorDetails.status || 500
-  }, URL: ${errorDetails.url}, METHOD: ${errorDetails.method}, USER: ${
-    errorDetails.user || "Guest"
-  }, ROLE: ${errorDetails.role || "N/A"}, IP: ${
-    errorDetails.ip || "Unknown"
-  }\n`;
+  const logEntry = `${new Date().toISOString()} - ERROR: ${errorDetails.message
+    }, CODE: ${errorDetails.code || "N/A"}, STATUS: ${errorDetails.status || 500
+    }, URL: ${errorDetails.url}, METHOD: ${errorDetails.method}, USER: ${errorDetails.user || "Guest"
+    }, ROLE: ${errorDetails.role || "N/A"}, IP: ${errorDetails.ip || "Unknown"
+    }\n`;
 
   fs.appendFile(logFilePath, logEntry, (err) => {
     if (err) {

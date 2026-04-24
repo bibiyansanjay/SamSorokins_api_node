@@ -1,0 +1,436 @@
+2026-04-24T06:05:07.019Z [INFO]  - [Batch] Received registration request: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: '',
+  residentEmail: '',
+  files: [ { name: 'Samplejotformprinit (1).pdf', size: 2432612 } ]
+}
+2026-04-24T06:05:07.024Z [INFO]  - [Batch] Registering 1 files for submission 6528198732717573189
+2026-04-24T06:05:07.485Z [INFO]  - Initializing TUS Server...
+2026-04-24T06:05:10.199Z [INFO]  - ✅ TUS Server initialized successfully
+2026-04-24T06:05:10.207Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 📤 Upload CREATE triggered
+2026-04-24T06:05:10.208Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'Samplejotformprinit (1).pdf',
+  filetype: 'application/pdf',
+  size: '2.32 MB'
+}
+2026-04-24T06:05:10.213Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=Samplejotformprinit (1).pdf, size=2432612
+2026-04-24T06:05:10.577Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 🔗 Atomically linked to record (69eb081379406bf176678686)
+2026-04-24T06:05:20.451Z [INFO]  - [Batch] Received registration request: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: '',
+  residentEmail: '',
+  files: [
+    { name: 'sample4 1111.png', size: 65033 },
+    { name: 'samlogo (1).jpeg', size: 8201 },
+    { name: 'smalLogo.png', size: 3483 },
+    { name: 'smalLogo.jpeg', size: 1460 },
+    { name: 'samlogo.png', size: 30269 }
+  ]
+}
+2026-04-24T06:05:20.484Z [INFO]  - [Batch] Registering 5 files for submission 6528198732717573189
+2026-04-24T06:05:21.056Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 📤 Upload CREATE triggered
+2026-04-24T06:05:21.057Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'sample4 1111.png',
+  filetype: 'image/png',
+  size: '0.06 MB'
+}
+2026-04-24T06:05:21.061Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=sample4 1111.png, size=65033
+2026-04-24T06:05:21.069Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 📤 Upload CREATE triggered
+2026-04-24T06:05:21.070Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'samlogo (1).jpeg',
+  filetype: 'image/jpeg',
+  size: '0.01 MB'
+}
+2026-04-24T06:05:21.078Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=samlogo (1).jpeg, size=8201
+2026-04-24T06:05:21.425Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 🔗 Atomically linked to record (69eb082079406bf17667868a)
+2026-04-24T06:05:21.457Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 🔗 Atomically linked to record (69eb082079406bf176678689)
+2026-04-24T06:05:25.363Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] ✅ Upload FINISH triggered
+2026-04-24T06:05:25.363Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'samlogo (1).jpeg',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:25.365Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 🔑 Raw upload.id (S3 source key): "515d042ee67f500cd70efe1dfc1f5303"
+2026-04-24T06:05:25.366Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 🔄 Moving S3 Object from "515d042ee67f500cd70efe1dfc1f5303" to "files/1777010725366_515d042ee67f500cd70efe1dfc1f5303_samlogo_(1).jpeg" (0.01 MB)
+2026-04-24T06:05:28.905Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] ✅ Upload FINISH triggered
+2026-04-24T06:05:28.906Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'Samplejotformprinit (1).pdf',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:28.907Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 🔑 Raw upload.id (S3 source key): "45319ad30e465c325d50058ad0560b42"
+2026-04-24T06:05:28.908Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 🔄 Moving S3 Object from "45319ad30e465c325d50058ad0560b42" to "files/1777010728908_45319ad30e465c325d50058ad0560b42_Samplejotformprinit_(1).pdf" (2.32 MB)
+2026-04-24T06:05:30.224Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] ✅ Upload FINISH triggered
+2026-04-24T06:05:30.225Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'sample4 1111.png',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:30.227Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 🔑 Raw upload.id (S3 source key): "0ca70731f6e99576f28c6bfbf5811e83"
+2026-04-24T06:05:30.228Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 🔄 Moving S3 Object from "0ca70731f6e99576f28c6bfbf5811e83" to "files/1777010730228_0ca70731f6e99576f28c6bfbf5811e83_sample4_1111.png" (0.06 MB)
+2026-04-24T06:05:30.354Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] ✅ S3 Copy success (RequestId: 74SJMPN7Y852VYGG)
+2026-04-24T06:05:30.354Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] 🗑️ Deleting temp S3 objects: 515d042ee67f500cd70efe1dfc1f5303, 515d042ee67f500cd70efe1dfc1f5303.info
+2026-04-24T06:05:30.993Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] ✅ Temp S3 objects deleted
+2026-04-24T06:05:30.993Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:31.316Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010725366_515d042ee67f500cd70efe1dfc1f5303_samlogo_(1).jpeg
+2026-04-24T06:05:31.679Z [INFO]  - [StatusUpdate] Updated record 69eb082079406bf17667868a to Uploaded. Reason: N/A
+2026-04-24T06:05:31.714Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 📤 Upload CREATE triggered
+2026-04-24T06:05:31.715Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'smalLogo.png',
+  filetype: 'image/png',
+  size: '0.00 MB'
+}
+2026-04-24T06:05:31.728Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=smalLogo.png, size=3483
+2026-04-24T06:05:32.038Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 🔗 Atomically linked to record (69eb082079406bf17667868b)
+2026-04-24T06:05:34.036Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] ✅ S3 Copy success (RequestId: 2DTZ4B6DE9WE97N5)
+2026-04-24T06:05:34.037Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] 🗑️ Deleting temp S3 objects: 45319ad30e465c325d50058ad0560b42, 45319ad30e465c325d50058ad0560b42.info
+2026-04-24T06:05:34.680Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] ✅ Temp S3 objects deleted
+2026-04-24T06:05:34.680Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:34.999Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010728908_45319ad30e465c325d50058ad0560b42_Samplejotformprinit_(1).pdf
+2026-04-24T06:05:35.220Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 📤 Upload CREATE triggered
+2026-04-24T06:05:35.221Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'smalLogo.jpeg',
+  filetype: 'image/jpeg',
+  size: '0.00 MB'
+}
+2026-04-24T06:05:35.223Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=smalLogo.jpeg, size=1460
+2026-04-24T06:05:35.235Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] ✅ S3 Copy success (RequestId: HF9MJB1P1ZZR21VC)
+2026-04-24T06:05:35.236Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] 🗑️ Deleting temp S3 objects: 0ca70731f6e99576f28c6bfbf5811e83, 0ca70731f6e99576f28c6bfbf5811e83.info
+2026-04-24T06:05:35.362Z [INFO]  - [StatusUpdate] Updated record 69eb081379406bf176678686 to Uploaded. Reason: N/A
+2026-04-24T06:05:35.505Z [INFO]  - [Batch] Received registration request: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: '',
+  residentEmail: '',
+  files: [
+    { name: 'sampleV1 (3).mp4', size: 14768621 },
+    { name: 'sampleV1 new.mp4', size: 14768621 },
+    { name: 'sampleV1 (2) - Copy.mp4', size: 14768621 },
+    { name: 'sampleV1.mp4', size: 14768621 },
+    { name: 'SampleV2.mp4', size: 14768621 },
+    { name: 'SampleV3.mp4', size: 13012988 },
+    { name: 'SampleV4.mp4', size: 32610156 }
+  ]
+}
+2026-04-24T06:05:35.518Z [INFO]  - [Batch] Registering 7 files for submission 6528198732717573189
+2026-04-24T06:05:35.541Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 🔗 Atomically linked to record (69eb082079406bf17667868c)
+2026-04-24T06:05:35.612Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] ✅ Upload FINISH triggered
+2026-04-24T06:05:35.612Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'smalLogo.png',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:35.616Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 🔄 Moving S3 Object from "c199ea618c24f929f8fb91a7d9d28dbe" to "files/1777010735616_c199ea618c24f929f8fb91a7d9d28dbe_smalLogo.png" (0.00 MB)
+2026-04-24T06:05:35.615Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 🔑 Raw upload.id (S3 source key): "c199ea618c24f929f8fb91a7d9d28dbe"
+2026-04-24T06:05:35.878Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] ✅ Temp S3 objects deleted
+2026-04-24T06:05:35.885Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:35.944Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] ✅ S3 Copy success (RequestId: 9XC210242M4BWB0M)
+2026-04-24T06:05:35.950Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] 🗑️ Deleting temp S3 objects: c199ea618c24f929f8fb91a7d9d28dbe, c199ea618c24f929f8fb91a7d9d28dbe.info
+2026-04-24T06:05:36.200Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010730228_0ca70731f6e99576f28c6bfbf5811e83_sample4_1111.png
+2026-04-24T06:05:36.542Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] [Worker Message]: Processing complete
+2026-04-24T06:05:36.618Z [INFO]  - [TUS] [515d042ee67f500cd70efe1dfc1f5303] [Worker Exit] Code 0
+2026-04-24T06:05:36.641Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] ✅ Temp S3 objects deleted
+2026-04-24T06:05:36.652Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:36.850Z [INFO]  - [StatusUpdate] Updated record 69eb082079406bf176678689 to Uploaded. Reason: N/A
+2026-04-24T06:05:36.988Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010735616_c199ea618c24f929f8fb91a7d9d28dbe_smalLogo.png
+2026-04-24T06:05:37.049Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 📤 Upload CREATE triggered
+2026-04-24T06:05:37.050Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'samlogo.png',
+  filetype: 'image/png',
+  size: '0.03 MB'
+}
+2026-04-24T06:05:37.053Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=samlogo.png, size=30269
+2026-04-24T06:05:37.376Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 🔗 Atomically linked to record (69eb082079406bf17667868d)
+2026-04-24T06:05:37.507Z [INFO]  - [StatusUpdate] Updated record 69eb082079406bf17667868b to Uploaded. Reason: N/A
+2026-04-24T06:05:37.844Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 📤 Upload CREATE triggered
+2026-04-24T06:05:37.850Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'sampleV1 (3).mp4',
+  filetype: 'video/mp4',
+  size: '14.08 MB'
+}
+2026-04-24T06:05:37.856Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=sampleV1 (3).mp4, size=14768621
+2026-04-24T06:05:38.189Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 🔗 Atomically linked to record (69eb082f79406bf17667868f)
+2026-04-24T06:05:40.131Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] [Worker Message]: Processing complete
+2026-04-24T06:05:40.137Z [INFO]  - [TUS] [45319ad30e465c325d50058ad0560b42] [Worker Exit] Code 0
+2026-04-24T06:05:41.129Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] ✅ Upload FINISH triggered
+2026-04-24T06:05:41.154Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'samlogo.png',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:41.321Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 🔑 Raw upload.id (S3 source key): "5cf46f062bc63699048520232498358f"
+2026-04-24T06:05:41.338Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 🔄 Moving S3 Object from "5cf46f062bc63699048520232498358f" to "files/1777010741338_5cf46f062bc63699048520232498358f_samlogo.png" (0.03 MB)
+2026-04-24T06:05:41.431Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] [Worker Message]: Processing complete
+2026-04-24T06:05:41.449Z [INFO]  - [TUS] [0ca70731f6e99576f28c6bfbf5811e83] [Worker Exit] Code 0
+2026-04-24T06:05:41.746Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] ✅ S3 Copy success (RequestId: GYJSVT3MKT6NQSDX)
+2026-04-24T06:05:41.761Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] 🗑️ Deleting temp S3 objects: 5cf46f062bc63699048520232498358f, 5cf46f062bc63699048520232498358f.info
+2026-04-24T06:05:42.290Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] [Worker Message]: Processing complete
+2026-04-24T06:05:42.297Z [INFO]  - [TUS] [c199ea618c24f929f8fb91a7d9d28dbe] [Worker Exit] Code 0
+2026-04-24T06:05:42.418Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] ✅ Temp S3 objects deleted
+2026-04-24T06:05:42.419Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:42.765Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010741338_5cf46f062bc63699048520232498358f_samlogo.png
+2026-04-24T06:05:43.173Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 📤 Upload CREATE triggered
+2026-04-24T06:05:43.175Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'sampleV1 new.mp4',
+  filetype: 'video/mp4',
+  size: '14.08 MB'
+}
+2026-04-24T06:05:43.190Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=sampleV1 new.mp4, size=14768621
+2026-04-24T06:05:43.309Z [INFO]  - [StatusUpdate] Updated record 69eb082079406bf17667868d to Uploaded. Reason: N/A
+2026-04-24T06:05:43.532Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 🔗 Atomically linked to record (69eb082f79406bf176678690)
+2026-04-24T06:05:43.901Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] ✅ Upload FINISH triggered
+2026-04-24T06:05:43.903Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'smalLogo.jpeg',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:05:43.906Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 🔑 Raw upload.id (S3 source key): "4807c639b1b0744a57b84d835a92067b"
+2026-04-24T06:05:43.908Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 🔄 Moving S3 Object from "4807c639b1b0744a57b84d835a92067b" to "files/1777010743908_4807c639b1b0744a57b84d835a92067b_smalLogo.jpeg" (0.00 MB)
+2026-04-24T06:05:44.261Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] ✅ S3 Copy success (RequestId: TV9AHE12FTMQEPCP)
+2026-04-24T06:05:44.262Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] 🗑️ Deleting temp S3 objects: 4807c639b1b0744a57b84d835a92067b, 4807c639b1b0744a57b84d835a92067b.info
+2026-04-24T06:05:44.954Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] ✅ Temp S3 objects deleted
+2026-04-24T06:05:44.962Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:05:45.364Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010743908_4807c639b1b0744a57b84d835a92067b_smalLogo.jpeg
+2026-04-24T06:05:45.661Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 📤 Upload CREATE triggered
+2026-04-24T06:05:45.664Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'sampleV1 (2) - Copy.mp4',
+  filetype: 'video/mp4',
+  size: '14.08 MB'
+}
+2026-04-24T06:05:45.673Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=sampleV1 (2) - Copy.mp4, size=14768621
+2026-04-24T06:05:45.725Z [INFO]  - [StatusUpdate] Updated record 69eb082079406bf17667868c to Uploaded. Reason: N/A
+2026-04-24T06:05:46.003Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 🔗 Atomically linked to record (69eb082f79406bf176678691)
+2026-04-24T06:05:47.889Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] [Worker Message]: Processing complete
+2026-04-24T06:05:47.893Z [INFO]  - [TUS] [5cf46f062bc63699048520232498358f] [Worker Exit] Code 0
+2026-04-24T06:05:50.552Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] [Worker Message]: Processing complete
+2026-04-24T06:05:50.557Z [INFO]  - [TUS] [4807c639b1b0744a57b84d835a92067b] [Worker Exit] Code 0
+2026-04-24T06:06:31.890Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] ✅ Upload FINISH triggered
+2026-04-24T06:06:31.896Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'sampleV1 new.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:06:31.898Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 🔑 Raw upload.id (S3 source key): "d95511c395594167a2cfdbf6c20535a7"
+2026-04-24T06:06:31.902Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 🔄 Moving S3 Object from "d95511c395594167a2cfdbf6c20535a7" to "files/1777010791902_d95511c395594167a2cfdbf6c20535a7_sampleV1_new.mp4" (14.08 MB)
+2026-04-24T06:06:34.774Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] ✅ Upload FINISH triggered
+2026-04-24T06:06:34.774Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'sampleV1 (3).mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:06:34.776Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 🔑 Raw upload.id (S3 source key): "c261c02d38387029172c6abc7bea49f3"
+2026-04-24T06:06:34.777Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 🔄 Moving S3 Object from "c261c02d38387029172c6abc7bea49f3" to "files/1777010794777_c261c02d38387029172c6abc7bea49f3_sampleV1_(3).mp4" (14.08 MB)
+2026-04-24T06:06:35.605Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] ✅ Upload FINISH triggered
+2026-04-24T06:06:35.606Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'sampleV1 (2) - Copy.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:06:35.607Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 🔑 Raw upload.id (S3 source key): "e13cf97a72001bb819b7627971bacaec"
+2026-04-24T06:06:35.608Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 🔄 Moving S3 Object from "e13cf97a72001bb819b7627971bacaec" to "files/1777010795608_e13cf97a72001bb819b7627971bacaec_sampleV1_(2)_-_Copy.mp4" (14.08 MB)
+2026-04-24T06:06:36.856Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] ✅ S3 Copy success (RequestId: QXAQR9WJ0R99H1WY)
+2026-04-24T06:06:36.857Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] 🗑️ Deleting temp S3 objects: d95511c395594167a2cfdbf6c20535a7, d95511c395594167a2cfdbf6c20535a7.info
+2026-04-24T06:06:37.510Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] ✅ Temp S3 objects deleted
+2026-04-24T06:06:37.511Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:06:37.865Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010791902_d95511c395594167a2cfdbf6c20535a7_sampleV1_new.mp4
+2026-04-24T06:06:38.177Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 📤 Upload CREATE triggered
+2026-04-24T06:06:38.178Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'sampleV1.mp4',
+  filetype: 'video/mp4',
+  size: '14.08 MB'
+}
+2026-04-24T06:06:38.181Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=sampleV1.mp4, size=14768621
+2026-04-24T06:06:38.231Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678690 to Uploaded. Reason: N/A
+2026-04-24T06:06:38.499Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 🔗 Atomically linked to record (69eb082f79406bf176678692)
+2026-04-24T06:06:40.092Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] ✅ S3 Copy success (RequestId: Y7Q2PP9B3T24GEN2)
+2026-04-24T06:06:40.093Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] 🗑️ Deleting temp S3 objects: c261c02d38387029172c6abc7bea49f3, c261c02d38387029172c6abc7bea49f3.info
+2026-04-24T06:06:40.746Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] ✅ Temp S3 objects deleted
+2026-04-24T06:06:40.747Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:06:40.914Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] ✅ S3 Copy success (RequestId: T7M4ME5451S9B41S)
+2026-04-24T06:06:40.914Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] 🗑️ Deleting temp S3 objects: e13cf97a72001bb819b7627971bacaec, e13cf97a72001bb819b7627971bacaec.info
+2026-04-24T06:06:41.083Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010794777_c261c02d38387029172c6abc7bea49f3_sampleV1_(3).mp4
+2026-04-24T06:06:41.559Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] ✅ Temp S3 objects deleted
+2026-04-24T06:06:41.559Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:06:41.712Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 📤 Upload CREATE triggered
+2026-04-24T06:06:41.712Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'SampleV2.mp4',
+  filetype: 'video/mp4',
+  size: '14.08 MB'
+}
+2026-04-24T06:06:41.715Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=SampleV2.mp4, size=14768621
+2026-04-24T06:06:41.779Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf17667868f to Uploaded. Reason: N/A
+2026-04-24T06:06:41.876Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010795608_e13cf97a72001bb819b7627971bacaec_sampleV1_(2)_-_Copy.mp4
+2026-04-24T06:06:42.046Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 🔗 Atomically linked to record (69eb082f79406bf176678693)
+2026-04-24T06:06:42.295Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 📤 Upload CREATE triggered
+2026-04-24T06:06:42.295Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'SampleV3.mp4',
+  filetype: 'video/mp4',
+  size: '12.41 MB'
+}
+2026-04-24T06:06:42.298Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=SampleV3.mp4, size=13012988
+2026-04-24T06:06:42.316Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678691 to Uploaded. Reason: N/A
+2026-04-24T06:06:42.624Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 🔗 Atomically linked to record (69eb082f79406bf176678694)
+2026-04-24T06:06:42.976Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] [Worker Message]: Processing complete
+2026-04-24T06:06:42.980Z [INFO]  - [TUS] [d95511c395594167a2cfdbf6c20535a7] [Worker Exit] Code 0
+2026-04-24T06:06:46.231Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] [Worker Message]: Processing complete
+2026-04-24T06:06:46.238Z [INFO]  - [TUS] [c261c02d38387029172c6abc7bea49f3] [Worker Exit] Code 0
+2026-04-24T06:06:46.976Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] [Worker Message]: Processing complete
+2026-04-24T06:06:46.981Z [INFO]  - [TUS] [e13cf97a72001bb819b7627971bacaec] [Worker Exit] Code 0
+2026-04-24T06:07:14.423Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] ✅ Upload FINISH triggered
+2026-04-24T06:07:14.424Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'sampleV1.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:07:14.425Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 🔑 Raw upload.id (S3 source key): "25aa6e5683f203c9ab5fd9b705f95c9a"
+2026-04-24T06:07:14.426Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 🔄 Moving S3 Object from "25aa6e5683f203c9ab5fd9b705f95c9a" to "files/1777010834426_25aa6e5683f203c9ab5fd9b705f95c9a_sampleV1.mp4" (14.08 MB)
+2026-04-24T06:07:18.923Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] ✅ Upload FINISH triggered
+2026-04-24T06:07:18.924Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'SampleV3.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:07:18.926Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 🔄 Moving S3 Object from "1a3144fbdf17037dcf62433d3059d7df" to "files/1777010838926_1a3144fbdf17037dcf62433d3059d7df_SampleV3.mp4" (12.41 MB)
+2026-04-24T06:07:18.925Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 🔑 Raw upload.id (S3 source key): "1a3144fbdf17037dcf62433d3059d7df"
+2026-04-24T06:07:19.756Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] ✅ S3 Copy success (RequestId: 25WZWNMD3D3DYX7E)
+2026-04-24T06:07:19.756Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] 🗑️ Deleting temp S3 objects: 25aa6e5683f203c9ab5fd9b705f95c9a, 25aa6e5683f203c9ab5fd9b705f95c9a.info
+2026-04-24T06:07:20.410Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] ✅ Temp S3 objects deleted
+2026-04-24T06:07:20.410Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:07:20.732Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010834426_25aa6e5683f203c9ab5fd9b705f95c9a_sampleV1.mp4
+2026-04-24T06:07:21.009Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 📤 Upload CREATE triggered
+2026-04-24T06:07:21.010Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  residentName: null,
+  residentEmail: null,
+  filename: 'SampleV4.mp4',
+  filetype: 'video/mp4',
+  size: '31.10 MB'
+}
+2026-04-24T06:07:21.012Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 🔍 Attempting atomic link: submissionId=6528198732717573189, filename=SampleV4.mp4, size=32610156
+2026-04-24T06:07:21.081Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678692 to Uploaded. Reason: N/A
+2026-04-24T06:07:21.125Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] ✅ Upload FINISH triggered
+2026-04-24T06:07:21.126Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'SampleV2.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:07:21.128Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 🔄 Moving S3 Object from "0b768bf6959e24633ba3ba2cd9f7c583" to "files/1777010841128_0b768bf6959e24633ba3ba2cd9f7c583_SampleV2.mp4" (14.08 MB)
+2026-04-24T06:07:21.127Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 🔑 Raw upload.id (S3 source key): "0b768bf6959e24633ba3ba2cd9f7c583"
+2026-04-24T06:07:21.350Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 🔗 Atomically linked to record (69eb082f79406bf176678695)
+2026-04-24T06:07:21.727Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] ✅ S3 Copy success (RequestId: BCRMT0MZBCFNY4JG)
+2026-04-24T06:07:21.728Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] 🗑️ Deleting temp S3 objects: 0b768bf6959e24633ba3ba2cd9f7c583, 0b768bf6959e24633ba3ba2cd9f7c583.info
+2026-04-24T06:07:22.433Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] ✅ Temp S3 objects deleted
+2026-04-24T06:07:22.434Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:07:22.803Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010841128_0b768bf6959e24633ba3ba2cd9f7c583_SampleV2.mp4
+2026-04-24T06:07:23.196Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678693 to Uploaded. Reason: N/A
+2026-04-24T06:07:24.392Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] ✅ S3 Copy success (RequestId: 4VBSHD4ZJSXSXN14)
+2026-04-24T06:07:24.436Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] 🗑️ Deleting temp S3 objects: 1a3144fbdf17037dcf62433d3059d7df, 1a3144fbdf17037dcf62433d3059d7df.info
+2026-04-24T06:07:25.100Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:07:25.099Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] ✅ Temp S3 objects deleted
+2026-04-24T06:07:25.444Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010838926_1a3144fbdf17037dcf62433d3059d7df_SampleV3.mp4
+2026-04-24T06:07:25.827Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] [Worker Message]: Processing complete
+2026-04-24T06:07:25.831Z [INFO]  - [TUS] [25aa6e5683f203c9ab5fd9b705f95c9a] [Worker Exit] Code 0
+2026-04-24T06:07:25.896Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678694 to Uploaded. Reason: N/A
+2026-04-24T06:07:27.939Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] [Worker Message]: Processing complete
+2026-04-24T06:07:27.945Z [INFO]  - [TUS] [0b768bf6959e24633ba3ba2cd9f7c583] [Worker Exit] Code 0
+2026-04-24T06:07:30.660Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] [Worker Message]: Processing complete
+2026-04-24T06:07:30.666Z [INFO]  - [TUS] [1a3144fbdf17037dcf62433d3059d7df] [Worker Exit] Code 0
+2026-04-24T06:08:39.214Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] ✅ Upload FINISH triggered
+2026-04-24T06:08:39.214Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] Finish Metadata: {
+  submissionId: '6528198732717573189',
+  userId: 'DgtyMoLKJnHBcvfcfhgphg',
+  filename: 'SampleV4.mp4',
+  residentName: null,
+  residentEmail: null
+}
+2026-04-24T06:08:39.216Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 🔑 Raw upload.id (S3 source key): "9baea7039f17afe23c7a9fdb7d88e239"
+2026-04-24T06:08:39.217Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 🔄 Moving S3 Object from "9baea7039f17afe23c7a9fdb7d88e239" to "files/1777010919216_9baea7039f17afe23c7a9fdb7d88e239_SampleV4.mp4" (31.10 MB)
+2026-04-24T06:08:45.269Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] ✅ S3 Copy success (RequestId: ZW6H4MF9XH8AX1TJ)
+2026-04-24T06:08:45.270Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] 🗑️ Deleting temp S3 objects: 9baea7039f17afe23c7a9fdb7d88e239, 9baea7039f17afe23c7a9fdb7d88e239.info
+2026-04-24T06:08:45.988Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] ✅ Temp S3 objects deleted
+2026-04-24T06:08:45.988Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] Finalizing DB record... (s3MoveSuccess=true)
+2026-04-24T06:08:46.310Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] ✅ DB updated: status=Uploaded, url=https://samsorkins-bucket.s3.us-west-1.amazonaws.com/files/1777010919216_9baea7039f17afe23c7a9fdb7d88e239_SampleV4.mp4
+2026-04-24T06:08:46.755Z [INFO]  - [StatusUpdate] Updated record 69eb082f79406bf176678695 to Uploaded. Reason: N/A
+2026-04-24T06:08:51.582Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] [Worker Message]: Processing complete
+2026-04-24T06:08:51.588Z [INFO]  - [TUS] [9baea7039f17afe23c7a9fdb7d88e239] [Worker Exit] Code 0
+2026-04-24T06:30:00.032Z [INFO]  - [UploadReminder] Cron triggered at: 2026-04-24T06:30:00.032Z
+2026-04-24T06:30:00.035Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-04-24T06:30:00.035Z
+2026-04-24T06:30:00.395Z [INFO]  - [UploadReminder] Stage 1: 7 candidate submissions to evaluate.
+2026-04-24T06:30:02.960Z [INFO]  - [UploadReminder] Stage 2: 0 submissions need 3hr repeating reminder.
+2026-04-24T06:30:03.329Z [INFO]  - [UploadReminder] Stage 3: 0 submissions need 48-hour final reminder.
+2026-04-24T06:30:03.329Z [INFO]  - [UploadReminder] Multi-stage check complete.
