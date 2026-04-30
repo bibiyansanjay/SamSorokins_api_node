@@ -27,6 +27,9 @@ const uploadSchema = new mongoose.Schema(
     s3Url: {
       type: String,
     },
+    thumbnailUrl: {
+      type: String,
+    },
     status: {
       type: String,
       enum: ["Pending", "Uploading", "Uploaded", "Failed"],

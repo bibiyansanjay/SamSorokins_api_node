@@ -15,7 +15,8 @@ if (!fs.existsSync(logsDir)) {
 }
 
 // Log rotation helpers
-const getYearMonth = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+const getYearMonth = (date) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 const getLogPaths = () => {
   const ym = getYearMonth(new Date());
   return {
@@ -34,16 +35,25 @@ const cleanupOldLogs = () => {
     const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const prevYM = getYearMonth(prevDate);
 
-    const validMatches = [`app-${currentYM}.log`, `error-${currentYM}.log`, `app-${prevYM}.log`, `error-${prevYM}.log`];
+    const validMatches = [
+      `app-${currentYM}.log`,
+      `error-${currentYM}.log`,
+      `app-${prevYM}.log`,
+      `error-${prevYM}.log`,
+    ];
 
     for (const file of files) {
-      if ((file.startsWith("app-") || file.startsWith("error-")) && file.endsWith(".log") && !validMatches.includes(file)) {
+      if (
+        (file.startsWith("app-") || file.startsWith("error-")) &&
+        file.endsWith(".log") &&
+        !validMatches.includes(file)
+      ) {
         try {
           fs.unlinkSync(path.join(logsDir, file));
-        } catch (e) { }
+        } catch (e) {}
       }
     }
-  } catch (err) { }
+  } catch (err) {}
 };
 
 // Cleanup on startup and schedule every 24 hours
@@ -56,19 +66,31 @@ const originalWarn = console.warn;
 
 console.log = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(getLogPaths().appLogPath, `${new Date().toISOString()} [INFO]  - ${msg}\n`, () => { });
+  fs.appendFile(
+    getLogPaths().appLogPath,
+    `${new Date().toISOString()} [INFO]  - ${msg}\n`,
+    () => {}
+  );
   originalLog.apply(console, args);
 };
 
 console.error = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(getLogPaths().errLogPath, `${new Date().toISOString()} [ERROR] - ${msg}\n`, () => { });
+  fs.appendFile(
+    getLogPaths().errLogPath,
+    `${new Date().toISOString()} [ERROR] - ${msg}\n`,
+    () => {}
+  );
   originalError.apply(console, args);
 };
 
 console.warn = function (...args) {
   const msg = util.format(...args);
-  fs.appendFile(getLogPaths().appLogPath, `${new Date().toISOString()} [WARN]  - ${msg}\n`, () => { });
+  fs.appendFile(
+    getLogPaths().appLogPath,
+    `${new Date().toISOString()} [WARN]  - ${msg}\n`,
+    () => {}
+  );
   originalWarn.apply(console, args);
 };
 
@@ -99,7 +121,7 @@ createDefaultUser();
 const logErrorToFile = (errorDetails) => {
   const logsDir = path.join(process.cwd(), "logs");
   const d = new Date();
-  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const ym = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
   const logFilePath = path.join(logsDir, `error-${ym}.log`);
 
   // Create logs directory if not exists
@@ -107,11 +129,15 @@ const logErrorToFile = (errorDetails) => {
     fs.mkdirSync(logsDir);
   }
 
-  const logEntry = `${new Date().toISOString()} - ERROR: ${errorDetails.message
-    }, CODE: ${errorDetails.code || "N/A"}, STATUS: ${errorDetails.status || 500
-    }, URL: ${errorDetails.url}, METHOD: ${errorDetails.method}, USER: ${errorDetails.user || "Guest"
-    }, ROLE: ${errorDetails.role || "N/A"}, IP: ${errorDetails.ip || "Unknown"
-    }\n`;
+  const logEntry = `${new Date().toISOString()} - ERROR: ${
+    errorDetails.message
+  }, CODE: ${errorDetails.code || "N/A"}, STATUS: ${
+    errorDetails.status || 500
+  }, URL: ${errorDetails.url}, METHOD: ${errorDetails.method}, USER: ${
+    errorDetails.user || "Guest"
+  }, ROLE: ${errorDetails.role || "N/A"}, IP: ${
+    errorDetails.ip || "Unknown"
+  }\n`;
 
   fs.appendFile(logFilePath, logEntry, (err) => {
     if (err) {
@@ -128,7 +154,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["POST", "PUT", "PATCH", "HEAD", "OPTIONS", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS", "DELETE"],
     allowedHeaders: [
       "Tus-Resumable",
       "Upload-Length",

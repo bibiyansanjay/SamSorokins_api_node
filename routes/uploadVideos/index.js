@@ -7,6 +7,7 @@ import downloadZip from "./downloadZip.js";
 import deleteFile from "./deleteFile.js";
 import deleteByName from "./deleteByName.js";
 import updateStatus from "./updateStatus.js";
+import uploadThumbnail from "./uploadThumbnail.js";
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/downloadZip", downloadZip);
 router.use("/deleteFile", deleteFile);
 router.use("/deleteByName", deleteByName);
 router.use("/updateStatus", updateStatus);
+router.use("/thumbnail", uploadThumbnail);
 
 // tus is now the getTusServer async function
 let tusInstance = null;
