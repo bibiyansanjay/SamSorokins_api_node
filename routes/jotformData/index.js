@@ -4,6 +4,7 @@ import extractParam from "../../middlewares/extractParam";
 import get from "./get";
 
 import getByUniqueId from "./getByUniqueId";
+import submit from "./submit";
 
 /**
  * @namespace forgotPassword
@@ -13,6 +14,7 @@ import getByUniqueId from "./getByUniqueId";
 
 const router = Router();
 
+router.put("/:submissionId/submit", extractParam("submissionId"), submit);
 router.get("/uniqueId/:uniqueId", extractParam("uniqueId"), getByUniqueId);
 router.get("/:submissionId", extractParam("submissionId"), get);
 

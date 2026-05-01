@@ -55,13 +55,14 @@ const sendUploadReminders = async () => {
     // ─────────────────────────────────────────────────────────────────────
     const candidateSubmissions = await JotformSubmission.find({
       reminder1SentAt: null,
-      createdAt: { $lte: oneHourAgo },
+      createdAt: { $lte: oneHourAgo, $gte: twentyFourHoursAgo },
     });
 
     console.log(
       `[UploadReminder] Stage 1: ${candidateSubmissions.length} candidate submissions to evaluate.`
     );
 
+    // console.log(candidateSubmissions);
     for (const submission of candidateSubmissions) {
       const answers = submission.answers || {};
 
@@ -69,9 +70,11 @@ const sendUploadReminders = async () => {
       const filesToUploadField = Object.values(answers).find(
         (item) => item?.text === "Files to Upload"
       );
+      // console.log({ filesToUploadField }, submission.submissionId);
       const requiredUploads = filesToUploadField?.answer;
       const hasRequiredUploads =
         Array.isArray(requiredUploads) && requiredUploads.length > 0;
+      // console.log({ hasRequiredUploads }, submission.submissionId);
 
       if (!hasRequiredUploads) continue;
 
@@ -83,7 +86,7 @@ const sendUploadReminders = async () => {
       if (uploadCount > 0) continue; // files already registered
 
       // Pull all dynamic content from the submission answers
-      const recipientEmail = getFieldValue(answers, "Email");
+      const recipientEmail = getFieldValue(answers, "User Email");
       const recipientName = getFieldValue(answers, "User Name") || "there";
 
       // const tenantEmail = getFieldValue(answers, "Tenant Emails");
@@ -97,9 +100,10 @@ const sendUploadReminders = async () => {
         { recipientName },
         { recipientEmail },
         { userOtherEmail },
-        { replyTo }
+        { replyTo },
+        submission.submissionId
       );
-
+      // return null;
       const emailSubject =
         getFieldValue(answers, "Submission Reminder Subject") ||
         "Reminder: Please Upload Your Files";
@@ -115,7 +119,7 @@ const sendUploadReminders = async () => {
       const formId = submission?.formId;
       const subId = submission?.submissionId;
       const reactAppUrl =
-        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+        process.env.REACT_APP_URL || "https://app.premiumpd.com";
       const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
       // Always mark reminder1SentAt so we don't re-evaluate every poll
@@ -156,48 +160,43 @@ const sendUploadReminders = async () => {
     }
 
     // ─────────────────────────────────────────────────────────────────────
-    // STAGE 2 — 3-hour repeating reminder for first 24 hours (files exist but still not uploaded)
+    // STAGE 2 — 3-hour repeating reminder (files exist but still not completely uploaded)
     // ─────────────────────────────────────────────────────────────────────
-    const staleUploads = await Upload.find({
-      status: { $ne: "Uploaded" },
-      residentEmail: { $exists: true, $ne: null, $ne: "" },
-      createdAt: { $gte: twentyFourHoursAgo, $lte: threeHoursAgo },
+    const candidateSubmissions2 = await JotformSubmission.find({
+      createdAt: { $lte: threeHoursAgo, $gte: twentyFourHoursAgo },
       $or: [
-        { lastReminderSentAt: null },
-        { lastReminderSentAt: { $lte: threeHoursAgo } },
+        { reminder2SentAt: null },
+        { reminder2SentAt: { $lte: threeHoursAgo } },
       ],
     });
 
-    // Group by submissionId → one email per resident
-    const bySubmission = {};
-    for (const upload of staleUploads) {
-      if (!bySubmission[upload.submissionId]) {
-        bySubmission[upload.submissionId] = {
-          email: upload.residentEmail,
-          name: upload.residentName || "there",
-          ids: [],
-        };
-      }
-      bySubmission[upload.submissionId].ids.push(upload._id);
-    }
-
     console.log(
-      `[UploadReminder] Stage 2: ${
-        Object.keys(bySubmission).length
-      } submissions need 3hr repeating reminder.`
+      `[UploadReminder] Stage 2: ${candidateSubmissions2.length} candidate submissions to evaluate.`
     );
 
-    for (const [submissionId, data] of Object.entries(bySubmission)) {
-      // Pull dynamic subject/body from JotForm submission
-      const submission = await JotformSubmission.findOne({ submissionId });
-      const answers = submission?.answers || {};
+    for (const submission of candidateSubmissions2) {
+      const { submissionId } = submission;
 
+      // 1. Must have at least one file registered
+      const totalUploads = await Upload.countDocuments({ submissionId });
+      if (totalUploads === 0) continue;
+
+      // 2. Must have at least one file NOT uploaded
+      const pendingUploads = await Upload.countDocuments({
+        submissionId,
+        status: { $ne: "Uploaded" },
+      });
+
+      if (pendingUploads === 0) continue; // All files uploaded, Stage 4 handles success email
+
+      const answers = submission.answers || {};
+
+      const recipientEmail = getFieldValue(answers, "User Email");
+      const recipientName = getFieldValue(answers, "User Name") || "there";
       const userOtherEmail = getFieldValue(answers, "User Other Emails");
       const replyTo = getFieldValue(answers, "Reply Email");
 
-      const toList =
-        [data?.email, userOtherEmail].filter(Boolean).join(",") ||
-        "bibiyan@yopmail.com";
+      const toList = [recipientEmail, userOtherEmail].filter(Boolean).join(",");
       const bcc = [replyTo].filter(Boolean);
 
       if (!toList) {
@@ -207,32 +206,27 @@ const sendUploadReminders = async () => {
         continue;
       }
 
-      console.log("userEmail:", toList, { userOtherEmail }, { bcc });
       const emailSubject =
         getFieldValue(answers, "Upload Reminder Subject") ||
         "Reminder: Your File Upload is Still Incomplete";
+
       let emailBody =
         getFieldValue(answers, "Upload Reminder Message") ||
-        `Dear ${data?.name},\n\nYour files have not been uploaded yet. Please connect to WiFi and complete your upload.\n\nThank you.`;
+        `Dear ${recipientName},\n\nYour files have not been fully uploaded yet. Please connect to WiFi and complete your upload.\n\nThank you.`;
 
       // Inject actual recipient name if JotForm template uses "Dear Resident"
-      emailBody = emailBody.replace(/Dear Resident/i, `Dear ${data?.name}`);
+      emailBody = emailBody.replace(/Dear Resident/i, `Dear ${recipientName}`);
 
       // Compute the upload link
       const formId = submission?.formId;
       const subId = submission?.submissionId;
       const reactAppUrl =
-        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+        process.env.REACT_APP_URL || "https://app.premiumpd.com";
       const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
-      // Mark all uploads for this submission as reminder sent (increment count)
-      await Upload.updateMany(
-        { _id: { $in: data.ids } },
-        {
-          $set: { lastReminderSentAt: new Date() },
-          $inc: { remindersCount: 1 },
-        }
-      );
+      // Mark reminder as sent so we don't send it again
+      submission.reminder2SentAt = new Date();
+      await submission.save();
 
       try {
         await sendMail(
@@ -251,7 +245,7 @@ const sendUploadReminders = async () => {
         );
       } catch (err) {
         console.error(
-          `[UploadReminder] Stage 2 failed for ${data.email}:`,
+          `[UploadReminder] Stage 2 failed for ${toList}:`,
           err.message
         );
       }
@@ -321,7 +315,7 @@ const sendUploadReminders = async () => {
       const formId = submission?.formId;
       const subId = submission?.submissionId;
       const reactAppUrl =
-        process.env.REACT_APP_URL || "http://10.169.47.7:5173";
+        process.env.REACT_APP_URL || "https://app.premiumpd.com";
       const uploadUrl = `${reactAppUrl}/jotform/form/${formId}?submissionId=${subId}`;
 
       await Upload.updateMany(
@@ -352,6 +346,93 @@ const sendUploadReminders = async () => {
       }
     }
 
+    // ─────────────────────────────────────────────────────────────────────
+    // STAGE 4 — Success Email (all files uploaded successfully)
+    // ─────────────────────────────────────────────────────────────────────
+
+    // 1. Get all submission IDs where EVERY upload record is "Uploaded"
+    const completedUploadStats = await Upload.aggregate([
+      {
+        $group: {
+          _id: "$submissionId",
+          totalUploads: { $sum: 1 },
+          completedUploads: {
+            $sum: { $cond: [{ $eq: ["$status", "Uploaded"] }, 1, 0] },
+          },
+        },
+      },
+      {
+        $match: {
+          // totalUploads must equal completedUploads (meaning NO pending/failed files)
+          $expr: { $eq: ["$totalUploads", "$completedUploads"] },
+          // Must have at least one upload record
+          totalUploads: { $gt: 0 },
+        },
+      },
+    ]);
+
+    const fullyUploadedSubIds = completedUploadStats.map(
+      (stat) => stat.submissionId
+    );
+
+    // 2. Find those submissions that haven't received the email yet
+    const pendingSuccessSubmissions = await JotformSubmission.find({
+      submissionId: { $in: fullyUploadedSubIds },
+      successFullUploadReminder: false,
+    });
+
+    console.log(
+      `[UploadReminder] Stage 4: ${pendingSuccessSubmissions.length} fully completed submissions to notify.`
+    );
+
+    for (const submission of pendingSuccessSubmissions) {
+      const { submissionId } = submission;
+
+      // 3. Mark as sent and send email
+      submission.successFullUploadReminder = true;
+      await submission.save();
+
+      const answers = submission.answers || {};
+      const userEmail = getFieldValue(answers, "User Email");
+      const userOtherEmail = getFieldValue(answers, "User Other Emails");
+
+      const recipientEmails = [userEmail, userOtherEmail]
+        .map((e) => e?.trim())
+        .filter(Boolean)
+        .join(",");
+
+      if (recipientEmails) {
+        const totalUploads = await Upload.countDocuments({ submissionId });
+        const residentName = getFieldValue(answers, "User Name") || "Resident";
+        const formName = submission.formName || "Upload Form";
+
+        try {
+          await sendMail(
+            `Uploads Complete - ${formName}`,
+            {
+              residentName,
+              submissionId,
+              formName,
+              totalFiles: totalUploads,
+              dateStr: new Date().toLocaleDateString(),
+            },
+            recipientEmails,
+            "uploadSuccess",
+            "",
+            []
+          );
+          console.log(
+            `[UploadReminder] Stage 4 sent → ${recipientEmails} (submission: ${submissionId})`
+          );
+        } catch (err) {
+          console.error(
+            `[UploadReminder] Stage 4 failed for ${submissionId}:`,
+            err.message
+          );
+        }
+      }
+    }
+
     console.log("[UploadReminder] Multi-stage check complete.");
   } catch (error) {
     console.error("[UploadReminder] Fatal error in reminder cron job:", error);
@@ -361,6 +442,7 @@ const sendUploadReminders = async () => {
 // Run every 30 minutes — catches both the 1hr and 24hr windows accurately
 cron.schedule(
   "*/30 * * * *",
+  // "*/2 * * * *", //every 2 mins for testing
   async () => {
     console.log(
       "[UploadReminder] Cron triggered at:",

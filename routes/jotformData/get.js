@@ -97,6 +97,12 @@ export default async (req, res, next) => {
       }
     }
 
+    const replyEmail =
+      getAnswerByName(answers, "Reply Email") ||
+      getAnswerByName(answers, "Email") ||
+      "";
+    const formName = getAnswerByName(answers, "Uploader Header") || "";
+
     // Save into MongoDB
 
     const submission = await JotformSubmission.findOneAndUpdate(
@@ -110,6 +116,8 @@ export default async (req, res, next) => {
         updatedAt: content.updated_at,
         answers: content.answers,
         uniqueId: uniqueId || "",
+        replyEmail: replyEmail,
+        formName: formName,
         // raw: jotformData,
       },
       {
@@ -119,7 +127,7 @@ export default async (req, res, next) => {
     );
 
     const residentName = getAnswerByName(answers, "User Name");
-    const email = getAnswerByName(answers, "Email");
+    const email = getAnswerByName(answers, "User Email");
 
     // const formTitle = getAnswerByName(answers, "fileUploader"); //File Uploader Tool (Form Title) //text
     const instTitle = getAnswerByName(answers, "Uploader Header"); //Move In Condition Report File Uploader (Instruction Title) //text

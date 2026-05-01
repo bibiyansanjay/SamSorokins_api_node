@@ -10,8 +10,8 @@ const jotformSubmissionSchema = new mongoose.Schema(
     formId: String,
     ip: String,
     status: String,
-    createdAt: String,
-    updatedAt: String,
+    // createdAt: String,
+    // updatedAt: String,
 
     // store all answers
     answers: {
@@ -28,9 +28,29 @@ const jotformSubmissionSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    reminder2SentAt: {
+      type: Date,
+      default: null,
+    },
     uniqueId: {
       type: String,
       default: "",
+    },
+    replyEmail: {
+      type: String,
+      default: "",
+    },
+    formName: {
+      type: String,
+      default: "",
+    },
+    successFullUploadReminder: {
+      type: Boolean,
+      default: false,
+    },
+    isSubmited: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

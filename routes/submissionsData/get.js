@@ -266,7 +266,7 @@ export default async (req, res, next) => {
         createdAt: item.createdAt,
         status: overallStatus,
         clientName: getFieldValue(answers, "User Name"),
-        clientEmail: getFieldValue(answers, "Email"),
+        clientEmail: getFieldValue(answers, "User Email"),
         propertyName: getFieldValue(answers, "RM Short Name"), //Property
         unitName: getFieldValue(answers, "RM Unit Name"), //Unit
         clientAddress: getFieldValue(answers, "Full Address"),

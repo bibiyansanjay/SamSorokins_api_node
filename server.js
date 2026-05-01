@@ -50,10 +50,14 @@ const cleanupOldLogs = () => {
       ) {
         try {
           fs.unlinkSync(path.join(logsDir, file));
-        } catch (e) {}
+        } catch (e) {
+          console.error(`Failed to delete old log file ${file}:`, e);
+        }
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error("Failed to cleanup old logs:", err);
+  }
 };
 
 // Cleanup on startup and schedule every 24 hours
@@ -111,6 +115,7 @@ db();
 // Initialize Cron Jobs
 import "./cron/uploadReminder.js";
 import "./cron/uploadCleanup.js";
+import "./cron/dailyUploadReport.js";
 
 // Create default user
 createDefaultUser();
