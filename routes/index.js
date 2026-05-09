@@ -11,8 +11,8 @@ import jotformData from "./jotformData";
 import files from "./files";
 import submissionsData from "./submissionsData";
 import dashboard from "./dashboard";
-// import chatBot from "./chatBot";
-// import subscription from "./subscription";
+import rentManager from "./rentManager";
+
 /**
  * @module Routes
  * @description Sets up routing for the Express server with various endpoints.
@@ -30,7 +30,6 @@ router.use("/dashboard", dashboard);
 router.use("/forgotPassword", forgotPassword);
 router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);
-// router.use("/chatBot", chatBot);
-// router.use("/subscription", subscription);
+router.use("/rentManager", postman, rentManager);
 
 export default router;
