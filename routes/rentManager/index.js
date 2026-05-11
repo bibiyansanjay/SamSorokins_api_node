@@ -238,9 +238,6 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         // const itemValue = cfg?.item?.toLowerCase(); // item name from sheet
         const reportID = cfg?.extraInfo?.trim() || ""; // report ID from extraInfo column
         const itemType = cfg?.itemType?.toLowerCase()?.trim() || ""; // item type from sheet (e.g. "PDF")
-        const itemType1 = cfg?.itemType?.toLowerCase()?.trim() || ""; // item type from sheet (e.g. "PDF")
-        console.log({ itemType });
-        console.log({ itemType1 });
 
         const pdfLink = `https://premiumpd.jotform.com/API/generatePDF?formid=${formId}&submissionid=${submissionID}&download=1&reportid=${reportID}&apiKey=${apiKey}`;
 
@@ -262,6 +259,15 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
           );
           const currentValue = currentUdfObj ? currentUdfObj.Value || "" : "";
           finalValue = valueToUse + currentValue;
+
+          // prepend PDF link if item type is PDF
+          if (itemType === "pdf") {
+            const cleanCurrent = currentValue?.trim() || "";
+
+            finalValue = cleanCurrent
+              ? `${pdfLink} | ${cleanCurrent}`
+              : pdfLink;
+          }
         } else if (action === "empty") {
           finalValue = "";
         } else {

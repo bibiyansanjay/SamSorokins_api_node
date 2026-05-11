@@ -14,16 +14,19 @@ const s3Client = new S3Client({
 });
 
 const cleanupOldUploads = async () => {
-  console.log("[UploadCleanup] Running 48-hour cleanup job at", new Date().toISOString());
+  console.log(
+    "[UploadCleanup] Running 72-hour cleanup job at",
+    new Date().toISOString()
+  );
 
   const now = Date.now();
-  // 48 hours ago
-  const threshold = new Date(now - 48 * 60 * 60 * 1000);
+  // 72 hours ago
+  const threshold = new Date(now - 72 * 60 * 60 * 1000);
 
   try {
     const expiredUploads = await Upload.find({
       status: { $in: ["Pending", "Uploading"] },
-      createdAt: { $lte: threshold }
+      createdAt: { $lte: threshold },
     });
 
     if (expiredUploads.length === 0) {
@@ -31,36 +34,49 @@ const cleanupOldUploads = async () => {
       return;
     }
 
-    console.log(`[UploadCleanup] Found ${expiredUploads.length} expired uploads to clean up.`);
+    console.log(
+      `[UploadCleanup] Found ${expiredUploads.length} expired uploads to clean up.`
+    );
 
     for (const upload of expiredUploads) {
       // 1. Delete S3 raw chunks if uploadId is a standard TUS id
       // upload.uploadId is used by TUS as the S3 object key.
       if (upload.uploadId && !upload.uploadId.startsWith("pending_")) {
         try {
-          console.log(`[UploadCleanup] Deleting orphaned S3 objects for ${upload.uploadId}`);
+          console.log(
+            `[UploadCleanup] Deleting orphaned S3 objects for ${upload.uploadId}`
+          );
 
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET,
-            Key: upload.uploadId
-          }));
+          await s3Client.send(
+            new DeleteObjectCommand({
+              Bucket: process.env.AWS_BUCKET,
+              Key: upload.uploadId,
+            })
+          );
 
-          await s3Client.send(new DeleteObjectCommand({
-            Bucket: process.env.AWS_BUCKET,
-            Key: `${upload.uploadId}.info`
-          }));
+          await s3Client.send(
+            new DeleteObjectCommand({
+              Bucket: process.env.AWS_BUCKET,
+              Key: `${upload.uploadId}.info`,
+            })
+          );
         } catch (s3Error) {
-          console.error(`[UploadCleanup] S3 Delete Error for ${upload.uploadId}:`, s3Error.message);
+          console.error(
+            `[UploadCleanup] S3 Delete Error for ${upload.uploadId}:`,
+            s3Error.message
+          );
           // We continue even if S3 delete fails (e.g., object already gone or permission error)
         }
       }
 
       // 2. Mark DB record as failed
       upload.status = "Failed";
-      upload.failureReason = "Cleanup timeout (>48h)";
+      upload.failureReason = "Timeout after 72 hours";
       await upload.save();
 
-      console.log(`[UploadCleanup] Marked upload ${upload._id} (${upload.filename}) as Failed.`);
+      console.log(
+        `[UploadCleanup] Marked upload ${upload._id} (${upload.filename}) as Failed.`
+      );
     }
 
     console.log("[UploadCleanup] Cleanup job complete.");
@@ -70,10 +86,14 @@ const cleanupOldUploads = async () => {
 };
 
 // Run every hour
-cron.schedule("0 * * * *", async () => {
-  await cleanupOldUploads();
-}, {
-  timezone: "America/Los_Angeles"
-});
+cron.schedule(
+  "0 * * * *",
+  async () => {
+    await cleanupOldUploads();
+  },
+  {
+    timezone: "America/Los_Angeles",
+  }
+);
 
 export default cleanupOldUploads;

@@ -32,6 +32,14 @@ const jotformSubmissionSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    uploadRemindersStage: {
+      type: Number,
+      default: 0,
+    },
+    markedFailedAt: {
+      type: Date,
+      default: null,
+    },
     uniqueId: {
       type: String,
       default: "",

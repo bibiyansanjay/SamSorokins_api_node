@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import util from "util";
 import { WebhookErrorLog } from "../models/index.js";
+import sendMail from "../methods/sendMail.js";
 
 let rmTokenCache = { token: null, expiresAt: 0 };
 
@@ -93,10 +94,12 @@ export async function getMatchingRows(targetFormId) {
 
   const sheets = google.sheets({ version: "v4", auth: sheetsAuth });
 
+  const sheetTab = process.env.SPREADSHEET_TAB_NAME || "API"; // Google Sheet's Tab Name
+
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SPREADSHEET_ID,
-      range: "Sheet1!A:K",
+      range: `${sheetTab}!A:K`,
     });
 
     const rows = response.data.values;
@@ -201,21 +204,73 @@ export function logRMAction(data) {
   });
 
   // If this is an error/failure, save it to the DB as well
+  console.log("rent manager log data error:", data);
+
+  const hasResultError =
+    Array.isArray(data.results) &&
+    data.results.some((r) => r.status === "error" || r.error);
+
   if (
     data.error ||
     data.type?.includes("FAILURE") ||
     data.type?.includes("NOT_FOUND") ||
-    data.status === "error"
+    data.status === "error" ||
+    hasResultError
   ) {
+    const reasonStr =
+      data?.error ||
+      data?.reason ||
+      (hasResultError
+        ? "One or more UDF updates failed"
+        : "No explicit reason provided");
+
+    //store error log in db if getti ng from rent manager /webhook
     WebhookErrorLog.create({
       email: data?.email || "",
       formId: data?.formId || "",
       submissionID: data?.submissionID || "",
       type: data?.type || "UNKNOWN_ERROR",
-      reason: data?.error || data?.reason || "No explicit reason provided",
+      reason: reasonStr,
       details: data,
     }).catch((dbErr) => {
       console.error("[Logger] Failed to save error log to DB:", dbErr);
     });
+
+    const testBccEmail =
+      process.env.TEST_BCC_EMAIL || "testrohit1993@gmail.com";
+    const errorLogEmail =
+      process.env.ERROR_LOG_EMAIL || "turnovers@premiumpd.com";
+    const toList = `${errorLogEmail},${testBccEmail}`;
+    const subjectStr = `Rent Manager Webhook Error - Form ${
+      data?.formId || "Unknown"
+    }`;
+    const bodyStr = `
+      <p>An error occurred while communicating with Rent Manager.</p>
+      <ul>
+        <li><strong>User Email:</strong> ${data?.email || "N/A"}</li>
+        <li><strong>Form ID:</strong> ${data?.formId || "N/A"}</li>
+        <li><strong>Submission ID:</strong> ${data?.submissionID || "N/A"}</li>
+        <li><strong>Reason:</strong> ${reasonStr}</li>
+      </ul>
+      <h4>Full Error Data:</h4>
+      <pre style="background:#f4f4f4;padding:10px;border-radius:5px;overflow-x:auto;">${JSON.stringify(
+        data,
+        null,
+        2
+      )}</pre>
+    `;
+
+    sendMail(
+      subjectStr,
+      { subject: subjectStr, body: bodyStr },
+      testBccEmail,
+      // toList,
+      "template-rentManagerWebhookError",
+      "",
+      [],
+      ""
+    ).catch((err) =>
+      console.error("[Logger] Failed to send error email:", err)
+    );
   }
 }

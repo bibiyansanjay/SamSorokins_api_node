@@ -13,6 +13,8 @@ const getStatusPriority = (status) => {
   return priorities[status] || 99;
 };
 
+const testBccEmail = process.env.TEST_BCC_EMAIL || "testrohit1993@gmail.com";
+
 const sendDailyUploadReport = async () => {
   console.log(
     "[DailyUploadReport] Running daily report generation at",
@@ -197,7 +199,8 @@ const sendDailyUploadReport = async () => {
               content: buffer,
             },
           ],
-          ""
+          "",
+          [testBccEmail]
         );
 
         console.log(`[DailyUploadReport] Sent Excel report to ${email}`);
