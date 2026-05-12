@@ -14,6 +14,7 @@ export default async (req, res, next) => {
   try {
     const {
       search = "",
+      status = "",
       page = 0,
       pageSize = 50,
       sortField = "createdAt",
@@ -57,7 +58,68 @@ export default async (req, res, next) => {
           as: "files",
         },
       },
+      // Calculate overallStatus inside the pipeline so we can filter by it
+      {
+        $addFields: {
+          overallStatus: {
+            $cond: {
+              if: { $eq: [{ $size: "$files" }, 0] },
+              then: "Pending",
+              else: {
+                $cond: {
+                  if: {
+                    $allElementsTrue: {
+                      $map: {
+                        input: "$files",
+                        as: "f",
+                        in: { $eq: ["$$f.status", "Uploaded"] },
+                      },
+                    },
+                  },
+                  then: "Uploaded",
+                  else: {
+                    $cond: {
+                      if: {
+                        $anyElementTrue: {
+                          $map: {
+                            input: "$files",
+                            as: "f",
+                            in: { $eq: ["$$f.status", "Uploading"] },
+                          },
+                        },
+                      },
+                      then: "Uploading",
+                      else: {
+                        $cond: {
+                          if: {
+                            $anyElementTrue: {
+                              $map: {
+                                input: "$files",
+                                as: "f",
+                                in: { $eq: ["$$f.status", "Failed"] },
+                              },
+                            },
+                          },
+                          then: "Failed",
+                          else: "Pending",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     ];
+
+    // ── Optional status filter ───────────────────────────────────────────
+    if (status) {
+      pipeline.push({
+        $match: { overallStatus: status },
+      });
+    }
 
     // ── Optional search ───────────────────────────────────────────────────
     if (search) {
@@ -80,12 +142,13 @@ export default async (req, res, next) => {
             { "files.residentName": { $regex: search, $options: "i" } },
             { "files.residentEmail": { $regex: search, $options: "i" } },
             { "files.status": { $regex: search, $options: "i" } },
+            { overallStatus: { $regex: search, $options: "i" } },
           ],
         },
       });
     }
 
-    // ── Count total (before pagination) ──────────────────────────────────
+    // ── Count total (before sort/skip/limit) ──────────────────────────────────
     const countPipeline = [...pipeline, { $count: "total" }];
     const [countResult] = await JotformSubmission.aggregate(countPipeline);
     const totalFiles = countResult?.total || 0;
@@ -102,114 +165,6 @@ export default async (req, res, next) => {
         },
       },
     });
-
-    // pipeline.push({
-    //   $addFields: {
-    //     parsedCreatedAt: {
-    //       $cond: {
-    //         if: { $eq: [{ $type: "$createdAt" }, "string"] },
-    //         then: {
-    //           $convert: {
-    //             input: {
-    //               $concat: [
-    //                 { $arrayElemAt: ["$dateParts", 3] }, // YYYY
-    //                 "-",
-    //                 {
-    //                   $switch: {
-    //                     branches: [
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jan"],
-    //                         },
-    //                         then: "01",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Feb"],
-    //                         },
-    //                         then: "02",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Mar"],
-    //                         },
-    //                         then: "03",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Apr"],
-    //                         },
-    //                         then: "04",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "May"],
-    //                         },
-    //                         then: "05",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jun"],
-    //                         },
-    //                         then: "06",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Jul"],
-    //                         },
-    //                         then: "07",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Aug"],
-    //                         },
-    //                         then: "08",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Sep"],
-    //                         },
-    //                         then: "09",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Oct"],
-    //                         },
-    //                         then: "10",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Nov"],
-    //                         },
-    //                         then: "11",
-    //                       },
-    //                       {
-    //                         case: {
-    //                           $eq: [{ $arrayElemAt: ["$dateParts", 1] }, "Dec"],
-    //                         },
-    //                         then: "12",
-    //                       },
-    //                     ],
-    //                     default: "01",
-    //                   },
-    //                 },
-    //                 "-",
-    //                 { $arrayElemAt: ["$dateParts", 2] }, // DD
-    //                 "T",
-    //                 { $arrayElemAt: ["$dateParts", 4] }, // HH:MM:SS
-    //                 "Z",
-    //               ],
-    //             },
-    //             to: "date",
-    //             onError: new Date(0),
-    //             onNull: new Date(0),
-    //           },
-    //         },
-    //         else: "$createdAt",
-    //       },
-    //     },
-    //   },
-    // });
 
     // ── Sort + paginate ───────────────────────────────────────────────────
     const safeSort = { _id: sortOrder === "asc" ? 1 : -1 };
