@@ -160,7 +160,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         .json({ error: `No active config for form ${formId}` });
     }
 
-    let answers = {};
+    // let answers = {};
     // if (submissionID) {
     //   try {
     //     const submission = await getJotformSubmission(submissionID);
@@ -179,13 +179,16 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         params: {
           filterExpression: `Contacts.Email,eq,${email}`,
           fields: "TenantID",
-          pageSize: 1,
+          // pageSize: 1,
+          pageSize: 5, // allow up to 5 to detect duplicates, we'll handle the error if more than 1 is found
         },
       }
     );
 
     const tenants = searchRes.data;
     if (!Array.isArray(tenants) || tenants.length === 0) {
+      console.error("tenant not found", email);
+
       logRMAction({
         type: "WEBHOOK_TENANT_NOT_FOUND",
         email,
@@ -197,6 +200,26 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         .status(404)
         .json({ error: `Tenant not found with email ${email}` });
     }
+
+    if (Array.isArray(tenants) && tenants?.length > 1) {
+      console.error("getting multiple tenants with this email", email);
+
+      logRMAction({
+        type: "WEBHOOK_MULTIPLE_TENANTS_FOUND",
+        email,
+        formId,
+        submissionID,
+        error: "Getting multiple tenants with this email",
+        tenantCount: tenants?.length,
+        tenantIds: tenants?.map((t) => t.TenantID),
+      });
+
+      return res.status(400).json({
+        success: false,
+        error: "Getting multiple tenants with this email",
+      });
+    }
+
     const tenantId = tenants[0].TenantID;
 
     const results = [];
@@ -243,8 +266,15 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
 
         if (action === "replace") {
           finalValue = valueToUse;
+
           if (itemType === "pdf") {
             finalValue = pdfLink;
+          }
+
+          if (itemType === "jotform") {
+            //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
+            const jotformValue = getAnswerByName(answers, valueToUse);
+            finalValue = jotformValue || "";
           }
         } else if (action === "prepend") {
           const detailRes = await axios.get(
@@ -267,6 +297,12 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
             finalValue = cleanCurrent
               ? `${pdfLink} | ${cleanCurrent}`
               : pdfLink;
+          }
+
+          if (itemType === "jotform") {
+            //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
+            const jotformValue = getAnswerByName(answers, valueToUse);
+            finalValue = jotformValue + currentValue;
           }
         } else if (action === "empty") {
           finalValue = "";
