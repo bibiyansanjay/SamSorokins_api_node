@@ -1,5 +1,9 @@
 import cron from "node-cron";
-import { Upload, JotformSubmission, UploadReminderLog } from "../models/index.js";
+import {
+  Upload,
+  JotformSubmission,
+  UploadReminderLog,
+} from "../models/index.js";
 import sendMail from "../methods/sendMail.js";
 
 /**
@@ -217,9 +221,12 @@ const sendUploadReminders = async () => {
       const userOtherEmail = getFieldValue(answers, "User Other Emails");
       const replyTo = getFieldValue(answers, "Reply Email");
 
+      const testBccEmail =
+        process.env.TEST_BCC_EMAIL || "testrohit1993@gmail.com";
+
       const toList =
         [recipientEmail, userOtherEmail].filter(Boolean).join(",") ||
-        "bibiyan@yopmail.com";
+        testBccEmail;
       const bcc = [replyTo, testBccEmail].filter(Boolean);
 
       let emailSubject =
