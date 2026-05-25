@@ -87,7 +87,8 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
 
       jotformData = response?.data;
       answers = jotformData?.content?.answers || {};
-      jotFormEmail = getAnswerByName(answers, "User Email");
+      // jotFormEmail = getAnswerByName(answers, "User Email");
+      jotFormEmail = getAnswerByName(answers, "Tenant Status Email");
 
       console.log(
         "Received data from jot form",
@@ -107,12 +108,16 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
   }
 
   // 2. Email extraction - search for 'email' in any key if top-level variants fail
-  let email =
-    payload.email ||
-    payload.userEmail ||
-    payload.q415_userEmail ||
-    payload.q3_email ||
-    jotFormEmail;
+  // let email =
+  //   payload.email ||
+  //   payload.userEmail ||
+  //   payload.q415_userEmail ||
+  //   payload.q3_email ||
+  //   jotFormEmail;
+
+  const email = jotFormEmail;
+  console.log({ email }, { submissionID });
+  //Tenant Status Email
 
   if (!email) {
     // Robust search: find any key that contains "email" (case-insensitive) and has a value that looks like an email
@@ -263,6 +268,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         const itemType = cfg?.itemType?.toLowerCase()?.trim() || ""; // item type from sheet (e.g. "PDF")
 
         const pdfLink = `https://premiumpd.jotform.com/API/generatePDF?formid=${formId}&submissionid=${submissionID}&download=1&reportid=${reportID}&apiKey=${apiKey}`;
+        console.log(submissionID, "PDF Link for submission:", pdfLink);
 
         if (action === "replace") {
           finalValue = valueToUse;
