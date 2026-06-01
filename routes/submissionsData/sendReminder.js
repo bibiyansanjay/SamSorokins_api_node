@@ -48,6 +48,7 @@ export default async (req, res, next) => {
       "Upload Form";
     const propertyName = getFieldValue(answers, "RM Short Name") || "-";
     const unitName = getFieldValue(answers, "RM Unit Name") || "-";
+    const recipientName = getFieldValue(answers, "User Name") || "Resident";
 
     const formId = submission.formId;
     const reactAppUrl =
@@ -60,12 +61,13 @@ export default async (req, res, next) => {
       propertyName,
       unitName,
       uploadLink,
+      recipientName,
     };
 
     const replyTo =
       getFieldValue(answers, "Reply Email") || "turnovers@premiumpd.com";
 
-    // const replyTo = "bibiyansanjay@gmail.com";
+    // const replyTo = "testrohit1993@gmail.com";
     // console.log(
     //   ' getFieldValue(answers, "Reply Email")',
     //   getFieldValue(answers, "Reply Email")
