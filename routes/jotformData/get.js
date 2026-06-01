@@ -118,6 +118,7 @@ export default async (req, res, next) => {
         uniqueId: uniqueId || "",
         replyEmail: replyEmail,
         formName: formName,
+
         // raw: jotformData,
       },
       {
@@ -157,6 +158,9 @@ export default async (req, res, next) => {
     const requiredUploads = getAnswerByName(answers, "Files to Upload"); //Thanks for selecting your files... //text
     const forwarding_URL = getAnswerByName(answers, "Forwarding URL");
 
+    const unitName = getAnswerByName(answers, "RM Unit Name");
+    const propertyName = getAnswerByName(answers, "RM Short Name");
+
     // finalInstructions,
     //   generalInstructions,
     //   photoUploadInstruction,
@@ -175,6 +179,9 @@ export default async (req, res, next) => {
         finalInstructions,
         requiredUploads,
         forwarding_URL,
+        unitName,
+        propertyName,
+        formName,
       },
       userData: {
         residentName,
