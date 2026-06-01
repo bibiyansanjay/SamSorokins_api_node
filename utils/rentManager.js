@@ -118,13 +118,15 @@ export async function getMatchingRows(targetFormId) {
         return rowFormId === normalizedTargetId && rowStatus === "final";
       })
       .map((row) => ({
-        status: row[0],
-        formId: row[1],
-        itemType: row[3], // get the item type (e.g. "PDF", "Text", "Number")
-        item: row[4], // The value to use
-        extraInfo: row[5], // The value to use
+        status: row[0].trim(),
+        formId: row[1].trim(),
+        itemType: row[3].trim(), // get the item type (e.g. "PDF", "Text", "Number")
+        item: row[4].trim(), // The value to use
+        extraInfo: row[5].trim(), // The value to use
+        tableName: row[6].trim(), // table name in Rent Manager (e.g. "Tenants", "Leases", "Properties")
         field: row[7], // The UDF name
         action: (row[9] || "").toLowerCase().trim(), // replace | prepend | empty
+        belongsTo: row[10], // fields belong to UDF or System field
       }));
   } catch (error) {
     console.error(`[Sheets] Error fetching rows: ${error.message}`);

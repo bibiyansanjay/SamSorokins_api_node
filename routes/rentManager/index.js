@@ -10,6 +10,7 @@ import {
   resolveJotformAnswer,
   logRMAction,
 } from "../../utils/rentManager";
+import updateSystemField from "./updateSystemField.js";
 // import test from "./test";
 
 const router = Router();
@@ -152,7 +153,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
   try {
     const headers = await getRMHeaders();
     const configs = await getMatchingRows(formId);
-    if (configs.length === 0) {
+    if (configs?.length === 0) {
       logRMAction({
         type: "WEBHOOK_CONFIG_NOT_FOUND",
         email,
@@ -190,7 +191,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
       }
     );
 
-    const tenants = searchRes.data;
+    const tenants = searchRes?.data;
     if (!Array.isArray(tenants) || tenants.length === 0) {
       console.error("tenant not found", email);
 
@@ -225,7 +226,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
       });
     }
 
-    const tenantId = tenants[0].TenantID;
+    const tenantId = tenants[0]?.TenantID;
 
     const results = [];
     for (const cfg of configs) {
@@ -234,6 +235,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         // if (submissionID && cfg.item?.startsWith("q")) {
         //   valueToUse = resolveJotformAnswer(answers, cfg.item);
         // }
+        const belongsTo = cfg?.belongsTo?.toLowerCase()?.trim() || ""; // fields belong to UDF or System field
 
         const udfRes = await axios.get(
           `${process.env.RM_BASE_URL}/UserDefinedFields`,
@@ -243,8 +245,11 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
           }
         );
 
-        const fields = udfRes.data;
-        if (!Array.isArray(fields) || fields.length === 0) {
+        const fields = udfRes?.data;
+        if (
+          (!Array.isArray(fields) || fields.length === 0) &&
+          belongsTo !== "system field"
+        ) {
           logRMAction({
             type: "WEBHOOK_UDF_FIELD_NOT_FOUND",
             email,
@@ -259,7 +264,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
           });
           continue;
         }
-        const udfId = fields[0].UserDefinedFieldID;
+        const udfId = fields?.[0]?.UserDefinedFieldID;
 
         let finalValue = "";
         const action = cfg.action?.toLowerCase()?.trim();
@@ -267,92 +272,136 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         const reportID = cfg?.extraInfo?.trim() || ""; // report ID from extraInfo column
         const itemType = cfg?.itemType?.toLowerCase()?.trim() || ""; // item type from sheet (e.g. "PDF")
 
+        const tableName = cfg?.tableName?.toLowerCase()?.trim() || ""; // table name in Rent Manager
+
         const pdfLink = `https://premiumpd.jotform.com/API/generatePDF?formid=${formId}&submissionid=${submissionID}&download=1&reportid=${reportID}&apiKey=${apiKey}`;
         console.log(submissionID, "PDF Link for submission:", pdfLink);
 
-        if (action === "replace") {
-          finalValue = valueToUse;
-
-          if (itemType === "pdf") {
-            finalValue = pdfLink;
-          }
-
-          if (itemType === "jotform") {
-            //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
-            const jotformValue = getAnswerByName(answers, valueToUse);
-            finalValue = jotformValue || "";
-          }
-        } else if (action === "prepend") {
-          const detailRes = await axios.get(
-            `${process.env.RM_BASE_URL}/Tenants/${tenantId}`,
-            {
-              headers,
-              params: { embeds: "UserDefinedValues" },
-            }
-          );
-          const currentUdfObj = detailRes.data.UserDefinedValues?.find(
-            (v) => v.UserDefinedFieldID === udfId
-          );
-          const currentValue = currentUdfObj ? currentUdfObj.Value || "" : "";
-          finalValue = valueToUse + currentValue;
-
-          // prepend PDF link if item type is PDF
-          if (itemType === "pdf") {
-            const cleanCurrent = currentValue?.trim() || "";
-
-            finalValue = cleanCurrent
-              ? `${pdfLink} | ${cleanCurrent}`
-              : pdfLink;
-          }
-
-          if (itemType === "jotform") {
-            //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
-            const jotformValue = getAnswerByName(answers, valueToUse);
-            finalValue = jotformValue + currentValue;
-          }
-        } else if (action === "empty") {
-          finalValue = "";
-        } else {
-          results.push({
-            field: cfg.field,
-            status: "skipped",
-            reason: `Unknown action: ${action}`,
+        if (tableName !== "tenant") {
+          // return error if table name is not tenant, since that's the only one we support in this webhook for now
+          const errorMsg = `Unsupported table name: ${tableName} for ${cfg.field}. Only "tenant" is supported in this webhook.`;
+          logRMAction({
+            type: "WEBHOOK_UDF_FAILURE",
+            email,
+            formId,
+            submissionID,
+            error: errorMsg,
           });
-          continue;
+          console.error("[Webhook-UDF] Error:", errorMsg);
+          return res.status(500).json({ success: false, error: errorMsg });
         }
 
-        await axios.post(
-          `${process.env.RM_BASE_URL}/Tenants/UserDefinedValues`,
-          [
-            {
-              ParentID: tenantId,
-              UserDefinedFieldID: udfId,
-              Value: finalValue,
-            },
-          ],
-          { headers }
-        );
+        if (belongsTo === "system field") {
+          console.log("Processing system field:", cfg.field);
+          const result = await updateSystemField({
+            cfg,
+            answers,
+            tenantId,
+            headers,
+            action,
+          });
+          results.push({
+            field: cfg.field,
+            ...result,
+          });
+          continue;
+        } else {
+          if (action === "replace") {
+            finalValue = valueToUse;
 
-        results.push({
-          field: cfg.field,
-          action,
-          status: "success",
-          value: finalValue,
-        });
+            if (itemType === "pdf") {
+              finalValue = pdfLink;
+            }
+
+            if (itemType === "jotform") {
+              //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
+              const jotformValue = getAnswerByName(answers, valueToUse);
+              finalValue = jotformValue || "";
+            }
+          } else if (action === "prepend") {
+            const detailRes = await axios.get(
+              `${process.env.RM_BASE_URL}/Tenants/${tenantId}`,
+              {
+                headers,
+                params: { embeds: "UserDefinedValues" },
+              }
+            );
+            const currentUdfObj = detailRes.data.UserDefinedValues?.find(
+              (v) => v.UserDefinedFieldID === udfId
+            );
+            const currentValue = currentUdfObj ? currentUdfObj.Value || "" : "";
+            finalValue = valueToUse + currentValue;
+
+            // prepend PDF link if item type is PDF
+            if (itemType === "pdf") {
+              const cleanCurrent = currentValue?.trim() || "";
+
+              finalValue = cleanCurrent
+                ? `${pdfLink} | ${cleanCurrent}`
+                : pdfLink;
+            }
+
+            if (itemType === "jotform") {
+              //If item type is jotform, get field value from jotform answers and update field value in rent manager with that value
+              const jotformValue = getAnswerByName(answers, valueToUse);
+              finalValue = jotformValue + currentValue;
+            }
+          } else if (action === "empty") {
+            finalValue = "";
+          } else {
+            results.push({
+              field: cfg.field,
+              status: "skipped",
+              reason: `Unknown action: ${action}`,
+            });
+            continue;
+          }
+
+          await axios.post(
+            `${process.env.RM_BASE_URL}/Tenants/UserDefinedValues`,
+            [
+              {
+                ParentID: tenantId,
+                UserDefinedFieldID: udfId,
+                Value: finalValue,
+              },
+            ],
+            { headers }
+          );
+
+          results.push({
+            field: cfg.field,
+            action,
+            status: "success",
+            value: finalValue,
+          });
+        }
       } catch (err) {
         results.push({ field: cfg.field, status: "error", error: err.message });
       }
     }
 
-    logRMAction({
-      type: "WEBHOOK_UDF",
-      email,
-      formId,
-      submissionID,
-      tenantId,
-      configs, // matched rows
-      results, // actions performed with status and reason
-    });
+    // logRMAction({
+    //   type: "WEBHOOK_UDF",
+    //   email,
+    //   formId,
+    //   submissionID,
+    //   tenantId,
+    //   configs, // matched rows
+    //   results, // actions performed with status and reason
+    // });
+
+    // const hasError = results.some((r) => r.status === "error" || r.error);
+    // if (hasError) {
+    //   logRMAction({
+    //     type: "WEBHOOK_UDF_PARTIAL_FAILURE",
+    //     email,
+    //     formId,
+    //     submissionID,
+    //     tenantId,
+    //     results,
+    //   });
+    // }
 
     return res.status(200).json({ success: true, tenantId, results });
   } catch (error) {
