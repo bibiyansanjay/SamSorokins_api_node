@@ -199,10 +199,11 @@ export default async (req, res, next) => {
         Array.isArray(filesToUploadField.answer) &&
         filesToUploadField.answer.length > 0;
 
+      //isSubmited
       let overallStatus;
       if (!requiresUpload) {
         overallStatus = "Upload not required";
-      } else if (files.length === 0) {
+      } else if (files.length === 0 || !item?.isSubmited) {
         overallStatus = "Pending";
       } else {
         const allUploaded = files.every((f) => f.status === "Uploaded");

@@ -11,6 +11,7 @@ import {
   logRMAction,
 } from "../../utils/rentManager";
 import updateSystemField from "./updateSystemField.js";
+import updateUnitField from "./updateUnitField.js";
 // import test from "./test";
 
 const router = Router();
@@ -117,7 +118,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
   //   jotFormEmail;
 
   const email = jotFormEmail;
-  console.log({ email }, { submissionID });
+
   //Tenant Status Email
 
   if (!email) {
@@ -145,9 +146,6 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
 
   console.log(
     `[Webhook-UDF] Extracted -> Email: ${email}, FormId: ${formId}, SubmissionID: ${submissionID}`
-  );
-  console.log(
-    `\n>>> Dynamic UDF Webhook received. Email: ${email}, FormId: ${formId}`
   );
 
   try {
@@ -184,7 +182,7 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         headers,
         params: {
           filterExpression: `Contacts.Email,eq,${email}`,
-          fields: "TenantID",
+          embeds: "Leases",
           // pageSize: 1,
           pageSize: 5, // allow up to 5 to detect duplicates, we'll handle the error if more than 1 is found
         },
@@ -275,8 +273,57 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
         const tableName = cfg?.tableName?.toLowerCase()?.trim() || ""; // table name in Rent Manager
 
         const pdfLink = `https://premiumpd.jotform.com/API/generatePDF?formid=${formId}&submissionid=${submissionID}&download=1&reportid=${reportID}&apiKey=${apiKey}`;
-        console.log(submissionID, "PDF Link for submission:", pdfLink);
+        console.log("PDF Link for submission:", { submissionID }, { pdfLink });
 
+        if (tableName === "unit") {
+          const unitId =
+            getAnswerByName(answers, "UnitID") ||
+            tenants[0]?.Leases?.find((l) => l.IsPrimaryLease)?.UnitID ||
+            tenants[0]?.Leases?.[0]?.UnitID;
+          if (!unitId) {
+            const errorMsg = `Unit ID not found for tenant: ${tenantId}`;
+            logRMAction({
+              type: "WEBHOOK_UNIT_UDF_FAILURE",
+              email,
+              formId,
+              submissionID,
+              error: errorMsg,
+            });
+            console.error("[Webhook-UDF] Error:", errorMsg);
+            results.push({
+              field: cfg.field,
+              status: "error",
+              error: errorMsg,
+            });
+            continue;
+          }
+
+          const result = await updateUnitField({
+            cfg,
+            answers,
+            unitId,
+            headers,
+            action,
+            valueToUse,
+            itemType,
+            pdfLink,
+            udfId,
+            belongsTo,
+            email,
+            submissionID,
+          });
+
+          results.push({
+            field: cfg.field,
+            ...result,
+          });
+          if (result.status === "success") {
+            console.log(
+              `[Success] Field updated: ${cfg.field}, Email: ${email}, SubmissionID: ${submissionID}, FormID: ${formId}`
+            );
+          }
+          continue;
+        }
         if (tableName !== "tenant") {
           // return error if table name is not tenant, since that's the only one we support in this webhook for now
           const errorMsg = `Unsupported table name: ${tableName} for ${cfg.field}. Only "tenant" is supported in this webhook.`;
@@ -288,7 +335,12 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
             error: errorMsg,
           });
           console.error("[Webhook-UDF] Error:", errorMsg);
-          return res.status(500).json({ success: false, error: errorMsg });
+          results.push({
+            field: cfg.field,
+            status: "error",
+            error: errorMsg,
+          });
+          continue;
         }
 
         if (belongsTo === "system field") {
@@ -299,11 +351,18 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
             tenantId,
             headers,
             action,
+            email,
+            submissionID,
           });
           results.push({
             field: cfg.field,
             ...result,
           });
+          if (result.status === "success") {
+            console.log(
+              `[Success] Field updated: ${cfg.field}, Email: ${email}, SubmissionID: ${submissionID}, FormID: ${formId}`
+            );
+          }
           continue;
         } else {
           if (action === "replace") {
@@ -375,8 +434,41 @@ router.post("/webhook-udf", upload.none(), async (req, res) => {
             status: "success",
             value: finalValue,
           });
+          console.log(
+            `[Success] Field updated: ${cfg.field}, Email: ${email}, SubmissionID: ${submissionID}, FormID: ${formId}`
+          );
         }
       } catch (err) {
+        const belongsTo = cfg?.belongsTo?.toLowerCase()?.trim() || "";
+        const tableName = cfg?.tableName?.toLowerCase()?.trim() || "";
+
+        if (tableName === "unit") {
+          logRMAction({
+            type: "WEBHOOK_UNIT_UDF_FAILURE",
+            email,
+            formId,
+            submissionID,
+            error: err.message,
+          });
+        } else if (belongsTo === "system field") {
+          logRMAction({
+            type: "WEBHOOK_SYSTEM_FIELD_FAILURE",
+            email,
+            formId,
+            submissionID,
+            error: err.message,
+          });
+        } else {
+          logRMAction({
+            type: "WEBHOOK_TENANT_UDF_FAILURE",
+            email,
+            formId,
+            submissionID,
+            tenantId,
+            error: err.message,
+            field: cfg.field,
+          });
+        }
         results.push({ field: cfg.field, status: "error", error: err.message });
       }
     }
@@ -547,6 +639,382 @@ router.get("/tenants/email/:email/udf", async (req, res) => {
       udfValue,
       error: error.message,
     });
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.response?.data || error.message });
+  }
+});
+
+/**
+ * GET /tenants/email/:email/unit
+ */
+router.get("/tenants/email/:email/unit", async (req, res) => {
+  const email = req.params.email;
+  const submissionID = req.query.submissionId || "";
+  const udfName = req.query.name || "";
+  const udfValue = req.query.value || "";
+
+  console.log(
+    submissionID,
+    "Received request to update unit UDF for tenant with email:",
+    email
+  );
+  if (!email) return res.status(400).json({ error: "Email is required" });
+  if (!submissionID)
+    return res.status(400).json({ error: "Submission ID is required" });
+  if (!udfName)
+    return res.status(400).json({ error: "Unit UDF name is required" });
+
+  try {
+    const headers = await getRMHeaders();
+    const searchRes = await axios.get(
+      `${process.env.RM_BASE_URL}/Tenants/Search`,
+      {
+        headers,
+        params: {
+          filterExpression: `Contacts.Email,eq,${email}`,
+          embeds: "Leases",
+          pageSize: 1,
+        },
+      }
+    );
+
+    const tenants = searchRes.data;
+    console.log("Tenant search result for unit UDF update:", tenants);
+    if (!Array.isArray(tenants) || tenants.length === 0) {
+      logRMAction({
+        type: "DIRECT_UNIT_UDF_TENANT_NOT_FOUND",
+        email,
+        error: `Tenant not found with email ${email}`,
+      });
+      return res
+        .status(404)
+        .json({ error: `Tenant not found with email ${email}` });
+    }
+    // Get submission data from jot form
+    const response = await axios.get(
+      `https://premiumpd.jotform.com/API/submission/${submissionID}`,
+      {
+        params: { apiKey },
+      }
+    );
+
+    const answers = response?.data?.content?.answers || {};
+
+    const tenantId = tenants[0].TenantID;
+    // const lease =
+    //   tenants[0]?.Leases?.find((l) => l.IsPrimaryLease) ||
+    //   tenants[0]?.Leases?.[0];
+    // const unitId = lease?.UnitID;
+    const unitId = getAnswerByName(answers, "UnitID");
+    if (!unitId) {
+      logRMAction({
+        type: "DIRECT_UNIT_UDF_UNIT_NOT_FOUND",
+        email,
+        error: `Unit ID not found for tenant: ${tenantId}`,
+      });
+      return res
+        .status(404)
+        .json({ error: `Unit ID not found for tenant: ${tenantId}` });
+    }
+
+    const udfRes = await axios.get(
+      `${process.env.RM_BASE_URL}/UserDefinedFields`,
+      {
+        headers,
+        params: { filters: `Name,eq,${udfName}` },
+      }
+    );
+
+    const fields = udfRes.data;
+    if (!Array.isArray(fields) || fields.length === 0) {
+      logRMAction({
+        type: "DIRECT_UNIT_UDF_FIELD_NOT_FOUND",
+        email,
+        udfName,
+        error: `Unit UDF field not found: ${udfName}`,
+      });
+      return res
+        .status(404)
+        .json({ error: `Unit UDF field not found: ${udfName}` });
+    }
+    const udfId = fields[0].UserDefinedFieldID;
+
+    const updateRes = await axios.post(
+      `${process.env.RM_BASE_URL}/Units/UserDefinedValues`,
+      [{ ParentID: unitId, UserDefinedFieldID: udfId, Value: udfValue }],
+      { headers }
+    );
+
+    logRMAction({
+      type: "DIRECT_UNIT_UDF_UPDATE",
+      email,
+      udfName,
+      udfValue,
+      tenantId,
+      unitId,
+      status: "success",
+      message: `Updated unit UDF "${udfName}"`,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Updated unit UDF "${udfName}" for Unit ID ${unitId}`,
+      details: { tenantId, unitId, udfId, udfName, udfValue },
+      data: updateRes.data,
+    });
+  } catch (error) {
+    logRMAction({
+      type: "DIRECT_UNIT_UDF_UPDATE_FAILURE",
+      email,
+      udfName,
+      udfValue,
+      error: error.message,
+    });
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.response?.data || error.message });
+  }
+});
+
+/**
+ * GET /tenants/email/:email/system
+ */
+router.get("/tenants/email/:email/system", async (req, res) => {
+  const email = req.params.email;
+  const systemFieldName = req.query.name || "";
+  let systemFieldValue = req.query.value || "";
+
+  if (!email) return res.status(400).json({ error: "Email is required" });
+  if (!systemFieldName)
+    return res.status(400).json({ error: "System field name is required" });
+
+  try {
+    const headers = await getRMHeaders();
+    const searchRes = await axios.get(
+      `${process.env.RM_BASE_URL}/Tenants/Search`,
+      {
+        headers,
+        params: {
+          filterExpression: `Contacts.Email,eq,${email}`,
+          fields: "TenantID",
+          pageSize: 1,
+        },
+      }
+    );
+
+    const tenants = searchRes.data;
+    if (!Array.isArray(tenants) || tenants.length === 0) {
+      logRMAction({
+        type: "DIRECT_SYSTEM_FIELD_TENANT_NOT_FOUND",
+        email,
+        error: `Tenant not found with email ${email}`,
+      });
+      return res
+        .status(404)
+        .json({ error: `Tenant not found with email ${email}` });
+    }
+    const tenantId = tenants[0].TenantID;
+
+    // Try parsing value if it looks like a JSON object (for address fields)
+    let parsedValue = systemFieldValue;
+    if (
+      typeof systemFieldValue === "string" &&
+      systemFieldValue.trim().startsWith("{")
+    ) {
+      try {
+        parsedValue = JSON.parse(systemFieldValue);
+      } catch (e) {
+        // Keep as string if parsing fails
+      }
+    }
+
+    const cfg = {
+      field: systemFieldName,
+      item: typeof parsedValue === "string" ? parsedValue : "",
+      action: "replace",
+    };
+
+    const answers = {
+      1: { text: systemFieldName, answer: parsedValue },
+    };
+
+    const result = await updateSystemField({
+      cfg,
+      answers,
+      tenantId,
+      headers,
+      action: "replace",
+    });
+
+    logRMAction({
+      type: "DIRECT_SYSTEM_FIELD_UPDATE",
+      email,
+      systemFieldName,
+      systemFieldValue,
+      tenantId,
+      status: result.status || "success",
+      error: result.status === "error" ? result.error : undefined,
+      message:
+        result.status === "error"
+          ? result.error
+          : `Updated system field "${systemFieldName}"`,
+    });
+
+    if (result.status === "error") {
+      return res.status(400).json({ success: false, ...result });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Updated system field "${systemFieldName}" for Tenant ID ${tenantId}`,
+      details: { tenantId, systemFieldName, systemFieldValue },
+      result,
+    });
+  } catch (error) {
+    logRMAction({
+      type: "DIRECT_SYSTEM_FIELD_UPDATE_FAILURE",
+      email,
+      systemFieldName,
+      systemFieldValue,
+      error: error.message,
+    });
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.response?.data || error.message });
+  }
+});
+
+/**
+ * GET /tenants/email/:email/unit-fields
+ */
+router.get("/tenants/email/:email/unit-fields", async (req, res) => {
+  const email = req.params.email;
+  const submissionID = req.query.submissionId || "";
+
+  console.log(
+    "Fetching unit fields for tenant with email:",
+    email,
+    "and submissionID:",
+    submissionID
+  );
+  if (!submissionID) {
+    return res
+      .status(400)
+      .json({ error: "Submission ID parameter is required" });
+  }
+  if (!email)
+    return res.status(400).json({ error: "Email parameter is required" });
+
+  try {
+    const headers = await getRMHeaders();
+    const searchRes = await axios.get(
+      `${process.env.RM_BASE_URL}/Tenants/Search`,
+      {
+        headers,
+        params: {
+          filterExpression: `Contacts.Email,eq,${email}`,
+          embeds: "Leases",
+          pageSize: 1,
+        },
+      }
+    );
+
+    const tenants = searchRes.data;
+    console.log(searchRes.data, "Searching for tenant to get unit fields");
+    if (!Array.isArray(tenants) || tenants.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: `Tenant not found with email ${email}`,
+      });
+    }
+    // const answers = null;
+    // const lease =
+    //   tenants[0]?.Leases?.find((l) => l.IsPrimaryLease) ||
+    //   tenants[0]?.Leases?.[0];
+    // const unitId = lease?.UnitID;
+
+    // Get submission data from jot form
+    const response = await axios.get(
+      `https://premiumpd.jotform.com/API/submission/${submissionID}`,
+      {
+        params: { apiKey },
+      }
+    );
+
+    const answers = response?.data?.content?.answers || {};
+
+    const unitId = getAnswerByName(answers, "UnitID");
+    if (!unitId) {
+      return res
+        .status(404)
+        .json({ success: false, error: `Unit ID not found for tenant` });
+    }
+
+    const unitRes = await axios.get(
+      `${process.env.RM_BASE_URL}/Units/${unitId}`,
+      {
+        headers,
+        params: { embeds: "UserDefinedValues" },
+      }
+    );
+
+    return res.status(200).json({ success: true, unit: unitRes.data });
+  } catch (error) {
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.response?.data || error.message });
+  }
+});
+
+/**
+ * GET /tenants/email/:email/system-fields
+ */
+router.get("/tenants/email/:email/system-fields", async (req, res) => {
+  const email = req.params.email;
+  if (!email)
+    return res.status(400).json({ error: "Email parameter is required" });
+
+  try {
+    const headers = await getRMHeaders();
+    const response = await axios.get(
+      `${process.env.RM_BASE_URL}/Tenants/Search`,
+      {
+        headers,
+        params: {
+          filterExpression: `Contacts.Email,eq,${email}`,
+          embeds: "Addresses,Contacts,Leases",
+          pageSize: 1,
+        },
+      }
+    );
+
+    const tenants = response.data;
+    if (!Array.isArray(tenants) || tenants.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: `No tenant found with email: ${email}`,
+      });
+    }
+
+    const tenant = tenants[0];
+
+    return res.status(200).json({
+      success: true,
+      tenantId: tenant.TenantID,
+      systemFields: {
+        MoveInDate: tenant.MoveInDate || null,
+        MoveOutDate: tenant.MoveOutDate || null,
+        NoticeDate: tenant.NoticeDate || null,
+        Status: tenant.Status || null,
+        PrimaryUnitID: tenant.PrimaryUnitID || null,
+        Addresses: tenant.Addresses || [],
+        Leases: tenant.Leases || [],
+      },
+      leases: tenant.Leases || [],
+      rawTenant: tenant,
+    });
+  } catch (error) {
     return res
       .status(error.response?.status || 500)
       .json({ success: false, error: error.response?.data || error.message });

@@ -67,11 +67,15 @@ const sendDailyUploadReport = async () => {
 
       // Determine overall Status
       let overallStatus = "Uploaded";
-      if (failedFiles > 0) overallStatus = "Failed";
+      if (!submission?.isSubmited) {
+        overallStatus = "Pending";
+      } else if (failedFiles > 0) overallStatus = "Failed";
       else if (pendingFiles > 0) overallStatus = "Pending";
       else if (uploadingFiles > 0) overallStatus = "Uploading";
       else if (totalFiles === 0) overallStatus = "Pending";
-
+      // if (submission?.isSubmited) {
+      //   overallStatus = "Not Submitted";
+      // }
       const reactAppUrl =
         process.env.REACT_APP_URL || "https://app.premiumpd.com";
 
