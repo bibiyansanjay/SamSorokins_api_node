@@ -88,7 +88,7 @@ const sendUploadReminders = async () => {
         submissionId: submission.submissionId,
       });
 
-      if (uploadCount > 0 || submission?.isSubmited === true) continue; // files already registered
+      if (uploadCount > 0 && submission?.isSubmited === true) continue; // files already registered
 
       // Pull all dynamic content from the submission answers
       const recipientEmail = getFieldValue(answers, "User Email");

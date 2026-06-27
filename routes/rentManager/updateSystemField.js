@@ -195,8 +195,10 @@ export default async function updateSystemField({
 
       // Check if it is a Lease field
       let leaseFieldName = null;
-      if (updateField === "MoveOutDate" || updateField === "LeaseEndDate") {
+      if (updateField === "MoveOutDate") {
         leaseFieldName = "MoveOutDate";
+      } else if (updateField === "LeaseEndDate") {
+        leaseFieldName = "EndDate";
       } else if (updateField === "NoticeDate") {
         leaseFieldName = "NoticeDate";
       }
