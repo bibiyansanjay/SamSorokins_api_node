@@ -15,6 +15,55 @@ function getAnswerByName(answers, fieldName, keyName = "answer") {
   return value;
 }
 
+function addOneDayToDate(dateAnswer) {
+  if (!dateAnswer) return "";
+
+  let year, month, day;
+
+  if (typeof dateAnswer === "object") {
+    year = parseInt(dateAnswer.year, 10);
+    month = parseInt(dateAnswer.month, 10);
+    day = parseInt(dateAnswer.day, 10);
+  } else {
+    const s = String(dateAnswer).trim();
+
+    // Case 1: YYYY-MM-DD
+    const ymdMatch = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if (ymdMatch) {
+      year = parseInt(ymdMatch[1], 10);
+      month = parseInt(ymdMatch[2], 10);
+      day = parseInt(ymdMatch[3], 10);
+    } else {
+      // Case 2: MM/DD/YYYY or MM-DD-YYYY
+      const mdyMatch = s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+      if (mdyMatch) {
+        year = parseInt(mdyMatch[3], 10);
+        month = parseInt(mdyMatch[1], 10);
+        day = parseInt(mdyMatch[2], 10);
+      } else {
+        // Fallback to JS Date parsing
+        const d = new Date(s);
+        if (!isNaN(d.getTime())) {
+          year = d.getFullYear();
+          month = d.getMonth() + 1;
+          day = d.getDate();
+        }
+      }
+    }
+  }
+
+  if (year && month && day) {
+    const d = new Date(year, month - 1, day);
+    d.setDate(d.getDate() + 1);
+    const nextYear = d.getFullYear();
+    const nextMonth = String(d.getMonth() + 1).padStart(2, "0");
+    const nextDay = String(d.getDate()).padStart(2, "0");
+    return `${nextYear}-${nextMonth}-${nextDay}`;
+  }
+
+  return "";
+}
+
 export default async function updateUnitField({
   cfg,
   answers,
@@ -46,7 +95,40 @@ export default async function updateUnitField({
     }
 
     let finalValue = "";
-    if (action === "replace") {
+    if (cfg.field?.trim() === "For Rent Available") {
+      const leaseExpAnswer = getAnswerByName(answers, "Lease Expiration Date");
+      if (!leaseExpAnswer) {
+        const errorMsg = "Lease Expiration Date answer not found in Jotform";
+        logRMAction({
+          type: "WEBHOOK_UNIT_UDF_FAILURE",
+          email,
+          formId: cfg?.formId,
+          submissionID,
+          error: errorMsg,
+        });
+        return {
+          status: "error",
+          error: errorMsg,
+        };
+      }
+      finalValue = addOneDayToDate(leaseExpAnswer);
+      if (!finalValue) {
+        const errorMsg = `Failed to parse Lease Expiration Date: ${JSON.stringify(
+          leaseExpAnswer
+        )}`;
+        logRMAction({
+          type: "WEBHOOK_UNIT_UDF_FAILURE",
+          email,
+          formId: cfg?.formId,
+          submissionID,
+          error: errorMsg,
+        });
+        return {
+          status: "error",
+          error: errorMsg,
+        };
+      }
+    } else if (action === "replace") {
       finalValue = valueToUse;
 
       if (itemType === "pdf") {
