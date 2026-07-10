@@ -983,7 +983,7 @@ router.get("/tenants/email/:email/system-fields", async (req, res) => {
         headers,
         params: {
           filterExpression: `Contacts.Email,eq,${email}`,
-          embeds: "Addresses,Contacts,Leases",
+          embeds: "Addresses,Contacts,Leases.LeaseRenewals",
           pageSize: 1,
         },
       }
@@ -998,6 +998,8 @@ router.get("/tenants/email/:email/system-fields", async (req, res) => {
     }
 
     const tenant = tenants[0];
+    const lease =
+      tenant?.Leases?.find((l) => l.IsPrimaryLease) || tenant?.Leases?.[0];
 
     return res.status(200).json({
       success: true,
@@ -1006,6 +1008,7 @@ router.get("/tenants/email/:email/system-fields", async (req, res) => {
         MoveInDate: tenant.MoveInDate || null,
         MoveOutDate: tenant.MoveOutDate || null,
         NoticeDate: tenant.NoticeDate || null,
+        EndDate: lease?.EndDate || null,
         Status: tenant.Status || null,
         PrimaryUnitID: tenant.PrimaryUnitID || null,
         Addresses: tenant.Addresses || [],

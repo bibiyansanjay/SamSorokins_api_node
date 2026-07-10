@@ -145,7 +145,9 @@ export default async function updateSystemField({
     } else if (
       normalizedField === "lease end date" ||
       normalizedField === "lease end" ||
-      normalizedField === "leaseenddate"
+      normalizedField === "leaseenddate" ||
+      normalizedField === "end date" ||
+      normalizedField === "enddate"
     ) {
       updateField = "LeaseEndDate";
     }
@@ -225,10 +227,29 @@ export default async function updateSystemField({
         );
         const leaseRes = await axios.get(
           `${process.env.RM_BASE_URL}/Leases/${lease.LeaseID}`,
-          { headers }
+          {
+            headers,
+            params: { embeds: "LeaseRenewals" },
+          }
         );
         const fullLease = leaseRes.data;
         fullLease[leaseFieldName] = finalValue;
+
+        if (leaseFieldName === "EndDate" && Array.isArray(fullLease.LeaseRenewals) && fullLease.LeaseRenewals.length > 0) {
+          console.log(
+            `[System Field] Lease has renewals. Updating LeaseRenewals EndDate to:`,
+            finalValue
+          );
+          const updatedRenewals = fullLease.LeaseRenewals.map((r) => ({
+            ...r,
+            EndDate: finalValue,
+          }));
+          await axios.post(
+            `${process.env.RM_BASE_URL}/LeaseRenewals`,
+            updatedRenewals,
+            { headers }
+          );
+        }
 
         console.log(
           `[System Field] Updating Lease ${lease.LeaseID} (Tenant ${tenantId}) field ${leaseFieldName} to:`,
