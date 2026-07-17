@@ -1,4 +1,5 @@
 import { Key } from "../../models";
+import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 
 export default async (req, res, next) => {
   try {
@@ -18,6 +19,14 @@ export default async (req, res, next) => {
     );
 
     await key.save();
+
+    // Notify status change (returned)
+    const keyCopy = {
+      ...key.toObject(),
+      status: "Returned / Checked In"
+    };
+    sendKeyStatusEmail(keyCopy); // send email in background
+
     return res.json({ message: "Key returned successfully", key });
   } catch (error) {
     next(error);

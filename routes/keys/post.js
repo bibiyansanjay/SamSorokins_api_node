@@ -1,4 +1,5 @@
 import { Key } from "../../models";
+import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 
 export default async (req, res, next) => {
   try {
@@ -39,6 +40,7 @@ export default async (req, res, next) => {
       existingKey.accessLog.push(logMessage);
 
       await existingKey.save();
+      sendKeyStatusEmail(existingKey); // send email in background
       return res.json({
         message: "Key checked out successfully",
         key: existingKey,
@@ -58,6 +60,7 @@ export default async (req, res, next) => {
     });
 
     await newKey.save();
+    sendKeyStatusEmail(newKey); // send email in background
     return res.json({ message: "Key checked out successfully", key: newKey });
   } catch (error) {
     next(error);

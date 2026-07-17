@@ -1,4 +1,5 @@
 import { Key } from "../../models";
+import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 
 export default async (req, res, next) => {
   try {
@@ -13,6 +14,7 @@ export default async (req, res, next) => {
     }
 
     let isChanged = false;
+    let statusChanged = false;
 
     if (
       whoHasIt !== undefined &&
@@ -34,10 +36,14 @@ export default async (req, res, next) => {
         `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status}"`
       );
       isChanged = true;
+      statusChanged = true;
     }
 
     if (isChanged) {
       await key.save();
+      if (statusChanged) {
+        sendKeyStatusEmail(key); // send email in background
+      }
     }
 
     return res.json({ message: "Key updated successfully", key });

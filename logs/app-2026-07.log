@@ -318,3 +318,25 @@
 2026-07-17T17:30:00.061Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T17:30:00.061Z
 2026-07-17T17:30:01.132Z [INFO]  - [UploadReminder] Stage 1: 4 candidate submissions to evaluate.
 2026-07-17T17:30:20.152Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.
+2026-07-17T17:41:12.298Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-17T17:41:12.302Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-17T18:00:00.072Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-17T18:00:00.072Z
+2026-07-17T18:00:00.077Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T18:00:00.077Z
+2026-07-17T18:00:00.078Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T18:00:00.078Z
+2026-07-17T18:00:00.474Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-17T18:00:01.113Z [INFO]  - [UploadReminder] Stage 1: 4 candidate submissions to evaluate.
+2026-07-17T18:00:25.751Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.
+2026-07-17T18:11:20.106Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-17T18:11:20.108Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-17T18:30:00.036Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T18:30:00.036Z
+2026-07-17T18:30:00.047Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T18:30:00.047Z
+2026-07-17T18:30:00.881Z [INFO]  - [UploadReminder] Stage 1: 3 candidate submissions to evaluate.
+2026-07-17T18:30:23.738Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.
+2026-07-17T18:41:18.793Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-17T18:41:18.796Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-17T18:45:14.847Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T18:45:18.840Z [INFO]  - Database connected....
+2026-07-17T18:45:19.177Z [INFO]  - ✅ Default admin already exists
+2026-07-17T18:45:50.020Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T18:45:54.141Z [INFO]  - Database connected....
+2026-07-17T18:45:54.477Z [INFO]  - ✅ Default admin already exists
