@@ -12,6 +12,7 @@ import files from "./files";
 import submissionsData from "./submissionsData";
 import dashboard from "./dashboard";
 import rentManager from "./rentManager";
+import keys from "./keys";
 
 /**
  * @module Routes
@@ -31,5 +32,6 @@ router.use("/forgotPassword", forgotPassword);
 router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);
 router.use("/rentManager", postman, rentManager);
+router.use("/keys", keys);
 
 export default router;

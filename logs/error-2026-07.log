@@ -1,0 +1,766 @@
+2026-07-16T15:31:06.838Z [ERROR] - (node:14856) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:23:11.369Z [ERROR] - (node:18424) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:24:39.402Z [ERROR] - (node:16732) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:24:49.423Z [ERROR] - ❌ Error creating default admin: MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+2026-07-16T16:25:35.592Z [ERROR] - (node:13336) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:30:45.748Z [ERROR] - (node:15036) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:31:31.488Z [ERROR] - (node:3076) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T16:40:45.668Z [ERROR] - (node:21180) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:14:36.813Z [ERROR] - (node:18368) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:27:42.663Z [ERROR] - (node:13784) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:29:36.603Z [ERROR] - (node:20648) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:30:47.179Z [ERROR] - (node:14744) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:31:55.799Z [ERROR] - (node:2996) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:32:48.678Z [ERROR] - (node:20184) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:34:11.702Z [ERROR] - (node:22064) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:38:50.772Z [ERROR] - (node:18812) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:39:05.169Z [ERROR] - (node:5788) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:45:39.196Z [ERROR] - (node:22208) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:46:37.845Z [ERROR] - (node:20772) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:47:37.882Z [ERROR] - (node:14248) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T18:52:09.501Z [ERROR] - (node:21660) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:01:51.333Z [ERROR] - (node:22480) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:02:51.808Z [ERROR] - (node:14328) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:12:03.970Z [ERROR] - (node:20276) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:14:20.263Z [ERROR] - (node:13988) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:17:24.038Z [ERROR] - (node:17596) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:57:32.503Z [ERROR] - (node:17632) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T19:58:30.153Z [ERROR] - (node:400) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:15:25.639Z [ERROR] - (node:21240) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:16:24.328Z [ERROR] - (node:18668) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:22:03.230Z [ERROR] - (node:17948) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:22:19.346Z [ERROR] - (node:19524) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:26:35.129Z [ERROR] - (node:9796) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:37:21.763Z [ERROR] - (node:21500) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:37:46.049Z [ERROR] - (node:19048) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-16T20:38:21.677Z [ERROR] - (node:264) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T12:29:00.496Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T12:38:13.671Z [ERROR] - (node:23048) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T12:45:47.962Z [ERROR] - (node:18752) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T12:52:57.469Z [ERROR] - (node:14084) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T12:53:07.468Z [ERROR] - ❌ Error creating default admin: MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:187:23)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+2026-07-17T13:05:24.219Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: Error: read ECONNRESET
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:218:20) {
+  errno: -4077,
+  code: 'ECONNRESET',
+  syscall: 'read'
+}
+2026-07-17T13:30:30.231Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T14:00:30.119Z [ERROR] - [DailyUploadReport] Fatal error: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T14:00:30.140Z [ERROR] - [UploadCleanup] Fatal error: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T14:00:30.164Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T14:30:30.058Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T15:00:30.084Z [ERROR] - [WebhookErrorReport] Fatal error: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T15:00:30.098Z [ERROR] - [UploadCleanup] Fatal error: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T15:00:30.113Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T15:30:30.055Z [ERROR] - [UploadReminder] Fatal error in reminder cron job: MongoServerSelectionError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+    at Topology.selectServer (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\sdam\topology.ts:628:30)
+    at tryOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:201:16)
+    at executeOperation (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\operations\execute_operation.ts:115:12)
+    at FindCursor._initialize (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\find_cursor.ts:92:22)
+    at FindCursor.cursorInit (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:944:21)
+    at FindCursor.fetchBatch (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:982:7)
+    at FindCursor.next (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:612:9)
+    at FindCursor.[Symbol.asyncIterator] (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:506:26)
+    at FindCursor.toArray (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cursor\abstract_cursor.ts:700:22)
+    at model.Query._find (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:2381:14)
+    at model.Query.exec (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongoose\lib\query.js:4548:63) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-01.onss6mu.mongodb.net:27017' => [ServerDescription],
+      'ac-mrx4wmu-shard-00-02.onss6mu.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-fuui1b-shard-0',
+    maxElectionId: new ObjectId('7fffffff000000000000020d'),
+    maxSetVersion: 274,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+      at TLSSocket.<anonymous> (G:\Projects\SamSorokins\SamSorokins_api_node\node_modules\mongodb\src\cmap\connect.ts:394:16)
+      at Object.onceWrapper (node:events:639:26)
+      at TLSSocket.emit (node:events:524:28)
+      at TLSSocket.emit (node:domain:489:12)
+      at emitErrorNT (node:internal/streams/destroy:169:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+      at processTicksAndRejections (node:internal/process/task_queues:82:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: getaddrinfo ENOTFOUND ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net
+        at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+      errno: -3008,
+      code: 'ENOTFOUND',
+      syscall: 'getaddrinfo',
+      hostname: 'ac-mrx4wmu-shard-00-00.onss6mu.mongodb.net'
+    }
+  }
+}
+2026-07-17T17:05:37.480Z [ERROR] - (node:15236) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T17:06:08.673Z [ERROR] - (node:20256) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T17:15:08.385Z [ERROR] - (node:21500) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-07-17T17:16:43.181Z [ERROR] - (node:18976) NOTE: The AWS SDK for JavaScript (v2) has reached end-of-support.
+It will no longer receive updates or releases.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)

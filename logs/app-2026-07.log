@@ -1,0 +1,320 @@
+2026-07-16T15:31:06.819Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T15:31:10.819Z [INFO]  - Database connected....
+2026-07-16T15:31:11.158Z [INFO]  - ✅ Default admin already exists
+2026-07-16T16:00:00.066Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T16:00:00.066Z
+2026-07-16T16:00:00.070Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T16:00:00.069Z
+2026-07-16T16:00:00.080Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-16T16:00:00.080Z
+2026-07-16T16:00:00.417Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-16T16:00:01.415Z [INFO]  - [UploadReminder] Stage 1: 7 candidate submissions to evaluate.
+2026-07-16T16:00:35.544Z [INFO]  - [UploadReminder] Stage 2: 1009 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T16:01:41.476Z [INFO]  - Email sent successfully: {
+  accepted: [ 'testrohit1993@gmail.com' ],
+  rejected: [],
+  ehlo: [
+    'SIZE 35882577',
+    '8BITMIME',
+    'AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH',
+    'ENHANCEDSTATUSCODES',
+    'PIPELINING',
+    'CHUNKING',
+    'SMTPUTF8'
+  ],
+  envelopeTime: 1129,
+  messageTime: 1046,
+  messageSize: 2760,
+  response: '250 2.0.0 OK  1784217701 d9443c01a7336-2cf1055d661sm22726235ad.42 - gsmtp',
+  envelope: {
+    from: 'premiumpropertiesberkeley@gmail.com',
+    to: [ 'testrohit1993@gmail.com' ]
+  },
+  messageId: '<8f9a3688-bddb-4c4a-b7e4-cd53945e12c4@gmail.com>'
+}
+2026-07-16T16:10:01.502Z [INFO]  - Email sent successfully: {
+  accepted: [ 'testrohit1993@gmail.com' ],
+  rejected: [],
+  ehlo: [
+    'SIZE 35882577',
+    '8BITMIME',
+    'AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH',
+    'ENHANCEDSTATUSCODES',
+    'PIPELINING',
+    'CHUNKING',
+    'SMTPUTF8'
+  ],
+  envelopeTime: 850,
+  messageTime: 785,
+  messageSize: 2760,
+  response: '250 2.0.0 OK  1784218201 d2e1a72fcca58-84a4f273f42sm4940690b3a.22 - gsmtp',
+  envelope: {
+    from: 'premiumpropertiesberkeley@gmail.com',
+    to: [ 'testrohit1993@gmail.com' ]
+  },
+  messageId: '<08707c95-9caf-aa68-a7ef-6757c4d441d9@gmail.com>'
+}
+2026-07-16T16:11:25.718Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-16T16:11:25.721Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-16T16:23:11.328Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:23:18.295Z [INFO]  - Database connected....
+2026-07-16T16:23:18.681Z [INFO]  - ✅ Default admin already exists
+2026-07-16T16:24:39.390Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:24:49.870Z [INFO]  - Database connected....
+2026-07-16T16:25:35.580Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:25:39.402Z [INFO]  - Database connected....
+2026-07-16T16:25:39.967Z [INFO]  - ✅ Default admin already exists
+2026-07-16T16:30:00.038Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T16:30:00.037Z
+2026-07-16T16:30:00.035Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T16:30:00.035Z
+2026-07-16T16:30:01.472Z [INFO]  - [UploadReminder] Stage 1: 6 candidate submissions to evaluate.
+2026-07-16T16:30:45.634Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:30:51.372Z [INFO]  - Database connected....
+2026-07-16T16:30:51.765Z [INFO]  - ✅ Default admin already exists
+2026-07-16T16:31:31.471Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:31:37.085Z [INFO]  - Database connected....
+2026-07-16T16:31:37.434Z [INFO]  - ✅ Default admin already exists
+2026-07-16T16:40:45.654Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T16:40:50.001Z [INFO]  - Database connected....
+2026-07-16T16:40:50.415Z [INFO]  - ✅ Default admin already exists
+2026-07-16T17:00:00.040Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-16T17:00:00.040Z
+2026-07-16T17:00:00.049Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T17:00:00.049Z
+2026-07-16T17:00:00.052Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T17:00:00.052Z
+2026-07-16T17:00:02.874Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-16T17:00:03.825Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T17:00:43.311Z [INFO]  - [UploadReminder] Stage 2: 1009 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T17:12:30.508Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-16T17:12:30.509Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-16T17:30:00.070Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T17:30:00.070Z
+2026-07-16T17:30:00.208Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T17:30:00.202Z
+2026-07-16T17:30:03.577Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T18:14:36.795Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:14:40.596Z [INFO]  - Database connected....
+2026-07-16T18:14:40.938Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:27:42.620Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:27:47.435Z [INFO]  - Database connected....
+2026-07-16T18:27:47.850Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:29:36.586Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:29:40.448Z [INFO]  - Database connected....
+2026-07-16T18:29:40.818Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:30:47.161Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:30:51.208Z [INFO]  - Database connected....
+2026-07-16T18:30:51.539Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:31:55.771Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:32:00.107Z [INFO]  - Database connected....
+2026-07-16T18:32:00.544Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:32:48.664Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:32:52.467Z [INFO]  - Database connected....
+2026-07-16T18:32:52.840Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:34:11.684Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:34:15.691Z [INFO]  - Database connected....
+2026-07-16T18:34:16.066Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:38:50.755Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:38:54.683Z [INFO]  - Database connected....
+2026-07-16T18:38:55.051Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:39:05.156Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:39:08.774Z [INFO]  - Database connected....
+2026-07-16T18:39:09.096Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:41:04.654Z [INFO]  - Email sent successfully: {
+  accepted: [ 'testrohit1993@gmail.com' ],
+  rejected: [],
+  ehlo: [
+    'SIZE 35882577',
+    '8BITMIME',
+    'AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH',
+    'ENHANCEDSTATUSCODES',
+    'PIPELINING',
+    'CHUNKING',
+    'SMTPUTF8'
+  ],
+  envelopeTime: 1130,
+  messageTime: 1325,
+  messageSize: 2760,
+  response: '250 2.0.0 OK  1784227264 5a478bee46e88-3140e5306afsm13265529eec.9 - gsmtp',
+  envelope: {
+    from: 'premiumpropertiesberkeley@gmail.com',
+    to: [ 'testrohit1993@gmail.com' ]
+  },
+  messageId: '<84f2713a-15d1-483d-730c-bfdb86fd7c3e@gmail.com>'
+}
+2026-07-16T18:45:39.165Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:45:43.032Z [INFO]  - Database connected....
+2026-07-16T18:45:43.524Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:46:37.755Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:46:42.603Z [INFO]  - Database connected....
+2026-07-16T18:46:43.047Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:47:37.857Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:47:41.663Z [INFO]  - Database connected....
+2026-07-16T18:47:41.999Z [INFO]  - ✅ Default admin already exists
+2026-07-16T18:52:09.487Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T18:52:13.409Z [INFO]  - Database connected....
+2026-07-16T18:52:13.771Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:00:00.060Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T19:00:00.060Z
+2026-07-16T19:00:00.064Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T19:00:00.064Z
+2026-07-16T19:00:00.071Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-16T19:00:00.071Z
+2026-07-16T19:00:00.434Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-16T19:00:01.386Z [INFO]  - [UploadReminder] Stage 1: 7 candidate submissions to evaluate.
+2026-07-16T19:00:22.203Z [INFO]  - [UploadReminder] Stage 2: 1011 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T19:01:51.156Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:01:58.132Z [INFO]  - Database connected....
+2026-07-16T19:01:58.516Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:02:51.771Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:02:56.082Z [INFO]  - Database connected....
+2026-07-16T19:02:56.446Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:12:03.906Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:12:07.772Z [INFO]  - Database connected....
+2026-07-16T19:12:08.147Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:14:20.248Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:14:24.061Z [INFO]  - Database connected....
+2026-07-16T19:14:24.475Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:17:24.026Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:17:27.993Z [INFO]  - Database connected....
+2026-07-16T19:17:28.345Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:30:00.046Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T19:30:00.046Z
+2026-07-16T19:30:00.050Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T19:30:00.050Z
+2026-07-16T19:30:01.933Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T19:30:22.528Z [INFO]  - [UploadReminder] Stage 2: 1011 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T19:40:35.100Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-16T19:40:35.099Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-16T19:57:32.457Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:57:36.236Z [INFO]  - Database connected....
+2026-07-16T19:57:36.602Z [INFO]  - ✅ Default admin already exists
+2026-07-16T19:58:30.105Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T19:58:33.961Z [INFO]  - Database connected....
+2026-07-16T19:58:34.306Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:00:00.046Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T20:00:00.046Z
+2026-07-16T20:00:00.048Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T20:00:00.048Z
+2026-07-16T20:00:00.057Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-16T20:00:00.057Z
+2026-07-16T20:00:00.531Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-16T20:00:01.457Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T20:15:25.624Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:15:29.416Z [INFO]  - Database connected....
+2026-07-16T20:15:29.758Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:16:24.292Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:16:28.141Z [INFO]  - Database connected....
+2026-07-16T20:16:28.484Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:22:03.199Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:22:06.955Z [INFO]  - Database connected....
+2026-07-16T20:22:07.306Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:22:19.334Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:22:23.239Z [INFO]  - Database connected....
+2026-07-16T20:22:23.609Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:26:35.115Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:26:38.848Z [INFO]  - Database connected....
+2026-07-16T20:26:39.200Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:30:00.048Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T20:30:00.047Z
+2026-07-16T20:30:00.045Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T20:30:00.045Z
+2026-07-16T20:30:01.432Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T20:30:21.469Z [INFO]  - [UploadReminder] Stage 2: 1011 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T20:37:21.750Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:37:25.456Z [INFO]  - Database connected....
+2026-07-16T20:37:25.800Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:37:45.998Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:37:50.223Z [INFO]  - Database connected....
+2026-07-16T20:37:50.572Z [INFO]  - ✅ Default admin already exists
+2026-07-16T20:38:21.663Z [INFO]  - Server is running on http://localhost:8000
+2026-07-16T20:38:25.596Z [INFO]  - Database connected....
+2026-07-16T20:38:25.945Z [INFO]  - ✅ Default admin already exists
+2026-07-16T21:00:00.044Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-16T21:00:00.044Z
+2026-07-16T21:00:00.047Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-16T21:00:00.047Z
+2026-07-16T21:00:00.052Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-16T21:00:00.052Z
+2026-07-16T21:00:00.412Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-16T21:00:01.393Z [INFO]  - [UploadReminder] Stage 1: 8 candidate submissions to evaluate.
+2026-07-16T21:00:21.921Z [INFO]  - [UploadReminder] Stage 2: 1011 candidate submissions to evaluate for multi-stage reminders.
+2026-07-16T21:10:35.731Z [INFO]  - [UploadReminder] Stage 4: 0 fully completed submissions to notify.
+2026-07-16T21:10:35.732Z [INFO]  - [UploadReminder] Multi-stage check complete.
+2026-07-17T03:29:58.747Z [WARN]  - [2026-07-17T03:29:58.746Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 03:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:58.790Z [WARN]  - [2026-07-17T03:29:58.790Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 03:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:58.922Z [WARN]  - [2026-07-17T03:29:58.922Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 04:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:58.838Z [WARN]  - [2026-07-17T03:29:58.838Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 04:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:58.948Z [WARN]  - [2026-07-17T03:29:58.947Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 05:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:58.988Z [WARN]  - [2026-07-17T03:29:58.988Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 05:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.009Z [WARN]  - [2026-07-17T03:29:59.009Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 06:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.020Z [WARN]  - [2026-07-17T03:29:59.020Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 06:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.059Z [WARN]  - [2026-07-17T03:29:59.059Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 07:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.088Z [WARN]  - [2026-07-17T03:29:59.088Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 07:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.099Z [WARN]  - [2026-07-17T03:29:59.099Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 08:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.126Z [WARN]  - [2026-07-17T03:29:59.126Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 08:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.180Z [WARN]  - [2026-07-17T03:29:59.180Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 03:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.192Z [WARN]  - [2026-07-17T03:29:59.192Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 04:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.204Z [WARN]  - [2026-07-17T03:29:59.204Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 05:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.211Z [WARN]  - [2026-07-17T03:29:59.211Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 06:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.217Z [WARN]  - [2026-07-17T03:29:59.217Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 07:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:29:59.224Z [WARN]  - [2026-07-17T03:29:59.224Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 08:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T03:30:00.060Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T03:30:00.060Z
+2026-07-17T03:30:00.067Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T03:30:00.067Z
+2026-07-17T12:29:00.534Z [WARN]  - [2026-07-17T12:29:00.534Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 09:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.564Z [WARN]  - [2026-07-17T12:29:00.564Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 11:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.609Z [WARN]  - [2026-07-17T12:29:00.609Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 12:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.636Z [WARN]  - [2026-07-17T12:29:00.636Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 13:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.549Z [WARN]  - [2026-07-17T12:29:00.549Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 10:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.694Z [WARN]  - [2026-07-17T12:29:00.694Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 15:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.659Z [WARN]  - [2026-07-17T12:29:00.659Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 14:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.795Z [WARN]  - [2026-07-17T12:29:00.795Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 09:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.830Z [WARN]  - [2026-07-17T12:29:00.829Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 10:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.842Z [WARN]  - [2026-07-17T12:29:00.842Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 11:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.855Z [WARN]  - [2026-07-17T12:29:00.855Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 11:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.866Z [WARN]  - [2026-07-17T12:29:00.866Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 12:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.904Z [WARN]  - [2026-07-17T12:29:00.904Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 12:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.921Z [WARN]  - [2026-07-17T12:29:00.921Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 13:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.012Z [WARN]  - [2026-07-17T12:29:01.012Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 13:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.030Z [WARN]  - [2026-07-17T12:29:01.030Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 14:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.050Z [WARN]  - [2026-07-17T12:29:01.050Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 14:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.061Z [WARN]  - [2026-07-17T12:29:01.061Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 15:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.073Z [WARN]  - [2026-07-17T12:29:01.073Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 15:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.083Z [WARN]  - [2026-07-17T12:29:01.083Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 16:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.097Z [WARN]  - [2026-07-17T12:29:01.097Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 16:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.112Z [WARN]  - [2026-07-17T12:29:01.112Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 17:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:01.126Z [WARN]  - [2026-07-17T12:29:01.126Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 17:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.815Z [WARN]  - [2026-07-17T12:29:00.815Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 10:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.710Z [WARN]  - [2026-07-17T12:29:00.710Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 16:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:29:00.735Z [WARN]  - [2026-07-17T12:29:00.735Z] [PID: 264] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 17:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T12:30:00.069Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T12:30:00.069Z
+2026-07-17T12:30:00.233Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T12:30:00.233Z
+2026-07-17T12:30:01.373Z [INFO]  - [UploadReminder] Stage 1: 6 candidate submissions to evaluate.
+2026-07-17T12:30:26.443Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.
+2026-07-17T12:38:13.659Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T12:38:17.423Z [INFO]  - Database connected....
+2026-07-17T12:38:17.757Z [INFO]  - ✅ Default admin already exists
+2026-07-17T12:45:47.949Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T12:45:51.684Z [INFO]  - Database connected....
+2026-07-17T12:45:52.042Z [INFO]  - ✅ Default admin already exists
+2026-07-17T12:52:57.436Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T12:53:10.102Z [INFO]  - Database connected....
+2026-07-17T13:00:00.042Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T13:00:00.042Z
+2026-07-17T13:00:00.044Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T13:00:00.044Z
+2026-07-17T13:00:00.055Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-17T13:00:00.055Z
+2026-07-17T13:00:03.856Z [INFO]  - [UploadCleanup] No expired uploads found.
+2026-07-17T13:00:04.659Z [INFO]  - [UploadReminder] Stage 1: 6 candidate submissions to evaluate.
+2026-07-17T13:00:24.104Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.
+2026-07-17T13:30:00.059Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T13:30:00.059Z
+2026-07-17T13:30:00.061Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T13:30:00.060Z
+2026-07-17T14:00:00.108Z [INFO]  - [DailyUploadReport] Running daily report generation at 2026-07-17T14:00:00.108Z
+2026-07-17T14:00:00.123Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-17T14:00:00.123Z
+2026-07-17T14:00:00.130Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T14:00:00.130Z
+2026-07-17T14:00:00.147Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T14:00:00.147Z
+2026-07-17T14:30:00.045Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T14:30:00.045Z
+2026-07-17T14:30:00.046Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T14:30:00.046Z
+2026-07-17T15:00:00.080Z [INFO]  - [WebhookErrorReport] Running daily report generation at 2026-07-17T15:00:00.080Z
+2026-07-17T15:00:00.097Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T15:00:00.097Z
+2026-07-17T15:00:00.088Z [INFO]  - [UploadCleanup] Running 72-hour cleanup job at 2026-07-17T15:00:00.088Z
+2026-07-17T15:00:00.098Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T15:00:00.098Z
+2026-07-17T15:30:00.047Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T15:30:00.047Z
+2026-07-17T15:30:00.048Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T15:30:00.048Z
+2026-07-17T17:01:54.646Z [WARN]  - [2026-07-17T17:01:54.646Z] [PID: 14084] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 21:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T17:01:54.669Z [WARN]  - [2026-07-17T17:01:54.669Z] [PID: 14084] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 22:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T17:01:54.710Z [WARN]  - [2026-07-17T17:01:54.710Z] [PID: 14084] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 22:00:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T17:01:54.704Z [WARN]  - [2026-07-17T17:01:54.704Z] [PID: 14084] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 21:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T17:01:54.716Z [WARN]  - [2026-07-17T17:01:54.716Z] [PID: 14084] [32m[NODE-CRON][32m [33m[WARN][0m missed execution at Fri Jul 17 2026 22:30:00 GMT+0530 (India Standard Time)! Possible blocking IO or high CPU user at the same process used by node-cron.
+2026-07-17T17:05:37.380Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T17:05:41.351Z [INFO]  - Database connected....
+2026-07-17T17:05:41.741Z [INFO]  - ✅ Default admin already exists
+2026-07-17T17:06:08.657Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T17:06:12.324Z [INFO]  - Database connected....
+2026-07-17T17:06:12.668Z [INFO]  - ✅ Default admin already exists
+2026-07-17T17:15:08.269Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T17:15:12.620Z [INFO]  - Database connected....
+2026-07-17T17:15:13.127Z [INFO]  - ✅ Default admin already exists
+2026-07-17T17:16:43.155Z [INFO]  - Server is running on http://localhost:8000
+2026-07-17T17:16:47.320Z [INFO]  - Database connected....
+2026-07-17T17:16:47.702Z [INFO]  - ✅ Default admin already exists
+2026-07-17T17:30:00.059Z [INFO]  - [UploadReminder] Cron triggered at: 2026-07-17T17:30:00.059Z
+2026-07-17T17:30:00.061Z [INFO]  - [UploadReminder] Running multi-stage reminder check at 2026-07-17T17:30:00.061Z
+2026-07-17T17:30:01.132Z [INFO]  - [UploadReminder] Stage 1: 4 candidate submissions to evaluate.
+2026-07-17T17:30:20.152Z [INFO]  - [UploadReminder] Stage 2: 1016 candidate submissions to evaluate for multi-stage reminders.

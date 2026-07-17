@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     };
 
     if (pageSize) {
-      query.role = { $ne: "ADMIN" };
+      query.role = { $nin: ["Admin", "Super Admin", "ADMIN", "SUPER ADMIN", "Key Manager"] };
     }
 
     if (sortModel && sortModel.length > 0) {

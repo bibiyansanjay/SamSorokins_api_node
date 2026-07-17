@@ -15,7 +15,9 @@ const schema = Joi.object({
   phoneNumber: Joi.string(),
   pinCode: Joi.string().allow(""),
   profileImg: Joi.string().allow(""),
-  role: Joi.string().valid("CLIENT", "ADMIN", "SUB-ADMIN").required(),
+  role: Joi.string()
+    .valid("Admin", "Super Admin", "Client", "Key Manager")
+    .required(),
   isDeleted: Joi.boolean(),
   // isActive: Joi.boolean(),
   // isLoggedIn: Joi.boolean(),
