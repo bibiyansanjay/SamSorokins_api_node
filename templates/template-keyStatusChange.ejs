@@ -1,52 +1,103 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #334155; margin: 0; padding: 20px; }
-    .container { max-width: 600px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); padding: 30px; margin: 0 auto; border: 1px solid #e2e8f0; }
-    .header { font-size: 20px; font-weight: bold; color: #1e3a8a; border-bottom: 2px solid #3b82f6; padding-bottom: 12px; margin-bottom: 20px; }
-    .intro { font-size: 15px; line-height: 1.5; color: #475569; margin-bottom: 20px; }
-    .param-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #f1f5f9; }
-    .param-label { color: #64748b; font-size: 14px; font-weight: 500; }
-    .param-value { font-weight: bold; color: #1e293b; font-size: 14px; text-align: right; }
-    .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">🔑 Key Vault Status Notification</div>
-    <div class="intro">
-      A status change transaction has occurred on Key RFID <strong><%= key.rfid %></strong>:
+  <head>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f8fafc;
+        color: #334155;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        padding: 30px;
+        margin: 0 auto;
+        border: 1px solid #e2e8f0;
+      }
+      .header {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1e3a8a;
+        border-bottom: 2px solid #3b82f6;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+      }
+      .intro {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #475569;
+        margin-bottom: 20px;
+      }
+      .param-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px dashed #f1f5f9;
+      }
+      .param-label {
+        font-weight: bold;
+        color: #64748b;
+        font-size: 14px;
+        /* font-weight: 500; */
+      }
+      .param-value {
+        /* font-weight: bold; */
+        color: #1e293b;
+        font-size: 14px;
+        text-align: right;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #94a3b8;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">🔑 Key Vault Status Notification</div>
+      <div class="intro">
+        A status change transaction has occurred on Key RFID
+        <strong><%= key.rfid %></strong>:
+      </div>
+
+      <div class="param-row">
+        <div class="param-label">RFID Code:</div>
+        <div class="param-value"><%= key.rfid %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">New Status:</div>
+        <div class="param-value" style="color: #2563eb"><%= key.status %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">Current Possessor:</div>
+        <div class="param-value"><%= key.whoHasIt || "N/A" %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">Property:</div>
+        <div class="param-value"><%= key.communityCode %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">Unit:</div>
+        <div class="param-value"><%= key.unit || "N/A" %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">Service Request:</div>
+        <div class="param-value"><%= key.serviceRequest || "N/A" %></div>
+      </div>
+
+      <div class="footer">
+        This is an automated system notification from the Premium Property Key
+        Vault.
+      </div>
     </div>
-    
-    <div class="param-row">
-      <div class="param-label">RFID Code</div>
-      <div class="param-value"><%= key.rfid %></div>
-    </div>
-    <div class="param-row">
-      <div class="param-label">New Status</div>
-      <div class="param-value" style="color: #2563eb;"><%= key.status %></div>
-    </div>
-    <div class="param-row">
-      <div class="param-label">Current Possessor</div>
-      <div class="param-value"><%= key.whoHasIt || "N/A" %></div>
-    </div>
-    <div class="param-row">
-      <div class="param-label">Property</div>
-      <div class="param-value"><%= key.communityCode %></div>
-    </div>
-    <div class="param-row">
-      <div class="param-label">Unit</div>
-      <div class="param-value"><%= key.unit || "N/A" %></div>
-    </div>
-    <div class="param-row">
-      <div class="param-label">Service Request</div>
-      <div class="param-value"><%= key.serviceRequest || "N/A" %></div>
-    </div>
-    
-    <div class="footer">
-      This is an automated system notification from the Premium Property Key Vault.
-    </div>
-  </div>
-</body>
+  </body>
 </html>

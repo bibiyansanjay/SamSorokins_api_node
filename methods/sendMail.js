@@ -30,7 +30,8 @@ const sendMail = async (
     );
 
     const mailOptions = {
-      from: process.env.GMAIL_EMAIL_USER,
+      // from: process.env.GMAIL_EMAIL_USER,
+      from: `"Premium Properties" <${process.env.GMAIL_EMAIL_USER}>`,
       to: recipient,
       cc: cc,
       bcc: bcc,
