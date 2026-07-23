@@ -105,8 +105,8 @@ export default async (req, res, next) => {
     const formID =
       payload?.formID || payload?.formId || payload?.form_id || "Unknown Form";
     const submissionID =
-      payload?.submissionID ||
       payload?.submissionId ||
+      payload?.submissionID ||
       payload?.submission_id ||
       "Unknown Submission";
 
@@ -154,32 +154,21 @@ export default async (req, res, next) => {
     const phoneNumber =
       getAnswerByName(answers, "Phone Number") || payload.phoneNumber || "";
 
-    const email =
-      getAnswerByName(answers, "Email") ||
-      getAnswerByName(answers, "Repairs Email") ||
-      payload.email ||
-      "";
+    const email = getAnswerByName(answers, "Email") || "";
 
-    const property =
-      getAnswerByName(answers, "Property") || payload.property || "UNKNOWN";
+    const property = getAnswerByName(answers, "Property") || "UNKNOWN";
 
-    const serviceIssue =
-      getAnswerByName(answers, "Service Issue #") || payload.serviceIssue || "";
+    const serviceIssue = getAnswerByName(answers, "Service Issue #") || "";
 
-    const fullAddress =
-      getAnswerByName(answers, "Full Address") || payload.fullAddress || "";
+    const fullAddress = getAnswerByName(answers, "Full Address") || "";
 
-    const rawPickUp =
-      getAnswerByName(answers, "Pick Up Date & Time") ||
-      payload.pickUpDateTime ||
-      payload.pickUp;
+    const rawPickUp = getAnswerByName(answers, "Pick Up Date & Time");
 
     const pickUpDateTime = formatPickUpDate(rawPickUp);
 
-    const byWhen = getAnswerByName(answers, "By When") || payload.byWhen || "";
+    const byWhen = getAnswerByName(answers, "By When") || "";
 
-    const keysNeeded =
-      getAnswerByName(answers, "Keys Needed") || payload.keysNeeded || "";
+    const keysNeeded = getAnswerByName(answers, "Keys Needed") || "";
 
     let status = payload.status || "Key Requested";
     const logMessage = `${new Date().toLocaleString()}: New key request created via webhook. Vendor: ${vendor}, Property: ${property}`;
