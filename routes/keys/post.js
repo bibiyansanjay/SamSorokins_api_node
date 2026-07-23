@@ -5,43 +5,26 @@ export default async (req, res, next) => {
   try {
     const {
       vendor,
-      whoHasIt,
       phoneNumber,
       email,
       property,
-      communityCode,
       serviceIssue,
-      serviceRequest,
       fullAddress,
       pickUpDateTime,
       byWhen,
       keysNeeded,
-      rfid: inputRfid,
       status,
       lostReason,
-      types,
-      unit,
     } = req.body;
 
-    const vendorName = (vendor || whoHasIt || "").trim();
-    const propertyName = (property || communityCode || "").trim();
-    const serviceIssueNum = (serviceIssue || serviceRequest || "").trim();
+    const vendorName = (vendor || "").trim();
+    const propertyName = (property || "").trim();
+    const serviceIssueNum = (serviceIssue || "").trim();
 
     if (!vendorName || !propertyName) {
       return res.status(400).json({
         message: "Mandatory fields: Vendor and Property are required.",
       });
-    }
-
-    let rfid = inputRfid ? inputRfid.trim() : "";
-    if (!rfid) {
-      rfid = `REQ-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    }
-
-    // Check if RFID already exists in DB to prevent unique constraint failure
-    const existingKey = await Key.findOne({ rfid });
-    if (existingKey) {
-      rfid = `${rfid}-${Date.now()}`;
     }
 
     const keyStatus = status || "Key Requested";
@@ -51,19 +34,6 @@ export default async (req, res, next) => {
     }
 
     const newKey = new Key({
-      rfid,
-      communityCode: propertyName,
-      unit: unit || "",
-      types:
-        types && types.length ? types : keysNeeded ? [keysNeeded] : ["Unit"],
-      whoHasIt: vendorName,
-      serviceRequest: serviceIssueNum,
-      serviceStatus: "",
-      status: keyStatus,
-      lostReason: lostReason || "",
-      source: "System",
-      isReturned: keyStatus === "Checked In",
-      returnedAt: keyStatus === "Checked In" ? new Date() : null,
       vendor: vendorName,
       phoneNumber: phoneNumber || "",
       email: email || "",
@@ -73,6 +43,11 @@ export default async (req, res, next) => {
       pickUpDateTime: pickUpDateTime || "",
       byWhen: byWhen || "",
       keysNeeded: keysNeeded || "",
+      status: keyStatus,
+      lostReason: lostReason || "",
+      source: "System",
+      isReturned: keyStatus === "Checked In",
+      returnedAt: keyStatus === "Checked In" ? new Date() : null,
       accessLog: [logMessage],
     });
 

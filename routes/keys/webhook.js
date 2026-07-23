@@ -144,95 +144,47 @@ export default async (req, res, next) => {
       formID
     );
 
-    // Extract exact values from Jotform answers using getAnswerByName with fallback to payload
-    const vendor = getAnswerByName(answers, "Vendor");
-    // ||getAnswerByName(answers, "Vendor Name") ||
-    // payload.vendor ||
-    // payload.whoHasIt ||
-    ("Unknown Vendor");
+    // Extract exact values from Jotform answers using getAnswerByName with fallback
+    const vendor =
+      getAnswerByName(answers, "Vendor") ||
+      getAnswerByName(answers, "Vendor Name") ||
+      payload.vendor ||
+      "Unknown Vendor";
 
-    const phoneNumber = getAnswerByName(answers, "Phone Number");
-    // ||
-    // payload.phoneNumber ||
-    // payload.phone ||
-    ("");
+    const phoneNumber =
+      getAnswerByName(answers, "Phone Number") || payload.phoneNumber || "";
 
-    const email = getAnswerByName(answers, "Email");
-    //  ||
-    // getAnswerByName(answers, "Repairs Email") ||
-    // payload.email ||
-    ("");
+    const email =
+      getAnswerByName(answers, "Email") ||
+      getAnswerByName(answers, "Repairs Email") ||
+      payload.email ||
+      "";
 
-    const property = getAnswerByName(answers, "Property");
-    //  ||
-    // payload.property ||
-    // payload.communityCode ||
-    ("UNKNOWN");
+    const property =
+      getAnswerByName(answers, "Property") || payload.property || "UNKNOWN";
 
-    const serviceIssue = getAnswerByName(answers, "Service Issue #");
-    // ||
-    // payload.serviceIssue ||
-    // payload.serviceRequest ||
-    ("");
+    const serviceIssue =
+      getAnswerByName(answers, "Service Issue #") || payload.serviceIssue || "";
 
-    const fullAddress = getAnswerByName(answers, "Full Address");
-    // ||
-    // payload.fullAddress ||
-    // payload.address ||
-    ("");
+    const fullAddress =
+      getAnswerByName(answers, "Full Address") || payload.fullAddress || "";
 
-    const rawPickUp = getAnswerByName(answers, "Pick Up Date & Time");
-    // ||
-    // payload.pickUpDateTime ||
-    // payload.pickUp;
+    const rawPickUp =
+      getAnswerByName(answers, "Pick Up Date & Time") ||
+      payload.pickUpDateTime ||
+      payload.pickUp;
 
     const pickUpDateTime = formatPickUpDate(rawPickUp);
 
-    const byWhen =
-      getAnswerByName(answers, "By When") ||
-      // || payload.byWhen
-      "";
+    const byWhen = getAnswerByName(answers, "By When") || payload.byWhen || "";
 
     const keysNeeded =
-      getAnswerByName(answers, "Keys Needed") ||
-      // || payload.keysNeeded
-      "";
-
-    // Requirement 1: Every webhook creates a new request.
-    let rfid = payload.rfid || payload.rfidNumber || payload.keyId || "";
-    if (!rfid) {
-      rfid =
-        submissionID && submissionID !== "Unknown Submission"
-          ? `REQ-${submissionID}`
-          : `REQ-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    }
-
-    // Ensure unique RFID per request entry in database
-    const existingRfid = await Key.findOne({ rfid });
-    if (existingRfid) {
-      rfid = `${rfid}-${Date.now()}`;
-    }
+      getAnswerByName(answers, "Keys Needed") || payload.keysNeeded || "";
 
     let status = payload.status || "Key Requested";
-    const whoHasIt = vendor;
-    const communityCode = property;
-    const serviceRequest = serviceIssue;
-
     const logMessage = `${new Date().toLocaleString()}: New key request created via webhook. Vendor: ${vendor}, Property: ${property}`;
 
     const newKey = new Key({
-      rfid,
-      communityCode,
-      unit: payload.unit || payload.unitNumber || "",
-      types: keysNeeded ? [keysNeeded] : ["Unit"],
-      whoHasIt,
-      serviceRequest,
-      serviceStatus: payload.serviceStatus || "",
-      status,
-      source: "Webhook",
-      isReturned: status === "Checked In",
-      returnedAt: status === "Checked In" ? new Date() : null,
-      accessLog: [logMessage],
       vendor,
       phoneNumber,
       email,
@@ -242,6 +194,11 @@ export default async (req, res, next) => {
       pickUpDateTime,
       byWhen,
       keysNeeded,
+      status,
+      source: "Webhook",
+      isReturned: status === "Checked In",
+      returnedAt: status === "Checked In" ? new Date() : null,
+      accessLog: [logMessage],
       rawData: jotformData ? { ...req.body, jotformData } : req.body,
     });
 

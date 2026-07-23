@@ -4,7 +4,7 @@ import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 export default async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { whoHasIt, status, lostReason } = req.body;
+    const { vendor, whoHasIt, status, lostReason } = req.body;
 
     const key = await Key.findById(id);
     if (!key) {
@@ -13,16 +13,13 @@ export default async (req, res, next) => {
 
     let isChanged = false;
     let statusChanged = false;
+    const newVendor = (vendor || whoHasIt || "").trim();
 
-    if (
-      whoHasIt !== undefined &&
-      whoHasIt.trim() !== "" &&
-      whoHasIt !== key.whoHasIt
-    ) {
-      const oldPossessor = key.whoHasIt;
-      key.whoHasIt = whoHasIt;
+    if (newVendor && newVendor !== key.vendor) {
+      const oldVendor = key.vendor || "Unknown";
+      key.vendor = newVendor;
       key.accessLog.push(
-        `${new Date().toLocaleString()}: Transferred from ${oldPossessor} to ${whoHasIt}`
+        `${new Date().toLocaleString()}: Vendor updated from ${oldVendor} to ${newVendor}`
       );
       isChanged = true;
     }
