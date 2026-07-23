@@ -145,11 +145,7 @@ export default async (req, res, next) => {
     );
 
     // Extract exact values from Jotform answers using getAnswerByName with fallback
-    const vendor =
-      getAnswerByName(answers, "Vendor") ||
-      getAnswerByName(answers, "Vendor Name") ||
-      payload.vendor ||
-      "Unknown Vendor";
+    const vendor = getAnswerByName(answers, "Vendor") || "Unknown Vendor";
 
     const phoneNumber =
       getAnswerByName(answers, "Phone Number") || payload.phoneNumber || "";
