@@ -79,6 +79,51 @@ const keySchema = new mongoose.Schema(
       enum: ["System", "Webhook"],
       default: "System",
     },
+    vendor: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    phoneNumber: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    email: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    property: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    serviceIssue: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    fullAddress: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    pickUpDateTime: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    byWhen: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    keysNeeded: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,
