@@ -4,13 +4,11 @@ import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 export default async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { whoHasIt, status } = req.body;
+    const { whoHasIt, status, lostReason } = req.body;
 
-    const key = await Key.findOne({ _id: id, isReturned: false });
+    const key = await Key.findById(id);
     if (!key) {
-      return res
-        .status(404)
-        .json({ message: "Active key checkout not found." });
+      return res.status(404).json({ message: "Key record not found." });
     }
 
     let isChanged = false;
@@ -29,12 +27,29 @@ export default async (req, res, next) => {
       isChanged = true;
     }
 
+    if (lostReason !== undefined && lostReason !== key.lostReason) {
+      key.lostReason = lostReason.trim();
+      isChanged = true;
+    }
+
     if (status !== undefined && status !== key.status) {
       const oldStatus = key.status;
       key.status = status;
-      key.accessLog.push(
-        `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status}"`
-      );
+
+      if (status === "Checked In") {
+        key.isReturned = true;
+        key.returnedAt = new Date();
+      } else {
+        key.isReturned = false;
+        key.returnedAt = null;
+      }
+
+      let logText = `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status}"`;
+      if (status === "Lost" && (lostReason || key.lostReason)) {
+        logText += `. Reason: ${lostReason || key.lostReason}`;
+      }
+      key.accessLog.push(logText);
+
       isChanged = true;
       statusChanged = true;
     }

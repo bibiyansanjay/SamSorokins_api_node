@@ -3,30 +3,39 @@ import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 
 export default async (req, res, next) => {
   try {
-    const { rfid, communityCode, unit, types, whoHasIt, serviceRequest, status } =
-      req.body;
+    const {
+      rfid,
+      communityCode,
+      unit,
+      types,
+      whoHasIt,
+      serviceRequest,
+      status,
+      lostReason,
+      serviceStatus,
+    } = req.body;
 
     if (!rfid || !communityCode || !whoHasIt || !types || !types.length) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Mandatory fields: RFID, Community Code, Requester, and Key Types are required.",
-        });
+      return res.status(400).json({
+        message:
+          "Mandatory fields: RFID, Community Code, Requester, and Key Types are required.",
+      });
     }
 
     // Check if key is already checked out
     const existingKey = await Key.findOne({ rfid });
 
-    const logMessage = `${new Date().toLocaleString()}: Checked out by ${whoHasIt}`;
+    const keyStatus = status || "Checked Out";
+    let logMessage = `${new Date().toLocaleString()}: Logged status "${keyStatus}" for ${whoHasIt}`;
+    if (keyStatus === "Lost" && lostReason) {
+      logMessage += `. Reason: ${lostReason}`;
+    }
 
     if (existingKey) {
-      if (!existingKey.isReturned) {
-        return res
-          .status(400)
-          .json({
-            message: `Key with RFID ${rfid} is already checked out to ${existingKey.whoHasIt}.`,
-          });
+      if (!existingKey.isReturned && existingKey.status !== "Checked In") {
+        return res.status(400).json({
+          message: `Key with RFID ${rfid} is already registered under status "${existingKey.status}" to ${existingKey.whoHasIt}.`,
+        });
       }
 
       existingKey.communityCode = communityCode;
@@ -34,15 +43,18 @@ export default async (req, res, next) => {
       existingKey.types = types;
       existingKey.whoHasIt = whoHasIt;
       existingKey.serviceRequest = serviceRequest || "";
-      existingKey.status = status || "Key Requested";
-      existingKey.isReturned = false;
-      existingKey.returnedAt = null;
+      existingKey.serviceStatus = serviceStatus || "";
+      existingKey.status = keyStatus;
+      existingKey.lostReason = lostReason || "";
+      existingKey.isReturned = keyStatus === "Checked In";
+      existingKey.returnedAt = keyStatus === "Checked In" ? new Date() : null;
+      existingKey.source = "System"; //to track the key where it create, from system or webhook
       existingKey.accessLog.push(logMessage);
 
       await existingKey.save();
       sendKeyStatusEmail(existingKey); // send email in background
       return res.json({
-        message: "Key checked out successfully",
+        message: "Key logged successfully",
         key: existingKey,
       });
     }
@@ -54,8 +66,12 @@ export default async (req, res, next) => {
       types,
       whoHasIt,
       serviceRequest: serviceRequest || "",
-      status: status || "Key Requested",
-      isReturned: false,
+      serviceStatus: serviceStatus || "",
+      status: keyStatus,
+      lostReason: lostReason || "",
+      source: "System",
+      isReturned: keyStatus === "Checked In",
+      returnedAt: keyStatus === "Checked In" ? new Date() : null,
       accessLog: [logMessage],
     });
 

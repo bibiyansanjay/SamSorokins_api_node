@@ -71,7 +71,26 @@ export default async (req, res, next) => {
       payload.vendor ||
       "";
     const serviceRequest = payload.serviceRequest || payload.srNumber || "";
-    const status = payload.status || "-- None --";
+    const serviceStatus =
+      payload.serviceStatus ||
+      payload.service_status ||
+      payload.serviceIssueStatus ||
+      payload.service_issue_status ||
+      payload.issueStatus ||
+      "";
+
+    let status = payload.status || "";
+    const serviceCheckText =
+      `${serviceStatus} ${status} ${serviceRequest}`.toLowerCase();
+    if (
+      serviceCheckText.includes("completed") ||
+      serviceCheckText.includes("invoiced") ||
+      serviceCheckText.includes("withdrawn")
+    ) {
+      status = "Outstanding";
+    } else if (!status || status === "-- None --") {
+      status = "Checked Out";
+    }
 
     let types = [];
     if (payload.types) {
@@ -89,9 +108,9 @@ export default async (req, res, next) => {
 
     // Check if key already exists
     let key = await Key.findOne({ rfid });
-    const logMessage = `${new Date().toLocaleString()}: Webhook received checkout transaction. Holder: ${
+    const logMessage = `${new Date().toLocaleString()}: Webhook received transaction. Holder: ${
       whoHasIt || "Unknown"
-    }`;
+    }. Status: ${status}`;
 
     if (key) {
       // Update existing key
@@ -101,11 +120,13 @@ export default async (req, res, next) => {
       if (types.length) key.types = types;
       key.whoHasIt = whoHasIt || key.whoHasIt;
       key.serviceRequest = serviceRequest || key.serviceRequest;
+      key.serviceStatus = serviceStatus || key.serviceStatus;
       key.status = status || key.status;
-      key.isReturned = false;
-      key.returnedAt = null;
+      key.isReturned = key.status === "Checked In";
+      if (key.isReturned && !key.returnedAt) key.returnedAt = new Date();
+      key.source = "Webhook";
       key.accessLog.push(logMessage);
-      key.rawData = payload; // Store the complete payload
+      key.rawData = jotformData ? { ...req.body, jotformData } : req.body; // Store complete req.body and any fetched Jotform data
 
       await key.save();
       if (oldStatus !== key.status) {
@@ -117,7 +138,7 @@ export default async (req, res, next) => {
         key,
       });
     } else {
-      // Create new key checkout
+      // Create new key record
       key = new Key({
         rfid,
         communityCode: communityCode || "UNKNOWN",
@@ -125,10 +146,13 @@ export default async (req, res, next) => {
         types: types.length ? types : ["Unit"],
         whoHasIt: whoHasIt || "Unknown (Webhook)",
         serviceRequest: serviceRequest || "",
-        status: status || "-- None --",
-        isReturned: false,
+        serviceStatus: serviceStatus || "",
+        status: status || "Checked Out",
+        source: "Webhook", //to track the key where it create, from system or webhook
+        isReturned: status === "Checked In",
+        returnedAt: status === "Checked In" ? new Date() : null,
         accessLog: [logMessage],
-        rawData: payload, // Store the complete payload
+        rawData: jotformData ? { ...req.body, jotformData } : req.body, // Store complete req.body
       });
 
       await key.save();
