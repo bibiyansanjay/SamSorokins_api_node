@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Key } from "../../models";
-import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
+// import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 
 const apiKey =
   process.env.JOTFORM_API_KEY || "da724b69ac2c6dc23adf791b768e8674";
@@ -192,7 +192,7 @@ export default async (req, res, next) => {
     });
 
     await newKey.save();
-    sendKeyStatusEmail(newKey); // send email in background
+    // sendKeyStatusEmail(newKey); // send email in background
 
     return res.json({
       success: true,
