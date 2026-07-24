@@ -49,6 +49,56 @@ const keySchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    // requestType: {
+    //   type: String,
+    //   enum: ["Vendor", "Non-Vendor"],
+    //   default: "Vendor",
+    // },
+    userType: {
+      type: String,
+      enum: ["Vendor", "Non-Vendor"],
+      default: "Vendor",
+    },
+    purpose: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    purposeDescription: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    areKeysForYou: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    whoWillPickUp: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    pickerPhoneNumber: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    pickerEmail: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    willBeReturned: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    whyNotReturned: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     status: {
       type: String,
       enum: [
@@ -93,6 +143,7 @@ const keySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    strict: false,
   }
 );
 

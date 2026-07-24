@@ -180,6 +180,7 @@ export default async (req, res, next) => {
       byWhen,
       keysNeeded,
       status,
+      userType: "Vendor",
       source: "Webhook",
       isReturned: status === "Checked In",
       returnedAt: status === "Checked In" ? new Date() : null,
