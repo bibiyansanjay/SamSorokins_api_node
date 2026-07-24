@@ -15,6 +15,15 @@ export default async (req, res, next) => {
       keysNeeded,
       status,
       lostReason,
+      userType,
+      purpose,
+      purposeDescription,
+      areKeysForYou,
+      whoWillPickUp,
+      pickerPhoneNumber,
+      pickerEmail,
+      willBeReturned,
+      whyNotReturned,
     } = req.body;
 
     const vendorName = (vendor || "").trim();
@@ -23,12 +32,13 @@ export default async (req, res, next) => {
 
     if (!vendorName || !propertyName) {
       return res.status(400).json({
-        message: "Mandatory fields: Vendor and Property are required.",
+        message: "Mandatory fields: Name/Vendor and Property are required.",
       });
     }
 
     const keyStatus = status || "Key Requested";
-    let logMessage = `${new Date().toLocaleString()}: Key request created. Vendor: ${vendorName}, Property: ${propertyName}`;
+    const reqType = userType || "Vendor";
+    let logMessage = `${new Date().toLocaleString()}: Key request created (${reqType}). Requester: ${vendorName}, Property: ${propertyName}`;
     if (keyStatus === "Lost" && lostReason) {
       logMessage += `. Reason: ${lostReason}`;
     }
@@ -45,6 +55,15 @@ export default async (req, res, next) => {
       keysNeeded: keysNeeded || "",
       status: keyStatus,
       lostReason: lostReason || "",
+      userType: reqType,
+      purpose: purpose || "",
+      purposeDescription: purposeDescription || "",
+      areKeysForYou: areKeysForYou || "",
+      whoWillPickUp: whoWillPickUp || "",
+      pickerPhoneNumber: pickerPhoneNumber || "",
+      pickerEmail: pickerEmail || "",
+      willBeReturned: willBeReturned || "",
+      whyNotReturned: whyNotReturned || "",
       source: "System",
       isReturned: keyStatus === "Checked In",
       returnedAt: keyStatus === "Checked In" ? new Date() : null,
