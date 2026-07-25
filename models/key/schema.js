@@ -24,6 +24,11 @@ const keySchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    unit: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     serviceIssue: {
       type: String,
       trim: true,

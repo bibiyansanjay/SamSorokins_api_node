@@ -8,6 +8,7 @@ export default async (req, res, next) => {
       phoneNumber,
       email,
       property,
+      unit,
       serviceIssue,
       fullAddress,
       pickUpDateTime,
@@ -28,6 +29,7 @@ export default async (req, res, next) => {
 
     const vendorName = (vendor || "").trim();
     const propertyName = (property || "").trim();
+    const unitName = (unit || "").trim();
     const serviceIssueNum = (serviceIssue || "").trim();
 
     if (!vendorName || !propertyName) {
@@ -38,7 +40,7 @@ export default async (req, res, next) => {
 
     const keyStatus = status || "Key Requested";
     const reqType = userType || "Vendor";
-    let logMessage = `${new Date().toLocaleString()}: Key request created (${reqType}). Requester: ${vendorName}, Property: ${propertyName}`;
+    let logMessage = `${new Date().toLocaleString()}: Key request created (${reqType}). Requester: ${vendorName}, Property: ${propertyName}${unitName ? ` (Unit: ${unitName})` : ""}`;
     if (keyStatus === "Lost" && lostReason) {
       logMessage += `. Reason: ${lostReason}`;
     }
@@ -48,6 +50,7 @@ export default async (req, res, next) => {
       phoneNumber: phoneNumber || "",
       email: email || "",
       property: propertyName,
+      unit: unitName,
       serviceIssue: serviceIssueNum,
       fullAddress: fullAddress || "",
       pickUpDateTime: pickUpDateTime || "",

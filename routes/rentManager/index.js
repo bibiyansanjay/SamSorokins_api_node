@@ -1064,4 +1064,141 @@ router.get("/tenants", async (req, res) => {
   }
 });
 
+/**
+ * GET /vendors
+ * Get Vendors from Rent Manager
+ */
+router.get("/vendors", async (req, res) => {
+  try {
+    const headers = await getRMHeaders();
+    const response = await axios.get(`${process.env.RM_BASE_URL}/Vendors`, {
+      headers,
+      params: {
+        filters: "IsActive,eq,true",
+        orderingOptions: "NameAsc",
+        fields: "Name,VendorID",
+        pageSize: 1000,
+      },
+    });
+    const vendors = Array.isArray(response.data) ? response.data : [];
+    return res.status(200).json({ success: true, vendors });
+  } catch (error) {
+    console.error("[RM-Vendors] Error:", error.response?.data || error.message);
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, vendors: [] });
+  }
+});
+
+/**
+ * GET /properties
+ * Get Properties from Rent Manager (UserDefinedFieldID 1068 with fallbacks)
+ */
+router.get("/properties", async (req, res) => {
+  try {
+    const headers = await getRMHeaders();
+
+    // Attempt 1: Query UserDefinedValues for UserDefinedFieldID 1068 with embeds=Property
+    try {
+      const response = await axios.get(
+        `${process.env.RM_BASE_URL}/Properties/UserDefinedValues`,
+        {
+          headers,
+          params: {
+            filters: "UserDefinedFieldID,eq,1068",
+            PageNumber: 1,
+            pageSize: 1000,
+            embeds: "Property",
+          },
+        }
+      );
+      const properties = Array.isArray(response.data) ? response.data : [];
+      if (properties.length > 0) {
+        return res.status(200).json({ success: true, properties });
+      }
+    } catch (err1) {
+      console.warn(
+        "[RM-Properties] Attempt 1 (embeds=Property) failed:",
+        err1.response?.data || err1.message
+      );
+    }
+
+    // Attempt 2: Query UserDefinedValues without embeds
+    try {
+      const response = await axios.get(
+        `${process.env.RM_BASE_URL}/Properties/UserDefinedValues`,
+        {
+          headers,
+          params: {
+            filters: "UserDefinedFieldID,eq,1068",
+            PageNumber: 1,
+            pageSize: 1000,
+          },
+        }
+      );
+      const properties = Array.isArray(response.data) ? response.data : [];
+      if (properties.length > 0) {
+        return res.status(200).json({ success: true, properties });
+      }
+    } catch (err2) {
+      console.warn(
+        "[RM-Properties] Attempt 2 (no embeds) failed:",
+        err2.response?.data || err2.message
+      );
+    }
+
+    // Attempt 3: Query /Properties directly as fallback
+    const fallbackRes = await axios.get(
+      `${process.env.RM_BASE_URL}/Properties`,
+      {
+        headers,
+        params: { pageSize: 1000 },
+      }
+    );
+    const properties = Array.isArray(fallbackRes.data)
+      ? fallbackRes.data
+      : [];
+    return res.status(200).json({ success: true, properties });
+  } catch (error) {
+    console.error(
+      "[RM-Properties] All attempts failed:",
+      error.response?.data || error.message
+    );
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, properties: [] });
+  }
+});
+
+/**
+ * GET /units
+ * Get Units by PropertyID from Rent Manager
+ */
+router.get("/units", async (req, res) => {
+  const propertyId = req.query.propertyId || req.query.PropertyID;
+  if (!propertyId) {
+    return res
+      .status(400)
+      .json({ success: false, error: "PropertyID is required", units: [] });
+  }
+
+  try {
+    const headers = await getRMHeaders();
+    const response = await axios.get(`${process.env.RM_BASE_URL}/Units`, {
+      headers,
+      params: {
+        filters: `PropertyID,eq,${propertyId}`,
+        pageSize: 1000,
+      },
+    });
+    const units = Array.isArray(response.data) ? response.data : [];
+    return res.status(200).json({ success: true, units });
+  } catch (error) {
+    console.error("[RM-Units] Error:", error.response?.data || error.message);
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, units: [] });
+  }
+});
+
 export default router;
