@@ -4,6 +4,7 @@ import { getKeysData } from "./get";
 import checkout from "./post";
 import update from "./put";
 import retKey from "./return";
+import deleteKey from "./delete";
 import webhook from "./webhook";
 import nonVendorWebhook from "./nonVendorWebhook";
 import { authOnly } from "../../middlewares/restrict";
@@ -20,5 +21,6 @@ router.get("/", authOnly, getKeysData);
 router.post("/checkout", authOnly, checkout);
 router.put("/:id", authOnly, update);
 router.post("/:id/return", authOnly, retKey);
+router.delete("/:id", authOnly, deleteKey);
 
 export default router;

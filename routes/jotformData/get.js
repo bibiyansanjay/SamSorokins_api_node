@@ -98,9 +98,9 @@ export default async (req, res, next) => {
     }
 
     const replyEmail =
-      getAnswerByName(answers, "Reply Email") ||
-      getAnswerByName(answers, "Email") ||
-      "";
+      getAnswerByName(answers, "Reply Email") || "turnovers@premiumpd.com";
+    // getAnswerByName(answers, "Email") ||
+
     const formName = getAnswerByName(answers, "Uploader Header") || "";
 
     // Save into MongoDB

@@ -135,6 +135,14 @@ const keySchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
     rawData: {
       type: mongoose.Schema.Types.Mixed,
       default: {},
