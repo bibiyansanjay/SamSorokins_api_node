@@ -1264,4 +1264,54 @@ router.get("/units", async (req, res) => {
   }
 });
 
+/**
+ * GET /users
+ * Get Users from Rent Manager (filtered for key vault users with fallback)
+ */
+router.get("/users", async (req, res) => {
+  try {
+    const headers = await getRMHeaders();
+    try {
+      const response = await axios.get(`${process.env.RM_BASE_URL}/Users`, {
+        headers,
+        params: {
+          filters:
+            "UserDefinedValues.UserDefinedFieldID,eq,1391;UserDefinedValues.Value,eq,Yes",
+          embeds: "PhoneNumbers,UserDefinedValues",
+          fields:
+            "Email,Firstname,Lastname,Name,PhoneNumbers,UserDefinedValues,UserID,Username,UserTitle",
+          pageSize: 1000,
+        },
+      });
+      const users = Array.isArray(response.data) ? response.data : [];
+      if (users.length > 0) {
+        return res.status(200).json({ success: true, users });
+      }
+    } catch (errFilter) {
+      console.warn(
+        "[RM-Users] Filtered query failed, falling back to all Users:",
+        errFilter.message
+      );
+    }
+
+    // Fallback: Query /Users without filters
+    const fallbackRes = await axios.get(`${process.env.RM_BASE_URL}/Users`, {
+      headers,
+      params: {
+        embeds: "PhoneNumbers",
+        fields:
+          "Email,Firstname,Lastname,Name,PhoneNumbers,UserID,Username,UserTitle",
+        pageSize: 1000,
+      },
+    });
+    const users = Array.isArray(fallbackRes.data) ? fallbackRes.data : [];
+    return res.status(200).json({ success: true, users });
+  } catch (error) {
+    console.error("[RM-Users] Error:", error.response?.data || error.message);
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, users: [] });
+  }
+});
+
 export default router;
