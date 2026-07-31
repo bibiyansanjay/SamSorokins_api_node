@@ -1076,7 +1076,8 @@ router.get("/vendors", async (req, res) => {
       params: {
         filters: "IsActive,eq,true",
         orderingOptions: "NameAsc",
-        fields: "Name,VendorID",
+        embeds: "Contact,Contact.PhoneNumbers",
+        fields: "Contact,Name,VendorID",
         pageSize: 1000,
       },
     });
@@ -1087,6 +1088,30 @@ router.get("/vendors", async (req, res) => {
     return res
       .status(error.response?.status || 500)
       .json({ success: false, error: error.message, vendors: [] });
+  }
+});
+
+/**
+ * GET /vendors/:id
+ * Get single Vendor by ID from Rent Manager with Contact & PhoneNumbers
+ */
+router.get("/vendors/:id", async (req, res) => {
+  try {
+    const headers = await getRMHeaders();
+    const { id } = req.params;
+    const response = await axios.get(`${process.env.RM_BASE_URL}/Vendors/${id}`, {
+      headers,
+      params: {
+        embeds: "Contact,Contact.PhoneNumbers",
+        fields: "Contact,Name,VendorID",
+      },
+    });
+    return res.status(200).json({ success: true, vendor: response.data });
+  } catch (error) {
+    console.error(`[RM-Vendor-${req.params.id}] Error:`, error.response?.data || error.message);
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, vendor: null });
   }
 });
 
