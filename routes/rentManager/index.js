@@ -1099,16 +1099,22 @@ router.get("/vendors/:id", async (req, res) => {
   try {
     const headers = await getRMHeaders();
     const { id } = req.params;
-    const response = await axios.get(`${process.env.RM_BASE_URL}/Vendors/${id}`, {
-      headers,
-      params: {
-        embeds: "Contact,Contact.PhoneNumbers",
-        fields: "Contact,Name,VendorID",
-      },
-    });
+    const response = await axios.get(
+      `${process.env.RM_BASE_URL}/Vendors/${id}`,
+      {
+        headers,
+        params: {
+          embeds: "Contact,Contact.PhoneNumbers",
+          fields: "Contact,Name,VendorID",
+        },
+      }
+    );
     return res.status(200).json({ success: true, vendor: response.data });
   } catch (error) {
-    console.error(`[RM-Vendor-${req.params.id}] Error:`, error.response?.data || error.message);
+    console.error(
+      `[RM-Vendor-${req.params.id}] Error:`,
+      error.response?.data || error.message
+    );
     return res
       .status(error.response?.status || 500)
       .json({ success: false, error: error.message, vendor: null });
@@ -1123,7 +1129,7 @@ router.get("/properties", async (req, res) => {
   try {
     const headers = await getRMHeaders();
 
-    // Attempt 1: Query UserDefinedValues for UserDefinedFieldID 1068 with embeds=Property
+    // Attempt 1: Query UserDefinedValues for UserDefinedFieldID 1068 with embeds=Property,Property.PrimaryAddress
     try {
       const response = await axios.get(
         `${process.env.RM_BASE_URL}/Properties/UserDefinedValues`,
@@ -1133,7 +1139,7 @@ router.get("/properties", async (req, res) => {
             filters: "UserDefinedFieldID,eq,1068",
             PageNumber: 1,
             pageSize: 1000,
-            embeds: "Property",
+            embeds: "Property,Property.PrimaryAddress,Property.Addresses",
           },
         }
       );
@@ -1172,12 +1178,16 @@ router.get("/properties", async (req, res) => {
       );
     }
 
-    // Attempt 3: Query /Properties directly as fallback
+    // Attempt 3: Query /Properties directly as fallback with embeds
     const fallbackRes = await axios.get(
       `${process.env.RM_BASE_URL}/Properties`,
       {
         headers,
-        params: { pageSize: 1000 },
+        params: {
+          pageSize: 1000,
+          embeds: "Addresses,PrimaryAddress",
+          fields: "Email,Name,PrimaryAddress,PropertyID,PropertyType,ShortName",
+        },
       }
     );
     const properties = Array.isArray(fallbackRes.data) ? fallbackRes.data : [];
@@ -1190,6 +1200,36 @@ router.get("/properties", async (req, res) => {
     return res
       .status(error.response?.status || 500)
       .json({ success: false, error: error.message, properties: [] });
+  }
+});
+
+/**
+ * GET /properties/:id
+ * Get single Property by ID from Rent Manager with PrimaryAddress
+ */
+router.get("/properties/:id", async (req, res) => {
+  try {
+    const headers = await getRMHeaders();
+    const { id } = req.params;
+    const response = await axios.get(
+      `${process.env.RM_BASE_URL}/Properties/${id}`,
+      {
+        headers,
+        params: {
+          embeds: "Addresses,PrimaryAddress",
+          fields: "Email,Name,PrimaryAddress,PropertyID,PropertyType,ShortName",
+        },
+      }
+    );
+    return res.status(200).json({ success: true, property: response.data });
+  } catch (error) {
+    console.error(
+      `[RM-Property-${req.params.id}] Error:`,
+      error.response?.data || error.message
+    );
+    return res
+      .status(error.response?.status || 500)
+      .json({ success: false, error: error.message, property: null });
   }
 });
 
