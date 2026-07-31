@@ -1076,7 +1076,7 @@ router.get("/vendors", async (req, res) => {
       params: {
         filters: "IsActive,eq,true",
         orderingOptions: "NameAsc",
-        fields: "Name,VendorID",
+        fields: "Name,VendorID,Email,PhoneNumber",
         pageSize: 1000,
       },
     });
@@ -1155,9 +1155,7 @@ router.get("/properties", async (req, res) => {
         params: { pageSize: 1000 },
       }
     );
-    const properties = Array.isArray(fallbackRes.data)
-      ? fallbackRes.data
-      : [];
+    const properties = Array.isArray(fallbackRes.data) ? fallbackRes.data : [];
     return res.status(200).json({ success: true, properties });
   } catch (error) {
     console.error(
