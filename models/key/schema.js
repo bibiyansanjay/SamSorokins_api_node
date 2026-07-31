@@ -153,6 +153,11 @@ const keySchema = new mongoose.Schema(
       enum: ["System", "Webhook"],
       default: "System",
     },
+    rfId: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,

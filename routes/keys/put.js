@@ -4,14 +4,14 @@ import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
 export default async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { vendor, whoHasIt, status, lostReason } = req.body;
+    const { vendor, rfId, whoHasIt, status, lostReason } = req.body;
 
     const key = await Key.findById(id);
     if (!key) {
       return res.status(404).json({ message: "Key record not found." });
     }
 
-    let isChanged = false;
+    // let isChanged = false;
     let statusChanged = false;
     const newVendor = (vendor || whoHasIt || "").trim();
 
@@ -21,12 +21,12 @@ export default async (req, res, next) => {
       key.accessLog.push(
         `${new Date().toLocaleString()}: Vendor updated from ${oldVendor} to ${newVendor}`
       );
-      isChanged = true;
+      // isChanged = true;
     }
 
     if (lostReason !== undefined && lostReason !== key.lostReason) {
       key.lostReason = lostReason.trim();
-      isChanged = true;
+      // isChanged = true;
     }
 
     if (status !== undefined && status !== key.status) {
@@ -47,15 +47,23 @@ export default async (req, res, next) => {
       }
       key.accessLog.push(logText);
 
-      isChanged = true;
       statusChanged = true;
     }
 
-    if (isChanged) {
-      await key.save();
-      if (statusChanged) {
-        sendKeyStatusEmail(key); // send email in background
+    if (rfId !== undefined) {
+      const trimmedRfId = (rfId || "").trim();
+      if (trimmedRfId !== key.rfId) {
+        // const oldRfId = key.rfId || "None";
+        key.rfId = trimmedRfId;
+        // key.accessLog.push(
+        //   `${new Date().toLocaleString()}: RFID / Key ID updated from "${oldRfId}" to "${trimmedRfId}"`
+        // );
       }
+    }
+
+    await key.save();
+    if (statusChanged) {
+      sendKeyStatusEmail(key); // send email in background
     }
 
     return res.json({ message: "Key updated successfully", key });
