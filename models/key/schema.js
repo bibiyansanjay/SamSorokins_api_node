@@ -18,6 +18,11 @@ const keySchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    repairsEmail: {
+      type: String,
+      trim: true,
+      default: "repairs@premiumpd.com",
+    },
     property: {
       type: String,
       required: true,

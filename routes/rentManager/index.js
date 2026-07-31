@@ -1076,7 +1076,7 @@ router.get("/vendors", async (req, res) => {
       params: {
         filters: "IsActive,eq,true",
         orderingOptions: "NameAsc",
-        fields: "Name,VendorID,Email,PhoneNumber",
+        fields: "Name,VendorID",
         pageSize: 1000,
       },
     });
