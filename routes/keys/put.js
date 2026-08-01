@@ -41,7 +41,9 @@ export default async (req, res, next) => {
         key.returnedAt = null;
       }
 
-      let logText = `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status}"`;
+      let logText = `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status} RFID: ${
+        rfId || "None"
+      }"`;
       if (status === "Lost" && (lostReason || key.lostReason)) {
         logText += `. Reason: ${lostReason || key.lostReason}`;
       }

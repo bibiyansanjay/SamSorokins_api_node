@@ -114,14 +114,13 @@ const keySchema = new mongoose.Schema(
       enum: [
         "Checked Out",
         "Checked In",
-        "Outstanding",
+        // "Outstanding",
         "Checked Out Permanently",
         "Lost",
-        "Key Requested",
-        "Key Checked Out",
-        "Key To Be Returned",
+        "Requested",
+        "To Be Returned",
       ],
-      default: "Key Requested",
+      default: "Requested",
     },
     lostReason: {
       type: String,
