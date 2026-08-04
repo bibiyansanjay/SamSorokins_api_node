@@ -183,11 +183,13 @@ export default async (req, res, next) => {
     const areKeysForYou =
       getAnswerByName(answers, "Are the Keys for You?") || "";
 
-    const whoWillPickUp =
-      getAnswerByName(answers, "Who will pick them up?") || "";
+    const whoWillPickUp = getAnswerByName(answers, "whoWillPickUp") || "";
+    // getAnswerByName(answers, "Who will pick them up?") || "";
 
-    const pickerPhoneNumber = getAnswerByName(answers, "phoneNumber") || "";
-    const pickerEmail = getAnswerByName(answers, "email") || "";
+    const pickerPhoneNumber =
+      getAnswerByName(answers, "pickerPhoneNumber") || "";
+    // getAnswerByName(answers, "phoneNumber") || "";
+    const pickerEmail = getAnswerByName(answers, "pickerEmail") || "";
 
     const willBeReturned =
       getAnswerByName(answers, "Will they be returned?") ||
@@ -197,7 +199,7 @@ export default async (req, res, next) => {
     const whyNotReturned =
       getAnswerByName(answers, "Why?") || getAnswerByName(answers, "why") || "";
 
-    let status = payload.status || "Key Requested";
+    let status = payload.status || "Requested";
     const logMessage = `${new Date().toLocaleString()}: New key request created via Non-Vendor Webhook. Requester: ${vendor}, Property: ${property}`;
 
     const newKey = new Key({

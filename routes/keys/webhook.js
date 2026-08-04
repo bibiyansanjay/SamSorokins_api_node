@@ -166,7 +166,7 @@ export default async (req, res, next) => {
 
     const keysNeeded = getAnswerByName(answers, "Keys Needed") || "";
 
-    let status = payload.status || "Key Requested";
+    let status = payload.status || "Requested";
     const logMessage = `${new Date().toLocaleString()}: New key request created via webhook. Vendor: ${vendor}, Property: ${property}`;
 
     const newKey = new Key({

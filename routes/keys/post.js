@@ -39,9 +39,11 @@ export default async (req, res, next) => {
       });
     }
 
-    const keyStatus = status || "Key Requested";
+    const keyStatus = status || "Requested";
     const reqType = userType || "Vendor";
-    let logMessage = `${new Date().toLocaleString()}: Key request created (${reqType}). Requester: ${vendorName}, Property: ${propertyName}${unitName ? ` (Unit: ${unitName})` : ""}`;
+    let logMessage = `${new Date().toLocaleString()}: Key request created (${reqType}). Requester: ${vendorName}, Property: ${propertyName}${
+      unitName ? ` (Unit: ${unitName})` : ""
+    }`;
     if (keyStatus === "Lost" && lostReason) {
       logMessage += `. Reason: ${lostReason}`;
     }
