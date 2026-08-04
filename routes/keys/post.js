@@ -78,7 +78,7 @@ export default async (req, res, next) => {
     });
 
     await newKey.save();
-    sendKeyStatusEmail(newKey);
+    // sendKeyStatusEmail(newKey);
     return res.json({
       message: "Key request created successfully",
       key: newKey,
