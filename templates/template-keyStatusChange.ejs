@@ -11,7 +11,8 @@
         padding: 20px;
       }
       .container {
-        max-width: 600px;
+        max-width: 800px;
+        width: 95%;
         background: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
@@ -36,17 +37,15 @@
       .param-row {
         display: flex;
         justify-content: space-between;
-        padding: 12px 0;
+        padding: 10px 0;
         border-bottom: 1px dashed #f1f5f9;
       }
       .param-label {
         font-weight: bold;
         color: #64748b;
         font-size: 14px;
-        /* font-weight: 500; */
       }
       .param-value {
-        /* font-weight: bold; */
         color: #1e293b;
         font-size: 14px;
         text-align: right;
@@ -65,38 +64,79 @@
     <div class="container">
       <div class="header">🔑 Key Vault Status Notification</div>
       <div class="intro">
-        A status change transaction has occurred on Key RFID
-        <strong><%= key.rfid %></strong>:
+        A status change transaction has occurred on Key Request (RFID:
+        <strong><%= key.rfId || key.rfid || "N/A" %></strong>):
       </div>
 
       <div class="param-row">
-        <div class="param-label">RFID Code:</div>
-        <div class="param-value"><%= key.rfid %></div>
+        <div class="param-label">RFID / Key ID:</div>
+        <div class="param-value"><%= key.rfId || key.rfid || "N/A" %></div>
       </div>
       <div class="param-row">
         <div class="param-label">New Status:</div>
-        <div class="param-value" style="color: #2563eb"><%= key.status %></div>
+        <div class="param-value" style="color: #2563eb; font-weight: bold;">
+          <%= key.status || "N/A" %>
+        </div>
       </div>
       <div class="param-row">
-        <div class="param-label">Current Possessor:</div>
-        <div class="param-value"><%= key.whoHasIt || "N/A" %></div>
+        <div class="param-label">Vendor / Requester:</div>
+        <div class="param-value"><%= key.vendor || key.whoHasIt || key.whoWillPickUp || "N/A" %></div>
+      </div>
+      <div class="param-row">
+        <div class="param-label">User Type:</div>
+        <div class="param-value"><%= key.userType || "N/A" %></div>
       </div>
       <div class="param-row">
         <div class="param-label">Property:</div>
-        <div class="param-value"><%= key.communityCode %></div>
+        <div class="param-value"><%= key.property || key.communityCode || "N/A" %></div>
       </div>
       <div class="param-row">
         <div class="param-label">Unit:</div>
         <div class="param-value"><%= key.unit || "N/A" %></div>
       </div>
       <div class="param-row">
-        <div class="param-label">Service Request:</div>
-        <div class="param-value"><%= key.serviceRequest || "N/A" %></div>
+        <div class="param-label">Service Issue #:</div>
+        <div class="param-value"><%= key.serviceIssue || key.serviceRequest || "N/A" %></div>
       </div>
+      <% if (key.phoneNumber) { %>
+      <div class="param-row">
+        <div class="param-label">Phone Number:</div>
+        <div class="param-value"><%= key.phoneNumber %></div>
+      </div>
+      <% } %>
+      <% if (key.email) { %>
+      <div class="param-row">
+        <div class="param-label">Email:</div>
+        <div class="param-value"><%= key.email %></div>
+      </div>
+      <% } %>
+      <% if (key.keysNeeded) { %>
+      <div class="param-row">
+        <div class="param-label">Keys Needed:</div>
+        <div class="param-value"><%= key.keysNeeded %></div>
+      </div>
+      <% } %>
+      <% if (key.pickUpDateTime) { %>
+      <div class="param-row">
+        <div class="param-label">Pick Up Date & Time:</div>
+        <div class="param-value"><%= key.pickUpDateTime %></div>
+      </div>
+      <% } %>
+      <% if (key.purpose) { %>
+      <div class="param-row">
+        <div class="param-label">Purpose:</div>
+        <div class="param-value"><%= key.purpose %></div>
+      </div>
+      <% } %>
+      <% if (key.lostReason) { %>
+      <div class="param-row">
+        <div class="param-label">Lost Reason / Decision:</div>
+        <div class="param-value" style="color: #dc2626;"><%= key.lostReason %></div>
+      </div>
+      <% } %>
 
       <div class="footer">
-        This is an automated system notification from the Premium Property Key
-        Vault.
+        This is an automated system notification from the Premium Property Key Vault.
       </div>
     </div>
   </body>

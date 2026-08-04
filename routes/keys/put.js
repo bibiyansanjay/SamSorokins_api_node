@@ -1,5 +1,6 @@
 import { Key } from "../../models";
 import { sendKeyStatusEmail } from "../../methods/sendKeyStatusEmail";
+import { updateRentManagerKeyStatus } from "../../utils/rentManager";
 
 export default async (req, res, next) => {
   try {
@@ -39,6 +40,7 @@ export default async (req, res, next) => {
       } else {
         key.isReturned = false;
         key.returnedAt = null;
+        key.isAccountingEmailSent = false;
       }
 
       let logText = `${new Date().toLocaleString()}: Status updated from "${oldStatus}" to "${status} RFID: ${
@@ -66,6 +68,11 @@ export default async (req, res, next) => {
     await key.save();
     if (statusChanged) {
       sendKeyStatusEmail(key); // send email in background
+      if (["Checked Out", "Checked In", "Lost"].includes(key.status)) {
+        updateRentManagerKeyStatus(key).catch((err) =>
+          console.error("[RM UpdateKeyStatus Error]", err)
+        );
+      }
     }
 
     return res.json({ message: "Key updated successfully", key });

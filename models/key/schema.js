@@ -162,6 +162,18 @@ const keySchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    isAccountingEmailSent: {
+      type: Boolean,
+      default: false,
+    },
+    accountingEmailSentAt: {
+      type: Date,
+      default: null,
+    },
+    weeklyReminderSentAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

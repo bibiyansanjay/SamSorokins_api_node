@@ -117,7 +117,7 @@ import "./cron/uploadReminder.js";
 import "./cron/uploadCleanup.js";
 import "./cron/dailyUploadReport.js";
 import "./cron/webhookErrorReport.js";
-// import "./cron/updateKeyStatus.js";
+import "./cron/updateKeyStatus.js";
 
 // Create default user
 createDefaultUser();

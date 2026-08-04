@@ -276,3 +276,176 @@ export function logRMAction(data) {
     );
   }
 }
+
+/**
+ * Updates Key Status and Key Checked Out UDFs in Rent Manager when status changes.
+ * Handles "Checked Out", "Checked In", and "Lost".
+ */
+export async function updateRentManagerKeyStatus(key) {
+  if (!key) return;
+
+  const currentStatus = String(key.status || "").trim();
+  const serviceIssueId = String(key.serviceIssue || "").trim();
+  const baseUrl = process.env.RM_BASE_URL;
+
+  if (!baseUrl) {
+    console.warn("[RM UpdateKeyStatus] RM_BASE_URL is not defined.");
+    return;
+  }
+
+  if (!serviceIssueId) {
+    console.warn("[RM UpdateKeyStatus] No serviceIssue ID present on key.");
+    return;
+  }
+
+  try {
+    const headers = await getRMHeaders();
+    let updated = false;
+
+    // Format current date MM/DD/YYYY for "Key Checked Out" UDF
+    const now = new Date();
+    const formattedDate = `${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}/${String(now.getDate()).padStart(2, "0")}/${now.getFullYear()}`;
+
+    // Update UDF fields in Rent Manager for ServiceManagerIssue: "Key Status" and "Key Checked Out"
+    const allowedStatuses = ["Checked Out", "Checked In", "Lost"];
+    if (allowedStatuses.includes(currentStatus)) {
+      // Fetch all UDF definitions from Rent Manager
+      let allUdfs = [];
+      try {
+        const udfRes = await axios.get(`${baseUrl}/UserDefinedFields`, {
+          headers,
+          timeout: 10000,
+        });
+        if (Array.isArray(udfRes.data)) {
+          allUdfs = udfRes.data;
+        }
+      } catch (err) {
+        console.warn(
+          "[RM UpdateKeyStatus] Failed to fetch UserDefinedFields:",
+          err.message
+        );
+      }
+
+      // Helper to find UDF by name or ID
+      const findUdf = (namePattern, fallbackId) => {
+        const normPattern = namePattern.toLowerCase().replace(/[\s_-]+/g, "");
+        let matched = allUdfs.filter((u) => {
+          const normName = String(u.Name || "")
+            .toLowerCase()
+            .replace(/[\s_-]+/g, "");
+          return normName === normPattern || normName.includes(normPattern);
+        });
+        if (matched.length === 0 && fallbackId) {
+          const byId = allUdfs.find((u) => u.UserDefinedFieldID === fallbackId);
+          if (byId) matched = [byId];
+          else {
+            matched = [
+              {
+                UserDefinedFieldID: fallbackId,
+                Name: namePattern,
+                ParentType: "ServiceManagerIssue",
+              },
+            ];
+          }
+        }
+        return matched;
+      };
+
+      const udfTargets = [
+        {
+          fields: findUdf("Key Status", null),
+          value: currentStatus,
+          name: "Key Status",
+        },
+      ];
+
+      if (currentStatus === "Checked Out") {
+        udfTargets.push({
+          fields: findUdf("Key Checked Out", 1691),
+          value: formattedDate,
+          name: "Key Checked Out",
+        });
+      }
+
+      for (const target of udfTargets) {
+        for (const field of target.fields) {
+          const udfId = field.UserDefinedFieldID;
+          const parentIdNum = isNaN(Number(serviceIssueId))
+            ? serviceIssueId
+            : Number(serviceIssueId);
+
+          // Strategy A: Post to /ServiceManagerIssues/UserDefinedValues
+          try {
+            await axios.post(
+              `${baseUrl}/ServiceManagerIssues/UserDefinedValues`,
+              [
+                {
+                  ParentID: parentIdNum,
+                  UserDefinedFieldID: udfId,
+                  Value: target.value,
+                },
+              ],
+              { headers, timeout: 10000 }
+            );
+            updated = true;
+            console.log(
+              `[RM UpdateKeyStatus] Updated ServiceManagerIssue UDF "${target.name}" (ID ${udfId}) via /ServiceManagerIssues/UserDefinedValues`
+            );
+          } catch (stratAErr) {
+            console.warn(
+              `[RM UpdateKeyStatus] Strategy A UDF update failed for "${target.name}": ${stratAErr.message}. Trying Strategy B...`
+            );
+            // Strategy B: Embedded UserDefinedValues on /ServiceManagerIssues
+            try {
+              await axios.post(
+                `${baseUrl}/ServiceManagerIssues`,
+                [
+                  {
+                    ServiceManagerIssueID: parentIdNum,
+                    UserDefinedValues: [
+                      {
+                        UserDefinedFieldID: udfId,
+                        Value: target.value,
+                      },
+                    ],
+                  },
+                ],
+                { headers, timeout: 10000 }
+              );
+              updated = true;
+              console.log(
+                `[RM UpdateKeyStatus] Updated ServiceManagerIssue UDF "${target.name}" (ID ${udfId}) via /ServiceManagerIssues embedded payload`
+              );
+            } catch (stratBErr) {
+              console.warn(
+                `[RM UpdateKeyStatus] Strategy B UDF update failed for "${target.name}":`,
+                stratBErr.message
+              );
+            }
+          }
+        }
+      }
+    }
+
+    logRMAction({
+      type: "KEY_STATUS_RM_UDF_UPDATE",
+      keyId: key._id,
+      serviceIssue: serviceIssueId,
+      status: updated ? "success" : "attempted",
+      message: `Rent Manager UDFs updated for ServiceManagerIssue ${serviceIssueId} with status "${currentStatus}"`,
+    });
+  } catch (error) {
+    console.error(
+      "[RM UpdateKeyStatus] Error updating Rent Manager:",
+      error.message
+    );
+    logRMAction({
+      type: "KEY_STATUS_RM_UDF_FAILURE",
+      keyId: key._id,
+      error: error.message,
+    });
+  }
+}
