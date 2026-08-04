@@ -41,7 +41,7 @@ function addOneDayToDate(dateAnswer) {
         month = parseInt(mdyMatch[1], 10);
         day = parseInt(mdyMatch[2], 10);
       } else {
-        // Fallback to JS Date parsing
+        // Fallback to JS Date parsingg
         const d = new Date(s);
         if (!isNaN(d.getTime())) {
           year = d.getFullYear();

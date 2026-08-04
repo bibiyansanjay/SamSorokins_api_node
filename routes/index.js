@@ -12,11 +12,13 @@ import files from "./files";
 import submissionsData from "./submissionsData";
 import dashboard from "./dashboard";
 import rentManager from "./rentManager";
-import keys from "./keys";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 
 /**
  * @module Routes
- * @description Sets up routing for the Express server with various endpoints.
+ * @description Sets up routing for the Express server with various endpoints.g
  */
 
 const router = Router();
@@ -32,6 +34,5 @@ router.use("/forgotPassword", forgotPassword);
 router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);
 router.use("/rentManager", postman, rentManager);
-router.use("/keys", keys);
 
 export default router;
