@@ -60,6 +60,11 @@ const jotformSubmissionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    requiresUpload: {
+      type: Boolean,
+      default: true,
+      index: true,
+    },
   },
   { timestamps: true }
 );

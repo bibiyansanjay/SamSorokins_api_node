@@ -10,6 +10,7 @@ const uploadSchema = new mongoose.Schema(
     submissionId: {
       type: String,
       required: true,
+      index: true,
     },
     userId: {
       type: String,
