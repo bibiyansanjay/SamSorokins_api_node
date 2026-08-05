@@ -12,7 +12,15 @@ const schema = Joi.object({
   address: Joi.string().allow(""),
   pinCode: Joi.string().allow(""),
   profileImg: Joi.string().allow(""),
-  role: Joi.string().valid("Admin", "Super Admin", "Client", "Receptionist"),
+  role: Joi.string().valid(
+    "Admin",
+    "Super Admin",
+    "Client",
+    "Key Manager",
+    "Key_Manager",
+    "Receptionist",
+    "receptionist"
+  ),
   preferredLanguage: Joi.string(),
   isDeleted: Joi.boolean(),
   isActive: Joi.boolean(),

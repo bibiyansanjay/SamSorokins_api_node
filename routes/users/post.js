@@ -16,7 +16,15 @@ const schema = Joi.object({
   pinCode: Joi.string().allow(""),
   profileImg: Joi.string().allow(""),
   role: Joi.string()
-    .valid("Admin", "Super Admin", "Client", "Receptionist")
+    .valid(
+      "Admin",
+      "Super Admin",
+      "Client",
+      "Key Manager",
+      "Key_Manager",
+      "Receptionist",
+      "receptionist"
+    )
     .required(),
   isDeleted: Joi.boolean(),
   // isActive: Joi.boolean(),
