@@ -24,7 +24,22 @@ export const postman = (req, res, next) => {
     (params.get("postman") || req.params?.postman || "")
       .toString()
       .toLowerCase() === "client";
-  if (hasPostmanADMIN || hasPostmanSUPERADMIN || hasPostmanCLIENT) {
+  const hasPostmanKEYMANAGER =
+    (params.get("postman") || req.params?.postman || "")
+      .toString()
+      .toLowerCase() === "keymanager";
+  const hasPostmanRECEPTIONIST =
+    (params.get("postman") || req.params?.postman || "")
+      .toString()
+      .toLowerCase() === "receptionist";
+
+  if (
+    hasPostmanADMIN ||
+    hasPostmanSUPERADMIN ||
+    hasPostmanCLIENT ||
+    hasPostmanKEYMANAGER ||
+    hasPostmanRECEPTIONIST
+  ) {
     // 1) Remove from search params
     params.delete("postman");
 
@@ -81,6 +96,12 @@ export const postman = (req, res, next) => {
     }
     if (hasPostmanCLIENT) {
       req.user = { id: 2, role: "2" }; //parent company role
+    }
+    if (hasPostmanKEYMANAGER) {
+      req.user = { id: 3, role: "Key_Manager" }; //key manager role
+    }
+    if (hasPostmanRECEPTIONIST) {
+      req.user = { id: 4, role: "Receptionist" }; //receptionist role
     }
 
     /*     console.log("After cleanup:");
