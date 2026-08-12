@@ -32,13 +32,18 @@ export const postman = (req, res, next) => {
     (params.get("postman") || req.params?.postman || "")
       .toString()
       .toLowerCase() === "receptionist";
+  const hasPostmanSTAFF =
+    (params.get("postman") || req.params?.postman || "")
+      .toString()
+      .toLowerCase() === "staff";
 
   if (
     hasPostmanADMIN ||
     hasPostmanSUPERADMIN ||
     hasPostmanCLIENT ||
     hasPostmanKEYMANAGER ||
-    hasPostmanRECEPTIONIST
+    hasPostmanRECEPTIONIST ||
+    hasPostmanSTAFF
   ) {
     // 1) Remove from search params
     params.delete("postman");
@@ -102,6 +107,9 @@ export const postman = (req, res, next) => {
     }
     if (hasPostmanRECEPTIONIST) {
       req.user = { id: 4, role: "Receptionist" }; //receptionist role
+    }
+    if (hasPostmanSTAFF) {
+      req.user = { id: 5, role: "Staff" }; //staff role
     }
 
     /*     console.log("After cleanup:");

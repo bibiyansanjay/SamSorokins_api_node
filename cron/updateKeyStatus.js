@@ -308,28 +308,41 @@ export const checkAccountingInvoicedKeys = async () => {
   }
 };
 
-// Schedule status check cron (every 2 hours)
+// Schedule status check cron: 1:30 PM (13:30) America/Los_Angeles
 cron.schedule(
-  "0 */2 * * *",
+  "30 13 * * *",
   async () => {
     await updateKeyStatus();
-  },
-  {
-    timezone: "America/Los_Angeles",
-  }
-);
-
-// Schedule accounting notification cron: Every 2 hours
-// "*/2 * * * *", //every 2 minutes for testing
-cron.schedule(
-  "0 */2 * * *",
-  async () => {
     await checkAccountingInvoicedKeys();
   },
   {
     timezone: "America/Los_Angeles",
   }
 );
+
+// Schedule status check cron: 9:00 PM (21:00) America/Los_Angeles
+cron.schedule(
+  "0 21 * * *",
+  async () => {
+    await updateKeyStatus();
+    await checkAccountingInvoicedKeys();
+  },
+  {
+    timezone: "America/Los_Angeles",
+  }
+);
+
+// // Schedule accounting notification cron: Every 2 hours
+// // "*/2 * * * *", //every 2 minutes for testing
+// cron.schedule(
+//   "0 */2 * * *",
+//   async () => {
+//     await checkAccountingInvoicedKeys();
+//   },
+//   {
+//     timezone: "America/Los_Angeles",
+//   }
+// );
 
 // Schedule weekly reminder email cron: Every Monday at 8:00 AM
 cron.schedule(

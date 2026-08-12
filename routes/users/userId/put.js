@@ -19,7 +19,9 @@ const schema = Joi.object({
     "Key Manager",
     "Key_Manager",
     "Receptionist",
-    "receptionist"
+    "receptionist",
+    "Staff",
+    "staff"
   ),
   preferredLanguage: Joi.string(),
   isDeleted: Joi.boolean(),

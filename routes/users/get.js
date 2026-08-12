@@ -17,7 +17,14 @@ export default async (req, res, next) => {
 
     if (pageSize) {
       query.role = {
-        $nin: ["Admin", "Super Admin", "ADMIN", "SUPER ADMIN", "Receptionist"],
+        $nin: [
+          "Admin",
+          "Super Admin",
+          "ADMIN",
+          "SUPER ADMIN",
+          "Receptionist",
+          "Staff",
+        ],
       };
     }
 

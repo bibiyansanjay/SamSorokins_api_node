@@ -7,6 +7,7 @@ import retKey from "./return";
 import deleteKey from "./delete";
 import webhook from "./webhook";
 import nonVendorWebhook from "./nonVendorWebhook";
+import keyManagementWebhook from "./keyManagementWebhook";
 import { authOnly } from "../../middlewares/restrict";
 
 const upload = multer();
@@ -15,6 +16,7 @@ const router = Router();
 // Public webhook routes
 router.post("/webhook", upload.none(), webhook); // for vendor
 router.post("/webhook/non-vendor", upload.none(), nonVendorWebhook); // for non-vendor
+router.post("/webhook/key-management", upload.none(), keyManagementWebhook); // for key management
 
 // Protected routes
 router.get("/", authOnly, getKeysData);

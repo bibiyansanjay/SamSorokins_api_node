@@ -23,7 +23,9 @@ const schema = Joi.object({
       "Key Manager",
       "Key_Manager",
       "Receptionist",
-      "receptionist"
+      "receptionist",
+      "Staff",
+      "staff"
     )
     .required(),
   isDeleted: Joi.boolean(),
