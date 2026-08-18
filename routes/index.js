@@ -13,6 +13,7 @@ import submissionsData from "./submissionsData";
 import dashboard from "./dashboard";
 import rentManager from "./rentManager";
 import keys from "./keys";
+import leaseRenewal from "./leaseRenewal";
 
 /**
  * @module Routes
@@ -33,5 +34,6 @@ router.use("/users", authOnly, users);
 router.use("/upload", postman, uploadVideos);
 router.use("/rentManager", postman, rentManager);
 router.use("/keys", keys);
+router.use("/leaseRenewal", leaseRenewal);
 
 export default router;
