@@ -1,8 +1,5 @@
 import axios from "axios";
-import multer from "multer";
 import { getRMHeaders } from "../../../utils/rentManager.js";
-
-const upload = multer();
 
 /**
  * @desc    Lease Renewal Webhook POST Handler
@@ -49,10 +46,21 @@ function getAnswerByName(answers, fieldName, keyName = "answer") {
 function formatDateToYYYYMMDD(dateVal) {
   if (!dateVal) return null;
 
+  if (dateVal instanceof Date) {
+    if (isNaN(dateVal.getTime())) return null;
+    const year = dateVal.getFullYear();
+    const month = String(dateVal.getMonth() + 1).padStart(2, "0");
+    const day = String(dateVal.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   if (typeof dateVal === "object") {
     const { year, month, day } = dateVal;
     if (year && month && day) {
-      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
+        2,
+        "0"
+      )}`;
     }
   }
 
@@ -83,6 +91,30 @@ function formatDateToYYYYMMDD(dateVal) {
   return s;
 }
 
+/**
+ * Helper to calculate StartDate (+1 day) and EndDate (+1 year) from leaseExpirationDate.
+ */
+function calculateRenewalDates(leaseExpirationDate) {
+  const formattedExpStr = formatDateToYYYYMMDD(leaseExpirationDate);
+
+  let startDateStr = formatDateToYYYYMMDD(new Date());
+  let endDateStr = formattedExpStr || leaseExpirationDate;
+
+  if (formattedExpStr && /^(\d{4})-(\d{2})-(\d{2})$/.test(formattedExpStr)) {
+    const [year, month, day] = formattedExpStr.split("-").map(Number);
+
+    // StartDate: plus 1 day in Lease Expiration Date
+    const startDateObj = new Date(year, month - 1, day + 1);
+    startDateStr = formatDateToYYYYMMDD(startDateObj);
+
+    // EndDate: plus 1 year in Lease Expiration Date
+    const endDateObj = new Date(year + 1, month - 1, day);
+    endDateStr = formatDateToYYYYMMDD(endDateObj);
+  }
+
+  return { startDateStr, endDateStr };
+}
+
 export default async (req, res, next) => {
   try {
     let payload = req.body;
@@ -102,41 +134,62 @@ export default async (req, res, next) => {
       }
     }
 
-    const formID =
-      payload?.formID || payload?.formId || payload?.form_id || "Unknown Form";
     const submissionID =
-      payload?.submissionId ||
-      payload?.submissionID ||
-      payload?.submission_id ||
-      "Unknown Submission";
+      payload?.submissionId || payload?.submissionID || payload?.submission_id;
+
+    console.log(
+      "------------------------- Lease Renewal Webhook Received -------------------------",
+      submissionID
+    );
+
+    if (!submissionID) {
+      console.warn(
+        "[LeaseRenewal-Webhook] No submission ID found in request payload. Aborting processing."
+      );
+      return res.status(400).json({
+        success: false,
+        message: "No submission ID found in request payload",
+      });
+    }
 
     let jotformData = payload.jotformData || null;
     let answers = payload?.content?.answers || payload?.answers || {};
 
     if (!answers || Object.keys(answers).length === 0) {
-      if (submissionID && submissionID !== "Unknown Submission") {
-        try {
-          const response = await axios.get(
-            `https://premiumpd.jotform.com/API/submission/${submissionID}`,
-            {
-              params: { apiKey },
-            }
-          );
-          jotformData = response?.data;
-          answers = jotformData?.content?.answers || {};
-        } catch (error) {
-          console.warn(
-            `[LeaseRenewal-Webhook] Failed to fetch Jotform submission ${submissionID}:`,
-            error.message
-          );
-        }
+      try {
+        const response = await axios.get(
+          `https://premiumpd.jotform.com/API/submission/${submissionID}`,
+          {
+            params: { apiKey },
+          }
+        );
+        jotformData = response?.data;
+        answers = jotformData?.content?.answers || {};
+      } catch (error) {
+        console.warn(
+          `[LeaseRenewal-Webhook] Failed to fetch Jotform submission ${submissionID}:`,
+          error.message
+        );
       }
+    }
+
+    if (!answers || Object.keys(answers).length === 0) {
+      console.warn(
+        `[LeaseRenewal-Webhook] No submission answers found for Submission ID ${submissionID}. Aborting processing.`
+      );
+      return res.status(400).json({
+        success: false,
+        message: `No submission answers found for Submission ID ${submissionID}`,
+      });
     }
 
     const unitId = getAnswerByName(answers, "UnitID") || "";
     const leaseExpirationDate =
       getAnswerByName(answers, "Lease Expiration Date") || "";
-    console.log({ unitId, leaseExpirationDate });
+
+    console.log(
+      `[LeaseRenewal] Extracted UnitID: "${unitId}", Lease Expiration Date: "${leaseExpirationDate}"`
+    );
 
     let leaseRenewalResult = null;
     let selectedLease = null;
@@ -153,11 +206,26 @@ export default async (req, res, next) => {
 
       const leases = leasesRes?.data;
       console.log(
-        `[LeaseRenewal] Fetched ${leases?.length || 0} leases for UnitID ${unitId}`
+        `[LeaseRenewal] Fetched ${
+          leases?.length || 0
+        } lease(s) from RentManager for UnitID: ${unitId}`
       );
 
       if (Array.isArray(leases) && leases.length > 0) {
-        // 2. Get updated lease from array by comparing MoveInDate (greatest MoveInDate)
+        // Log summary of all candidate leases found
+        const candidateSummary = leases.map((l) => ({
+          LeaseID: l.LeaseID,
+          UnitID: l.UnitID,
+          MoveInDate: l.MoveInDate,
+          StartDate: l.StartDate,
+          EndDate: l.EndDate,
+        }));
+        console.log(
+          "[LeaseRenewal] All Candidate Leases Found for UnitID:",
+          candidateSummary
+        );
+
+        // 2. Select lease by greatest MoveInDate
         selectedLease = leases.reduce((prev, current) => {
           const prevTime = prev?.MoveInDate
             ? new Date(prev.MoveInDate).getTime()
@@ -169,24 +237,23 @@ export default async (req, res, next) => {
         }, leases[0]);
 
         console.log(
-          `[LeaseRenewal] Selected LeaseID ${selectedLease?.LeaseID} with MoveInDate ${selectedLease?.MoveInDate}`
+          `[LeaseRenewal] Selected Target Lease -> LeaseID: ${selectedLease?.LeaseID}, MoveInDate: ${selectedLease?.MoveInDate}, Current EndDate: ${selectedLease?.EndDate}`
         );
 
         // 3. Create payload for new lease renewal
-        const currentDateStr = formatDateToYYYYMMDD(new Date());
-        const formattedExpirationDate =
-          formatDateToYYYYMMDD(leaseExpirationDate) || leaseExpirationDate;
+        const { startDateStr, endDateStr } =
+          calculateRenewalDates(leaseExpirationDate);
 
         const leaseRenewalPayload = {
           ParentLeaseID: selectedLease.LeaseID,
           UnitID: isNaN(Number(unitId)) ? unitId : Number(unitId),
-          StartDate: currentDateStr,
-          EndDate: formattedExpirationDate,
+          StartDate: startDateStr,
+          EndDate: endDateStr,
         };
 
         console.log(
-          "[LeaseRenewal] Creating lease renewal with payload:",
-          leaseRenewalPayload
+          "[LeaseRenewal] Submitting Lease Renewal Payload:",
+          JSON.stringify(leaseRenewalPayload, null, 2)
         );
 
         // Create lease renewal API: /LeaseRenewals
@@ -198,12 +265,18 @@ export default async (req, res, next) => {
 
         leaseRenewalResult = renewalRes?.data;
         console.log(
-          "[LeaseRenewal] Lease renewal created successfully:",
+          "[LeaseRenewal] SUCCESS: Lease renewal created successfully:",
           leaseRenewalResult
         );
       } else {
-        console.warn(`[LeaseRenewal] No leases found for UnitID ${unitId}`);
+        console.warn(
+          `[LeaseRenewal] WARNING: No leases found in RentManager for UnitID: ${unitId}`
+        );
       }
+    } else {
+      console.warn(
+        "[LeaseRenewal] WARNING: UnitID was not provided in Jotform submission answers."
+      );
     }
 
     return res.status(200).json({
@@ -217,10 +290,12 @@ export default async (req, res, next) => {
       receivedData: req.body,
     });
   } catch (error) {
+    const errorData = error?.response?.data || error?.message;
     console.error(
       "[WEBHOOK ERROR] Error handling lease renewal webhook:",
-      error
+      errorData
     );
+
     return res.status(500).json({
       success: false,
       message: "Error processing lease renewal webhook",
@@ -228,4 +303,3 @@ export default async (req, res, next) => {
     });
   }
 };
-
