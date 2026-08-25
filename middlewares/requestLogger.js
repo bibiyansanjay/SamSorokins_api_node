@@ -29,7 +29,11 @@ const getCleanIP = (req) => {
   let clean = rawIp.replace(/^::ffff:/i, "").trim();
 
   // Strip port if formatted as IPv4:port
-  if (clean.includes(":") && !clean.includes("::") && clean.split(":").length === 2) {
+  if (
+    clean.includes(":") &&
+    !clean.includes("::") &&
+    clean.split(":").length === 2
+  ) {
     clean = clean.split(":")[0];
   }
 
@@ -100,9 +104,10 @@ const requestLogger = async (req, res, next) => {
       const responseTime = Date.now() - startTime;
       const clientIP = getCleanIP(req);
 
-      // Requirement 4: Save email on login request or any unauthenticated request
       let email = req.user?.email || req.body?.email || req.query?.email || "";
       let userId = req.user?._id || req.user?.id || null;
+      let role = req.user?.role || "";
+      let isSuperAdmin = req.user?.isSuperAdmin || false;
 
       // If userId is missing but we have an email (e.g. login / verify OTP), try to look up user
       if (!userId && email) {
@@ -110,14 +115,29 @@ const requestLogger = async (req, res, next) => {
           const foundUser = await User.findOne({
             email: String(email).trim().toLowerCase(),
             isDeleted: false,
-          }).select("_id email");
+          }).select("_id email role isSuperAdmin");
           if (foundUser) {
             userId = foundUser._id;
             if (!email) email = foundUser.email;
+            if (foundUser.role) role = foundUser.role;
+            if (foundUser.isSuperAdmin) isSuperAdmin = foundUser.isSuperAdmin;
           }
         } catch (e) {
           // ignore lookup errors
         }
+      }
+
+      const strUserId = userId ? String(userId) : "";
+      const normalizedRole = String(role).trim().toLowerCase();
+
+      // Skip log creation for developer user ID (69bd177472681b58e9c964b9) or Super Admin role
+      if (
+        strUserId === "69bd177472681b58e9c964b9" ||
+        isSuperAdmin ||
+        normalizedRole === "super admin" ||
+        normalizedRole === "superadmin"
+      ) {
+        return;
       }
 
       const requestName = getRequestName(
