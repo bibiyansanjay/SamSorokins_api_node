@@ -32,6 +32,10 @@ const jotformSubmissionSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    lastManualReminderSentAt: {
+      type: Date,
+      default: null,
+    },
     uploadRemindersStage: {
       type: Number,
       default: 0,

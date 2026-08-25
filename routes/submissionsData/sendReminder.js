@@ -134,7 +134,11 @@ export default async (req, res, next) => {
       return res.status(400).json({ message: "Content is required" });
     }
 
-    const submission = await JotformSubmission.findOne({ submissionId });
+    const submission = await JotformSubmission.findOneAndUpdate(
+      { submissionId },
+      { lastManualReminderSentAt: new Date() },
+      { new: true }
+    );
     const answers = submission?.answers || {};
     const replyTo =
       getFieldValue(answers, "Reply Email") || "turnovers@premiumpd.com";
