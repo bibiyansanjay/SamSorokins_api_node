@@ -4,6 +4,7 @@ import JotformSubmission from "./jotformSubmission";
 import WebhookErrorLog from "./webhookErrorLog/index.js";
 import UploadReminderLog from "./uploadReminderLog/index.js";
 import Key from "./key";
+import RequestLog from "./requestLog/index.js";
 
 /**
  * @module Schema
@@ -17,4 +18,5 @@ export {
   WebhookErrorLog,
   UploadReminderLog,
   Key,
+  RequestLog,
 };

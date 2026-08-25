@@ -101,6 +101,7 @@ console.warn = function (...args) {
 import routes from "./routes";
 import db from "./db";
 import isTokenExpired from "./middlewares/isTokenExpired.js";
+import requestLogger from "./middlewares/requestLogger.js";
 import createDefaultUser from "./db/DefaultUser.js";
 
 // Initialize app
@@ -182,7 +183,7 @@ app.use(
 // =========================
 // ✅ Routes
 // =========================
-app.use("/", isTokenExpired, routes);
+app.use("/", isTokenExpired, requestLogger, routes);
 
 // =========================
 // ✅ Global Error Handler (MUST BE LAST)
