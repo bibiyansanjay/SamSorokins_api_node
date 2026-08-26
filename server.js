@@ -119,6 +119,7 @@ import "./cron/uploadCleanup.js";
 import "./cron/dailyUploadReport.js";
 import "./cron/webhookErrorReport.js";
 import "./cron/updateKeyStatus.js";
+import "./cron/autoMarkSubmitted.js"; // to mark as isSubmited true if upload any file and file is older than 1hr
 
 // Create default user
 createDefaultUser();
