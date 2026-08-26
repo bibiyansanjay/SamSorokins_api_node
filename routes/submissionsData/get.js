@@ -15,6 +15,8 @@ export default async (req, res, next) => {
     const {
       search = "",
       status = "",
+      propertyName = "",
+      unitName = "",
       page = 0,
       pageSize = 50,
       sortField = "createdAt",
@@ -256,12 +258,22 @@ export default async (req, res, next) => {
       pipeline.push({ $match: { overallStatus: status } });
     }
 
+    if (propertyName && propertyName !== "All") {
+      pipeline.push({ $match: { extractedPropertyName: propertyName } });
+    }
+
+    if (unitName && unitName !== "All") {
+      pipeline.push({ $match: { extractedUnitName: unitName } });
+    }
+
     if (search) {
       pipeline.push({
         $match: {
           $or: [
             { submissionId: { $regex: search, $options: "i" } },
-            { "answersListForSort.v.answer": { $regex: search, $options: "i" } },
+            {
+              "answersListForSort.v.answer": { $regex: search, $options: "i" },
+            },
             { "files.filename": { $regex: search, $options: "i" } },
             { "files.residentName": { $regex: search, $options: "i" } },
             { "files.residentEmail": { $regex: search, $options: "i" } },
