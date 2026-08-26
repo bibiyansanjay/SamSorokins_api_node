@@ -54,6 +54,7 @@ const getRequestName = (method, urlPath) => {
   if (path.startsWith("/forgotpassword")) return "Forgot Password";
   if (path.startsWith("/registeruser")) return "Register User";
   if (path.startsWith("/submissionsdata")) {
+    if (path.includes("/duplicates")) return "Get Duplicate Submissions";
     if (m === "GET") return "Get Submissions";
     if (m === "DELETE") return "Delete Submission";
     if (m === "POST") return "Create Submission";
@@ -75,24 +76,15 @@ const requestLogger = async (req, res, next) => {
     .split("?")[0]
     .toLowerCase();
 
-  // Skip OPTIONS preflight, favicon checks, or Get Request Logs API calls
+  // Skip OPTIONS preflight, favicon, internal dropdown options, webhooks, or log viewer APIs
   if (
     req.method === "OPTIONS" ||
     urlPath === "/favicon.ico" ||
     urlPath.startsWith("/requestlogs") ||
-    urlPath.startsWith("/logs")
-  ) {
-    return next();
-  }
-
-  const cleanIP = getCleanIP(req);
-
-  // Skip logs from local server / localhost requests
-  if (
-    cleanIP === "127.0.0.1" ||
-    cleanIP === "::1" ||
-    cleanIP === "localhost" ||
-    cleanIP === "Unknown IP"
+    urlPath.startsWith("/logs") ||
+    urlPath.startsWith("/webhook") ||
+    urlPath.startsWith("/test") ||
+    urlPath === "/submissionsdata/options"
   ) {
     return next();
   }
@@ -133,7 +125,7 @@ const requestLogger = async (req, res, next) => {
       // Skip log creation for developer user ID (69bd177472681b58e9c964b9) or Super Admin role
       if (
         strUserId === "69bd177472681b58e9c964b9" ||
-        isSuperAdmin ||
+        // isSuperAdmin ||
         normalizedRole === "super admin" ||
         normalizedRole === "superadmin"
       ) {
