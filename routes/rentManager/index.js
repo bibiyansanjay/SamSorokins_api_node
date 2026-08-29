@@ -1314,4 +1314,108 @@ router.get("/users", async (req, res) => {
   }
 });
 
+/**
+ * GET /serviceIssue/:issueId
+ * Get vender details by Issue ID from Rent Manager, to show detials in the create ker request form
+ */
+router.get("/serviceIssue/:issueId", async (req, res) => {
+  const { issueId } = req.params;
+  if (!issueId) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Issue ID is required" });
+  }
+
+  try {
+    const headers = await getRMHeaders();
+    const response = await axios.get(
+      `${process.env.RM_BASE_URL}/ServiceManagerIssues/${issueId}`,
+      {
+        headers,
+        params: {
+          embeds:
+            "Units,Units.Addresses,Units.Property,Vendor,Vendor.Contacts,Vendor.Contacts.PhoneNumbers",
+          fields: "ServiceManagerIssueID,Units,Vendor,VendorID",
+        },
+      }
+    );
+
+    const data = response.data;
+    if (!data) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Service Issue not found" });
+    }
+
+    // Extract Vendor Details
+    const vendorObj = data.Vendor;
+    const vendorName =
+      vendorObj?.Name || (data.VendorID ? `Vendor ${data.VendorID}` : "");
+    const primaryContact = Array.isArray(vendorObj?.Contacts)
+      ? vendorObj.Contacts.find((c) => c.IsPrimary) || vendorObj.Contacts[0]
+      : vendorObj?.Contact || null;
+    const email = primaryContact?.Email || "";
+
+    const phoneObjs = Array.isArray(primaryContact?.PhoneNumbers)
+      ? primaryContact.PhoneNumbers
+      : [];
+    const primaryPhone = phoneObjs.find((p) => p.IsPrimary) || phoneObjs[0];
+    const phoneNumber =
+      primaryPhone?.PhoneNumber || primaryPhone?.StrippedPhoneNumber || "";
+
+    // Extract Unit & Property Details
+    const unitObj = Array.isArray(data.Units) ? data.Units[0] : null;
+    const unitName = unitObj?.Name || unitObj?.UnitNumber || "";
+    const propObj = unitObj?.Property;
+    const propertyName = propObj?.Name || propObj?.Code || propObj?.Value || "";
+
+    // Extract Full Address
+    const primaryAddrObj =
+      (Array.isArray(unitObj?.Addresses)
+        ? unitObj.Addresses.find((a) => a.IsPrimary) || unitObj.Addresses[0]
+        : null) ||
+      propObj?.PrimaryAddress ||
+      (Array.isArray(propObj?.Addresses)
+        ? propObj.Addresses.find((a) => a.IsPrimary) || propObj.Addresses[0]
+        : null);
+
+    let fullAddress = "";
+    if (primaryAddrObj) {
+      if (primaryAddrObj.Address) {
+        fullAddress = primaryAddrObj.Address.replace(/\r?\n/g, ", ").trim();
+      } else {
+        const parts = [
+          primaryAddrObj.Street,
+          primaryAddrObj.City,
+          [primaryAddrObj.State, primaryAddrObj.PostalCode]
+            .filter(Boolean)
+            .join(" "),
+        ].filter(Boolean);
+        fullAddress = parts.join(", ").trim();
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      issueId: data.ServiceManagerIssueID,
+      vendor: vendorName,
+      phoneNumber,
+      email,
+      property: propertyName,
+      unit: unitName,
+      fullAddress,
+      rawData: data,
+    });
+  } catch (error) {
+    console.error(
+      `[RM-ServiceIssue-${issueId}] Error:`,
+      error.response?.data || error.message
+    );
+    return res.status(error.response?.status || 500).json({
+      success: false,
+      error: error.response?.data || error.message,
+    });
+  }
+});
+
 export default router;
