@@ -55,6 +55,17 @@ const jotformSubmissionSchema = new mongoose.Schema(
     formName: {
       type: String,
       default: "",
+      index: true,
+    },
+    propertyName: {
+      type: String,
+      default: "",
+      index: true,
+    },
+    unitName: {
+      type: String,
+      default: "",
+      index: true,
     },
     successFullUploadReminder: {
       type: Boolean,
@@ -69,9 +80,22 @@ const jotformSubmissionSchema = new mongoose.Schema(
       default: true,
       index: true,
     },
+    isDuplicateResolved: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
   },
   { timestamps: true }
 );
+
+// Compound index for instant duplicate grouping
+jotformSubmissionSchema.index({
+  isDuplicateResolved: 1,
+  formName: 1,
+  propertyName: 1,
+  unitName: 1,
+});
 
 export default jotformSubmissionSchema;
 // export default mongoose.model(

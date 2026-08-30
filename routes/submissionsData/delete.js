@@ -1,5 +1,7 @@
 import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { Upload, JotformSubmission } from "../../models/index.js";
+import { clearDuplicatesCache } from "./getDuplicates.js";
+import { clearResolvedDuplicatesCache } from "./getResolvedDuplicates.js";
 
 export default async (req, res, next) => {
   const { submissionId } = req.params;
@@ -71,6 +73,9 @@ export default async (req, res, next) => {
     } else {
         console.log(`[DELETE_SUBMISSION] JotformSubmission record ${submissionId} not found`);
     }
+
+    clearDuplicatesCache();
+    clearResolvedDuplicatesCache();
 
     return res.status(200).json({ success: true, message: "Submission deleted successfully" });
   } catch (error) {

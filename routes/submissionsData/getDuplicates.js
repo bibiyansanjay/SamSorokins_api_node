@@ -1,153 +1,347 @@
 import { JotformSubmission, Upload } from "../../models/index.js";
 
-// In-memory TTL cache for instant duplicate API responses (< 1ms)
-let duplicatesCache = null;
-let cacheTime = 0;
-const CACHE_TTL_MS = 60 * 1000; // 60 seconds cache TTL
+// In-memory cache for raw computed unresolved duplicate groups
+let unresolvedRawCache = null;
+let unresolvedCacheTime = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
 
 export const clearDuplicatesCache = () => {
-  duplicatesCache = null;
-  cacheTime = 0;
+  unresolvedRawCache = null;
+  unresolvedCacheTime = 0;
 };
 
-const getFieldValue = (answers, fieldNames, keyName = "answer") => {
-  const targets = Array.isArray(fieldNames) ? fieldNames : [fieldNames];
-  const field = Object.values(answers || {}).find((item) =>
-    targets.includes(item?.text)
-  );
-  if (!field) return null;
-  const value = field?.[keyName] ?? null;
-  if (typeof value === "string") return value.replace(/<[^>]*>/g, "").trim();
-  return value;
+const computeDuplicateGroupsFromDB = async (targetFormId = null) => {
+  const matchStage = { isDuplicateResolved: { $ne: true } };
+  if (targetFormId) {
+    matchStage.formId = String(targetFormId).trim();
+  }
+
+  const pipeline = [
+    { $match: matchStage },
+    {
+      $project: {
+        submissionId: 1,
+        formId: 1,
+        formName: 1,
+        propertyName: 1,
+        unitName: 1,
+        clientName: 1,
+        clientEmail: 1,
+        fullAddress: 1,
+        isSubmited: 1,
+        createdAt: 1,
+        answersArray: {
+          $objectToArray: { $ifNull: ["$answers", {}] },
+        },
+      },
+    },
+    {
+      $project: {
+        submissionId: 1,
+        isSubmited: 1,
+        createdAt: 1,
+        formId: {
+          $ifNull: [
+            "$formId",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: {
+                            $in: ["$$item.v.text", ["Form ID", "formId"]],
+                          },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        formName: {
+          $ifNull: [
+            "$formName",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: {
+                            $in: [
+                              "$$item.v.text",
+                              ["Uploader Header", "Form Name", "FormName"],
+                            ],
+                          },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        propertyName: {
+          $ifNull: [
+            "$propertyName",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: {
+                            $in: [
+                              "$$item.v.text",
+                              ["RM Short Name", "Property", "Property Name"],
+                            ],
+                          },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        unitName: {
+          $ifNull: [
+            "$unitName",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: {
+                            $in: [
+                              "$$item.v.text",
+                              [
+                                "RM Unit Name",
+                                "Unit",
+                                "Unit Name",
+                                "Unit Number",
+                              ],
+                            ],
+                          },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        clientName: {
+          $ifNull: [
+            "$clientName",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: { $eq: ["$$item.v.text", "User Name"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        clientEmail: {
+          $ifNull: [
+            "$clientEmail",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: { $eq: ["$$item.v.text", "User Email"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+        fullAddress: {
+          $ifNull: [
+            "$fullAddress",
+            {
+              $let: {
+                vars: {
+                  firstMatch: {
+                    $arrayElemAt: [
+                      {
+                        $filter: {
+                          input: "$answersArray",
+                          as: "item",
+                          cond: { $eq: ["$$item.v.text", "Full Address"] },
+                        },
+                      },
+                      0,
+                    ],
+                  },
+                },
+                in: "$$firstMatch.v.answer",
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      $match: {
+        formId: { $exists: true, $ne: null, $nin: ["", "undefined", "null"] },
+        propertyName: {
+          $exists: true,
+          $ne: null,
+          $nin: ["", "N/A", "n/a", "undefined", "null", "-"],
+        },
+        unitName: {
+          $exists: true,
+          $ne: null,
+          $nin: ["", "N/A", "n/a", "undefined", "null", "-"],
+        },
+      },
+    },
+    {
+      $addFields: {
+        groupKey: {
+          $concat: [
+            { $toLower: "$formId" },
+            ":::",
+            { $toLower: "$propertyName" },
+            ":::",
+            { $toLower: "$unitName" },
+          ],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$groupKey",
+        formId: { $first: "$formId" },
+        formName: { $first: "$formName" },
+        propertyName: { $first: "$propertyName" },
+        unitName: { $first: "$unitName" },
+        count: { $sum: 1 },
+        submissions: {
+          $push: {
+            _id: "$_id",
+            submissionId: "$submissionId",
+            createdAt: "$createdAt",
+            isSubmited: "$isSubmited",
+            clientName: "$clientName",
+            clientEmail: "$clientEmail",
+            clientAddress: "$fullAddress",
+          },
+        },
+      },
+    },
+    { $match: { count: { $gte: 2 } } },
+    { $sort: { count: -1 } },
+  ];
+
+  return await JotformSubmission.aggregate(pipeline);
 };
 
 export default async (req, res, next) => {
   try {
     const now = Date.now();
+    const targetFormId = req.query.formId ? String(req.query.formId).trim() : null;
+    const page = Math.max(0, parseInt(req.query.page || 0, 10));
+    const pageSize = Math.max(
+      1,
+      parseInt(req.query.pageSize || req.query.limit || 8, 10)
+    );
 
-    // Return cached duplicates if available and fresh (< 60s)
-    if (duplicatesCache && now - cacheTime < CACHE_TTL_MS) {
-      return res.json(duplicatesCache);
+    // Compute or use cached raw unresolved duplicate groups
+    let activeRawGroups;
+    if (targetFormId) {
+      activeRawGroups = await computeDuplicateGroupsFromDB(targetFormId);
+    } else {
+      if (!unresolvedRawCache || now - unresolvedCacheTime > CACHE_TTL_MS) {
+        unresolvedRawCache = await computeDuplicateGroupsFromDB();
+        unresolvedCacheTime = now;
+      }
+      activeRawGroups = unresolvedRawCache || [];
     }
 
-    // Step 1: Lightweight projection query from MongoDB (~20ms)
-    const submissions = await JotformSubmission.find(
-      {},
-      {
-        submissionId: 1,
-        formName: 1,
-        answers: 1,
-        isSubmited: 1,
-        createdAt: 1,
-      }
-    ).lean();
+    const totalGroups = activeRawGroups.length;
+    const totalDuplicateSubmissions = activeRawGroups.reduce(
+      (sum, g) => sum + (g.count || g.submissions?.length || 0),
+      0
+    );
 
-    // Step 2: Pass 1 in Node.js - Group submissions by same formName (~2ms)
-    const formNameMap = new Map();
+    const start = page * pageSize;
+    const paginatedRawGroups = activeRawGroups.slice(start, start + pageSize);
 
-    submissions.forEach((item) => {
-      const answers = item.answers || {};
-      const formName = (
-        item.formName ||
-        getFieldValue(answers, ["Uploader Header", "Form Name", "FormName"]) ||
-        ""
-      ).trim();
-
-      if (!formName || formName.toUpperCase() === "N/A") return;
-
-      const key = formName.toLowerCase();
-      if (!formNameMap.has(key)) {
-        formNameMap.set(key, {
-          formName,
-          items: [],
-        });
-      }
-      formNameMap.get(key).items.push(item);
-    });
-
-    // Step 3: Pass 2 in Node.js - Within same formName groups (count >= 2), group by RM Short Name & RM Unit Name (~1ms)
-    const finalDuplicateGroupsList = [];
-
-    formNameMap.forEach((formGroup) => {
-      // Skip forms with only 1 submission
-      if (formGroup.items.length < 2) return;
-
-      const propUnitMap = new Map();
-
-      formGroup.items.forEach((item) => {
-        const answers = item.answers || {};
-
-        const prop = (
-          getFieldValue(answers, [
-            "RM Short Name",
-            "Property",
-            "Property Name",
-          ]) || ""
-        ).trim();
-
-        const unit = (
-          getFieldValue(answers, [
-            "RM Unit Name",
-            "Unit",
-            "Unit Name",
-            "Unit Number",
-          ]) || ""
-        ).trim();
-
-        // Exclude if Property or Unit is blank or N/A
-        if (
-          !prop ||
-          !unit ||
-          prop.toUpperCase() === "N/A" ||
-          unit.toUpperCase() === "N/A"
-        ) {
-          return;
-        }
-
-        const key = `${prop.toLowerCase()}:::${unit.toLowerCase()}`;
-
-        if (!propUnitMap.has(key)) {
-          propUnitMap.set(key, {
-            formName: formGroup.formName,
-            propertyName: prop,
-            unitName: unit,
-            submissions: [],
-          });
-        }
-
-        propUnitMap.get(key).submissions.push(item);
-      });
-
-      propUnitMap.forEach((group) => {
-        if (group.submissions.length >= 2) {
-          finalDuplicateGroupsList.push(group);
-        }
-      });
-    });
-
-    if (finalDuplicateGroupsList.length === 0) {
-      const emptyResult = {
+    if (paginatedRawGroups.length === 0) {
+      return res.json({
         success: true,
-        totalGroups: 0,
-        totalDuplicateSubmissions: 0,
+        totalGroups,
+        totalDuplicateSubmissions,
+        page,
+        pageSize,
         duplicateGroups: [],
-      };
-      duplicatesCache = emptyResult;
-      cacheTime = now;
-      return res.json(emptyResult);
+      });
     }
 
-    // Step 4: Query Uploads ONLY for duplicate submission IDs (~2ms)
-    const duplicateSubIds = [];
-    finalDuplicateGroupsList.forEach((g) => {
+    // Fetch file uploads ONLY for submission IDs in the active page slice
+    const pageSubIds = [];
+    paginatedRawGroups.forEach((g) => {
       g.submissions.forEach((sub) => {
-        if (sub.submissionId) duplicateSubIds.push(sub.submissionId);
+        if (sub.submissionId) pageSubIds.push(sub.submissionId);
       });
     });
 
-    const uploads = await Upload.find({
-      submissionId: { $in: duplicateSubIds },
-    }).lean();
+    const uploads = await Upload.find(
+      { submissionId: { $in: pageSubIds } },
+      { submissionId: 1, filename: 1, s3Url: 1, status: 1, createdAt: 1 }
+    ).lean();
 
     const uploadsMap = {};
     uploads.forEach((f) => {
@@ -163,70 +357,58 @@ export default async (req, res, next) => {
       });
     });
 
-    // Step 5: Format response and sort by count descending (~1ms)
-    const duplicateGroups = finalDuplicateGroupsList
-      .map((group) => {
-        const formattedSubmissions = group.submissions.map((sub) => {
-          const answers = sub.answers || {};
-          const files = uploadsMap[sub.submissionId] || [];
+    const duplicateGroups = paginatedRawGroups.map((group) => {
+      const formattedSubmissions = group.submissions.map((sub) => {
+        const files = uploadsMap[sub.submissionId] || [];
 
-          let overallStatus = "Pending";
-          if (files.length === 0 || !sub?.isSubmited) {
-            overallStatus = "Pending";
-          } else {
-            const allUploaded = files.every((f) => f.status === "Uploaded");
-            const anyUploading = files.some((f) => f.status === "Uploading");
-            const anyFailed = files.some((f) => f.status === "Failed");
+        let overallStatus = "Pending";
+        if (files.length === 0 || !sub?.isSubmited) {
+          overallStatus = "Pending";
+        } else {
+          const allUploaded = files.every((f) => f.status === "Uploaded");
+          const anyUploading = files.some((f) => f.status === "Uploading");
+          const anyFailed = files.some((f) => f.status === "Failed");
 
-            if (allUploaded) overallStatus = "Uploaded";
-            else if (anyUploading) overallStatus = "Uploading";
-            else if (anyFailed) overallStatus = "Failed";
-            else overallStatus = "Pending";
-          }
-
-          return {
-            _id: sub._id,
-            submissionId: sub.submissionId,
-            createdAt: sub.createdAt,
-            status: overallStatus,
-            clientName: getFieldValue(answers, "User Name"),
-            clientEmail: getFieldValue(answers, "User Email"),
-            propertyName: group.propertyName,
-            unitName: group.unitName,
-            clientAddress: getFieldValue(answers, "Full Address"),
-            formName:
-              group.formName || getFieldValue(answers, "Uploader Header"),
-            files,
-            totalFiles: files.length,
-          };
-        });
+          if (allUploaded) overallStatus = "Uploaded";
+          else if (anyUploading) overallStatus = "Uploading";
+          else if (anyFailed) overallStatus = "Failed";
+          else overallStatus = "Pending";
+        }
 
         return {
-          formName: group.formName,
+          _id: sub._id,
+          submissionId: sub.submissionId,
+          createdAt: sub.createdAt,
+          status: overallStatus,
+          clientName: sub.clientName || "-",
+          clientEmail: sub.clientEmail || "-",
           propertyName: group.propertyName,
           unitName: group.unitName,
-          count: formattedSubmissions.length,
-          submissions: formattedSubmissions,
+          clientAddress: sub.clientAddress || "-",
+          formName: group.formName,
+          files,
+          totalFiles: files.length,
         };
-      })
-      .sort((a, b) => b.count - a.count);
+      });
 
-    const totalDuplicateSubmissions = duplicateGroups.reduce(
-      (acc, group) => acc + group.count,
-      0
-    );
+      return {
+        formId: group.formId,
+        formName: group.formName,
+        propertyName: group.propertyName,
+        unitName: group.unitName,
+        count: formattedSubmissions.length,
+        submissions: formattedSubmissions,
+      };
+    });
 
-    const result = {
+    return res.json({
       success: true,
-      totalGroups: duplicateGroups.length,
+      totalGroups,
       totalDuplicateSubmissions,
+      page,
+      pageSize,
       duplicateGroups,
-    };
-
-    duplicatesCache = result;
-    cacheTime = now;
-
-    return res.json(result);
+    });
   } catch (error) {
     console.error("[submissionsData/getDuplicates]", error);
     next(error);

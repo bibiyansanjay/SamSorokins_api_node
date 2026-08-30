@@ -103,6 +103,8 @@ export default async (req, res, next) => {
 
     const formName = getAnswerByName(answers, "Uploader Header") || "";
 
+    const unitName = getAnswerByName(answers, "RM Unit Name");
+    const propertyName = getAnswerByName(answers, "RM Short Name");
     // Save into MongoDB
 
     const submission = await JotformSubmission.findOneAndUpdate(
@@ -118,7 +120,8 @@ export default async (req, res, next) => {
         uniqueId: uniqueId || "",
         replyEmail: replyEmail,
         formName: formName,
-
+        propertyName: propertyName,
+        unitName: unitName,
         // raw: jotformData,
       },
       {
@@ -157,9 +160,6 @@ export default async (req, res, next) => {
 
     const requiredUploads = getAnswerByName(answers, "Files to Upload"); //Thanks for selecting your files... //text
     const forwarding_URL = getAnswerByName(answers, "Forwarding URL");
-
-    const unitName = getAnswerByName(answers, "RM Unit Name");
-    const propertyName = getAnswerByName(answers, "RM Short Name");
 
     // finalInstructions,
     //   generalInstructions,
